@@ -10,7 +10,7 @@
 
 	<!-- By default go to secured page -->
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>files.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<!-- Starting JSF -->
