@@ -2,7 +2,6 @@ package com.danielkueffer.filehosting.auth;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.danielkueffer.filehosting.controller.AuthController;
 
@@ -25,9 +25,6 @@ import com.danielkueffer.filehosting.controller.AuthController;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 
-	@Inject
-	AuthController authController;
-
 	/**
 	 * Checks if the user is logged in
 	 */
@@ -38,6 +35,11 @@ public class AuthFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String path = req.getServletPath();
 
+		// Get the AuthControler from the session
+		HttpSession session = ((HttpServletRequest) request).getSession(false);
+		AuthController authController = (session != null) ? (AuthController) session
+				.getAttribute("authController") : null;
+				
 		if ((authController != null && authController.isLoggedIn())
 				|| this.excludeFromFilter(path)) {
 
@@ -48,7 +50,6 @@ public class AuthFilter implements Filter {
 			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendRedirect(req.getContextPath() + "/login.xhtml");
 		}
-
 	}
 
 	/**
@@ -71,5 +72,4 @@ public class AuthFilter implements Filter {
 	@Override
 	public void destroy() {
 	}
-
 }

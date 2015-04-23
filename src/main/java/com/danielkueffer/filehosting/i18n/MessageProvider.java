@@ -1,11 +1,10 @@
-package com.danielkueffer.filehosting.messages;
+package com.danielkueffer.filehosting.i18n;
 
 import java.io.Serializable;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 
 /**
  * Get a value from a resouce bundle
@@ -13,7 +12,6 @@ import javax.inject.Named;
  * @author dkueffer
  * 
  */
-@Named
 public class MessageProvider implements Serializable {
 
 	private static final long serialVersionUID = 1L;

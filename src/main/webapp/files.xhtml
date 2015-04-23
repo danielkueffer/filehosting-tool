@@ -9,6 +9,8 @@
 		<ui:define name="content">
 			<p>Filelist</p>
 			
+			<h:outputText value="#{fileController.getLanguage()}"/>
+			
 			<h:form>
 				<h:commandLink value="#{msg['logout.label']}"
 					action="#{authController.logout}" />

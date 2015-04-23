@@ -1,19 +1,21 @@
 package com.danielkueffer.filehosting.controller;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import com.danielkueffer.filehosting.auth.Credentials;
 import com.danielkueffer.filehosting.auth.LoggedIn;
-import com.danielkueffer.filehosting.messages.MessageProvider;
+import com.danielkueffer.filehosting.i18n.MessageProvider;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.UserService;
 
@@ -23,7 +25,7 @@ import com.danielkueffer.filehosting.service.UserService;
  * @author dkueffer
  * 
  */
-@Named
+@ManagedBean
 @SessionScoped
 public class AuthController implements Serializable {
 
@@ -37,6 +39,9 @@ public class AuthController implements Serializable {
 
 	@EJB
 	UserService userService;
+	
+	@ManagedProperty(value = "#{localeController}")
+	LocaleController localeManager;
 
 	private User user;
 	private String message;
@@ -51,8 +56,14 @@ public class AuthController implements Serializable {
 		User user = this.userService.login(this.credentials.getUsername(),
 				this.credentials.getPassword());
 
+		// Login success
 		if (user != null) {
 			this.user = user;
+
+			Locale l = new Locale(user.getLanguage());
+
+			this.localeManager.setLanguage(l.getLanguage());
+			// this.localeManager.setLanguage(l.getLanguage());
 
 			return "/files.xhtml?faces-redirect=true";
 		} else {
@@ -115,4 +126,11 @@ public class AuthController implements Serializable {
 		return this.user;
 	}
 
+	/**
+	 * @param localeManager
+	 *            the localeManager to set
+	 */
+	public void setLocaleManager(LocaleController localeManager) {
+		this.localeManager = localeManager;
+	}
 }

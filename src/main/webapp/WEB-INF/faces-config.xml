@@ -7,9 +7,10 @@
 	<application>
 		<locale-config>
 			<default-locale>en</default-locale>
+			<supported-locale>de</supported-locale>
 		</locale-config>
 		<resource-bundle>
-			<base-name>locale.message</base-name>
+			<base-name>locale.messages</base-name>
 			<var>msg</var>
 		</resource-bundle>
 	</application>
