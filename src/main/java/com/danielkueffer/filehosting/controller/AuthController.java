@@ -44,7 +44,7 @@ public class AuthController implements Serializable {
 	 * @return
 	 */
 	public String doLogin() {
-
+		
 		User user = this.userService.login(this.credentials.getUsername(),
 				this.credentials.getPassword());
 

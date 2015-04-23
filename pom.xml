@@ -22,18 +22,25 @@
 			<version>4.3.9.Final</version>
 		</dependency>
 
-		<!-- Testing -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-		</dependency>
-
 		<!-- Date -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.7</version>
+		</dependency>
+
+		<!-- Commons -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+
+		<!-- Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
 		</dependency>
 	</dependencies>
 
@@ -59,33 +66,17 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.glassfish.maven.plugin</groupId>
-				<artifactId>maven-glassfish-plugin</artifactId>
-				<version>2.1</version>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>1.0.2.Final</version>
 				<configuration>
-					<glassfishDirectory>${local.glassfish.home}</glassfishDirectory>
-					<user>${local.glassfish.user}</user>
-					<passwordFile>${local.glassfish.passfile}</passwordFile>
-					<domain>
-						<name>${local.glassfish.domain}</name>
-						<httpPort>8080</httpPort>
-						<adminPort>4848</adminPort>
-					</domain>
-					<components>
-						<component>
-							<name>${project.artifactId}</name>
-							<artifact>target/${project.build.finalName}.war</artifact>
-						</component>
-					</components>
-					<debug>true</debug>
-					<terse>false</terse>
-					<echo>true</echo>
+					<hostname>${wildfly-hostname}</hostname>
+					<port>${wildfly-port}</port>
+					<username>${wildfly-username}</username>
+					<password>${wildfly-password}</password>
 				</configuration>
 			</plugin>
-
 		</plugins>
-
-		<finalName>Filehosting-Tool</finalName>
 	</build>
 
 </project>

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.danielkueffer.filehosting.controller.AuthController;
 
-
 /**
  * Filter checks if LoginController has loginIn property set to true. If it is
  * not set then request is being redirected to the login.xhml page.
@@ -37,19 +36,32 @@ public class AuthFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
-		
-		if (req.getServletPath().equals("/login.xhtml")) {
-			if (authController != null && authController.isLoggedIn()) {
-	
-				// User is logged in, so just continue request.
-				chain.doFilter(request, response);
-			} else {
-				// User is not logged in, so redirect to index.
-				HttpServletResponse res = (HttpServletResponse) response;
-				res.sendRedirect(req.getContextPath() + "/login.xhtml");
-			}
+		String path = req.getServletPath();
+
+		if ((authController != null && authController.isLoggedIn())
+				|| this.excludeFromFilter(path)) {
+
+			// User is logged in, so just continue request.
+			chain.doFilter(request, response);
+		} else {
+			// User is not logged in, so redirect to index.
+			HttpServletResponse res = (HttpServletResponse) response;
+			res.sendRedirect(req.getContextPath() + "/login.xhtml");
 		}
 
+	}
+
+	/**
+	 * Exclude a path from the filter
+	 * 
+	 * @param path
+	 * @return
+	 */
+	private boolean excludeFromFilter(String path) {
+		if (path.startsWith("/login"))
+			return true;
+		else
+			return false;
 	}
 
 	@Override

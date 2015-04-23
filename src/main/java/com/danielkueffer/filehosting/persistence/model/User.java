@@ -251,21 +251,4 @@ public class User implements Serializable {
 	public void setLastLogin(Timestamp lastLogin) {
 		this.lastLogin = lastLogin;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password="
-				+ password + ", email=" + email + ", language=" + language
-				+ ", profileImage=" + profileImage + ", displayName="
-				+ displayName + ", diskQuota=" + diskQuota + ", active="
-				+ active + ", notificationDiskFull=" + notificationDiskFull
-				+ ", groups=" + groups + ", dateCreated=" + dateCreated
-				+ ", lastLogin=" + lastLogin + "]";
-	}
-
 }

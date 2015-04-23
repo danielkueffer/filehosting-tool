@@ -4,14 +4,11 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
 	<persistence-unit name="defaultUnit" transaction-type="JTA">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<jta-data-source>DefaultDS</jta-data-source>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<jta-data-source>java:/jdbc/DefaultDS</jta-data-source>
 		<class>com.danielkueffer.filehosting.persistence.model.User</class>
 		<class>com.danielkueffer.filehosting.persistence.model.Group</class>
 		<properties>
-			<property name="hibernate.transaction.jta.platform"
-				value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
-
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 		</properties>
 	</persistence-unit>

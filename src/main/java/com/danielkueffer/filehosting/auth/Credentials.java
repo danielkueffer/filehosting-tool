@@ -3,6 +3,8 @@ package com.danielkueffer.filehosting.auth;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+
+
 /**
  * The login credentials
  * 

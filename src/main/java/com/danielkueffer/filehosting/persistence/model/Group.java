@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "group")
+@Table(name = "`group`")
 public class Group implements Serializable {
 
 	private static final long serialVersionUID = -3165312403093453404L;
@@ -154,7 +154,9 @@ public class Group implements Serializable {
 		this.updatedUser = updatedUser;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
