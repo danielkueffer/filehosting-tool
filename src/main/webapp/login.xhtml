@@ -10,14 +10,14 @@
 		<ui:define name="content">
 
 			<h:form id="login-form">
-				<h:outputText value="username:" />
+				<h:outputText value="#{msg['login.username']}:" />
 				<h:inputText value="#{credentials.username}" id="username" />
 				<br />
-				<h:outputText value="password:" />
+				<h:outputText value="#{msg['login.password']}:" />
 				<h:inputSecret value="#{credentials.password}" id="password" />
 				<br />
-				<h:commandButton id="button" value="Login"
-					action="#{authController.doLogin}" />
+				<h:commandButton id="button" value="#{msg['login.submit']}" action="#{authController.doLogin}" />
+				
 				<br />
 				<h:messages />
 				<br />

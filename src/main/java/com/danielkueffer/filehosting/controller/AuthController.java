@@ -13,9 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import com.danielkueffer.filehosting.auth.Credentials;
 import com.danielkueffer.filehosting.auth.LoggedIn;
+import com.danielkueffer.filehosting.messages.MessageProvider;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.UserService;
-
 
 /**
  * The authorization controller
@@ -32,6 +32,9 @@ public class AuthController implements Serializable {
 	@Inject
 	Credentials credentials;
 
+	@Inject
+	MessageProvider messageProvider;
+
 	@EJB
 	UserService userService;
 
@@ -44,7 +47,7 @@ public class AuthController implements Serializable {
 	 * @return
 	 */
 	public String doLogin() {
-		
+
 		User user = this.userService.login(this.credentials.getUsername(),
 				this.credentials.getPassword());
 
@@ -53,12 +56,11 @@ public class AuthController implements Serializable {
 
 			return "/files.xhtml?faces-redirect=true";
 		} else {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Invalid Login!", "Please Try Again!"));
 
-			message = "Invalid Login. Please Try Again!";
+			message = this.messageProvider.getValue("login.invalid");
+
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, message, ""));
 
 			return "/login.xhtml";
 		}
