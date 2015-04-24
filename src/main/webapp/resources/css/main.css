@@ -54,10 +54,10 @@ body {
 
 h1 {
 	float: left;
-	font-size: 1.428em; /* 20px */
+	font: normal 1.285em titilliumbold_italic, Arial, Helvertica, sans-serif; /* 18px */
 	margin: 0 0 0 20px;
 	text-transform: uppercase;
-	color: #999;
+	color: #FCF9DA;
 }
 
 /**
@@ -70,7 +70,7 @@ h1 {
 .header-wrapper {
 	float: left;
 	width: 100%;
-	padding: 12px 0 11px;
+	padding: 13px 0 13px;
 	background: #3D3D3D;
 }
 
@@ -79,7 +79,7 @@ h1 {
 	bottom: 0;
 	display: block;
 	left: 0;
-	top: 50px;
+	top: 52px;
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding: 20;
@@ -90,7 +90,7 @@ h1 {
 }
 
 .content-wrapper {
-	top: 50px;
+	top: 52px;
 	position: relative;
 	margin-left: 230px;
 }
@@ -106,7 +106,7 @@ h1 {
 	float: right;
 	list-style: none;
 	padding: 0;
-	margin: 5px 20px 0 0;
+	margin: 3px 20px 0 0;
 }
 
 .header-nav li {
@@ -123,47 +123,53 @@ h1 {
  * Login
  */
 .login {
-	width: 350px;
-	margin: 180px auto;
-	border: 1px solid #ccc;
-	padding: 40px;
+	width: 424px;
+	margin: 150px auto;
 }
 
 .login h1 {
-	font-size: 1.25em;
+	font: normal 1.375em titilliumbold_italic, Arial, Helvertica, sans-serif; /* 22px */
 	margin: 0 0 30px;
 	color: #333;
+	width: 100%;
+	text-align: center;
 }
 
 .login form {
 	float: left;
-	width: 100%;
+	padding: 40px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
 }
 
 .login label {
-	float: left;
+	display: block;
 	width: 100px;
 	font-size: 0.75em;
 	font-weight: bold;
+	margin: 0 0 5px;
 }
 
 .login div {
-	margin: 0 0 10px;
+	margin: 0 0 20px;
 }
 
 .login input[type="text"],
 .login input[type="password"] {
-	width: 210px;
+	width: 320px;
+	padding: 10px;
+	font-size: 0.75em;
+	color: #666;
 }
 
 .login input[type="submit"] {
-	margin: 0 0 0 100px;
 	font-size: 0.875em;
+	padding: 5px 20px;
 }
 
 .login ul {
 	list-style: none;
-	margin: 20px 0 0 100px;
+	margin: 20px 0 0;
 	padding: 0;
 	color: #f00;
 	font-size: 0.75em;
