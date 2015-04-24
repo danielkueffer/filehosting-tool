@@ -61,9 +61,7 @@ public class AuthController implements Serializable {
 			this.user = user;
 
 			Locale l = new Locale(user.getLanguage());
-
 			this.localeManager.setLanguage(l.getLanguage());
-			// this.localeManager.setLanguage(l.getLanguage());
 
 			return "/files.xhtml?faces-redirect=true";
 		} else {
@@ -122,7 +120,7 @@ public class AuthController implements Serializable {
 	 */
 	@Produces
 	@LoggedIn
-	User getCurrentUser() {
+	public User getCurrentUser() {
 		return this.user;
 	}
 

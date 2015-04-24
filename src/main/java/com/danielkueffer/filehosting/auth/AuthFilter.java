@@ -39,7 +39,7 @@ public class AuthFilter implements Filter {
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		AuthController authController = (session != null) ? (AuthController) session
 				.getAttribute("authController") : null;
-				
+
 		if ((authController != null && authController.isLoggedIn())
 				|| this.excludeFromFilter(path)) {
 
@@ -59,10 +59,12 @@ public class AuthFilter implements Filter {
 	 * @return
 	 */
 	private boolean excludeFromFilter(String path) {
-		if (path.startsWith("/login"))
+		if (path.startsWith("/login")
+				|| path.startsWith("/javax.faces.resource")) {
 			return true;
-		else
-			return false;
+		}
+
+		return false;
 	}
 
 	@Override

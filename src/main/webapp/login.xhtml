@@ -3,27 +3,42 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
+	
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Filehosting-Tool - Login</title>
+	
+	<h:outputStylesheet library="css" name="normalize.min.css"/>
+	<h:outputStylesheet library="css" name="main.css"/>
 
-<body>
-	<ui:composition template="./WEB-INF/template.xhtml">
+	<h:outputScript library="js/vendor" name="jquery-1.11.2.min.js"></h:outputScript>
+	<h:outputScript library="js" name="main.js"></h:outputScript>
 
-		<ui:define name="content">
+	<h:outputText value="&lt;!--[if lt IE 9]&gt; " escape="false"/>
+		<h:outputScript library="js/vendor" name="html5-3.6-respond-1.4.2.min.js"></h:outputScript>
+	<h:outputText value=" &lt;![endif]--&gt;" escape="false"/>
+</h:head>
+<h:body>
 
-			<h:form id="login-form">
-				<h:outputText value="#{msg['login.username']}:" />
+	<div class="login clearfix">
+		<h1>Filehosting-Tool</h1>
+	
+		<h:form>
+			<div>
+				<label for="username"><h:outputText value="#{msg['login.username']}:" /></label>
 				<h:inputText value="#{credentials.username}" id="username" />
-				<br />
-				<h:outputText value="#{msg['login.password']}:" />
+			</div>
+			
+			<div>
+				<label for="password"><h:outputText value="#{msg['login.password']}:" /></label>
 				<h:inputSecret value="#{credentials.password}" id="password" />
-				<br />
-				<h:commandButton id="button" value="#{msg['login.submit']}" action="#{authController.doLogin}" />
-				
-				<br />
-				<h:messages />
-				<br />
-			</h:form>
+			</div>
+			
+			<h:commandButton id="button" value="#{msg['login.submit']}" action="#{authController.doLogin}" />
+			
+			<h:messages />
+		</h:form>
+	</div>
 
-		</ui:define>
-	</ui:composition>
-</body>
+</h:body>
 </html>
