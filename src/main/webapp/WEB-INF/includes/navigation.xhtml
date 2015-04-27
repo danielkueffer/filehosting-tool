@@ -5,14 +5,14 @@
 	
 	<nav class="mainnav">
 		<ul>
-			<li class="#{pageName == msg['files.title'] ? 'active' : ''}"><a href="#"><i class="icon-docs"></i>  #{msg['nav.files']}</a></li>
-			<li class="parent"><a href="#"><i class="icon-users"></i> #{msg['nav.usermanagement']}</a>
+			<li class="#{pageName == msg['files.title'] ? 'active' : ''}"><a href="#"><i class="icon-docs"></i> <span class="menu-text">#{msg['nav.files']}</span></a></li>
+			<li class="parent"><a href="#"><i class="icon-users"></i> <span class="menu-text">#{msg['nav.usermanagement']}</span></a>
 				<ul>
-					<li><a href="#"><i class="icon-user"></i> #{msg['nav.users']}</a></li>
-					<li><a href="#"><i class="icon-group"></i> #{msg['nav.groups']}</a></li>
+					<li><a href="#"><i class="icon-user"></i> <span class="menu-text">#{msg['nav.users']}</span></a></li>
+					<li><a href="#"><i class="icon-group"></i> <span class="menu-text">#{msg['nav.groups']}</span></a></li>
 				</ul>
 			</li>
-			<li><a href="#"><i class="icon-cog"></i> #{msg['nav.settings']}</a></li>
+			<li><a href="#"><i class="icon-cog"></i> <span class="menu-text">#{msg['nav.settings']}</span></a></li>
 		</ul>
 	</nav>
 	

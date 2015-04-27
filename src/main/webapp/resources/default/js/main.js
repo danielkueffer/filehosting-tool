@@ -14,6 +14,7 @@ $(document).ready(function() {
 		}
 	});
 	
+	// Folding Navigation
 	$(".mainnav .parent > a").click(function() {
 		var child = $(this).parent().find("ul");
 		
@@ -26,6 +27,20 @@ $(document).ready(function() {
 			$(".mainnav").find("li.active").removeClass("idle");
 			$(this).parent("li").removeClass("active");
 			child.slideUp();
+		}
+		
+		$(this).blur();
+		
+		return false;
+	});
+	
+	// Narrow Menu Bar
+	$(".menu-trigger a").click(function() {
+		if ($(".sidebar").hasClass("narrow")) {
+			$(".sidebar").removeClass("narrow");
+		}
+		else {
+			$(".sidebar").addClass("narrow");
 		}
 		
 		$(this).blur();

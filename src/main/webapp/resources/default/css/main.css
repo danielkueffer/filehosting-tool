@@ -290,9 +290,24 @@ h2 {
 	margin: 15px 15px 0 0;
 	padding: 4px 4px 4px 3px;
 	background: #D9D7D7;
-	color: #666;
 	border-radius: 5px;
-	cursor: pointer;
+}
+
+.menu-trigger a {
+	color: #666;
+}
+
+.sidebar.narrow {
+	width: 52px;
+}
+
+.sidebar.narrow .menu-text,
+.sidebar.narrow .search {
+	display: none;
+}
+
+.sidebar.narrow .menu-trigger {
+	margin-right: 13px;
 }
 
 /**
