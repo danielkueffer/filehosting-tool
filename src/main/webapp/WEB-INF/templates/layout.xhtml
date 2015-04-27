@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="#{localeController.language}"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+<f:view locale="#{localeController.locale}">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Filehosting Tool - #{pageName}</title>
+		
+		<h:outputStylesheet library="default" name="css/normalize.min.css"/>
+		<h:outputStylesheet library="default" name="fonts/titillium/stylesheet.css"/>
+		<h:outputStylesheet library="default" name="fonts/fontello/css/fontello.css"/>
+		<h:outputStylesheet library="default" name="css/main.css"/>
+	
+		<h:outputScript library="default" name="js/vendor/jquery-1.11.2.min.js"></h:outputScript>
+		<h:outputScript library="default" name="js/main.js"></h:outputScript>
+	
+		<h:outputText value="&lt;!--[if lt IE 9]&gt; " escape="false"/>
+			<h:outputScript library="default" name="js/vendor/html5-3.6-respond-1.4.2.min.js"></h:outputScript>
+		<h:outputText value=" &lt;![endif]--&gt;" escape="false"/>
+	</h:head>
+	<h:body>
+		<div class="wrapper">
+			<div class="header-wrapper">
+				<h1>Filehosting Tool</h1>
+				
+				<ul class="header-nav">
+					<li><i class="icon-user"></i> <a href="#"><h:outputText value="#{authController.getCurrentUser().getDisplayName()}" /></a></li>
+					<li>
+						<span class="logout-icon-wrap">
+							<a href="#"><i class="icon-logout"></i></a>
+						</span>
+						
+						<h:form>
+							<h:commandLink value="#{msg['logout.label']}" action="#{authController.logout}" />
+						</h:form>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="container-row">
+				<div class="sidebar">
+					<div class="menu-trigger">
+						<i class="icon-th-list"></i>
+					</div>
+				
+					<ui:include src="/WEB-INF/includes/searchform.xhtml" />
+					<ui:include src="/WEB-INF/includes/navigation.xhtml" />
+				</div>
+				
+				<div class="content-wrapper">
+					<div class="content">
+						<ui:insert name="content">Content</ui:insert>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</h:body>
+</f:view>
+</html>

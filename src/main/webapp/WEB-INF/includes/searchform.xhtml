@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<div class="searchform">
+		<h:form>
+			<div>
+				<i class="icon-search"></i>
+				<label for="search"><h:outputText value="#{msg['sidebar.search']}:" /></label>
+				<h:inputText value="#{msg['sidebar.search']}" id="search" class="search" />
+			</div>
+			
+			<h:commandButton id="button" value="#{msg['sidebar.search']}" action="#{authController.doLogin}" />
+		</h:form>
+	</div>
+</ui:composition>

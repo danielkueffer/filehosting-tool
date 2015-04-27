@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<nav class="mainnav">
+		<ul>
+			<li class="#{pageName == msg['files.title'] ? 'active' : ''}"><a href="#"><i class="icon-docs"></i>  #{msg['nav.files']}</a></li>
+			<li class="parent"><a href="#"><i class="icon-users"></i> #{msg['nav.usermanagement']}</a>
+				<ul>
+					<li><a href="#"><i class="icon-user"></i> #{msg['nav.users']}</a></li>
+					<li><a href="#"><i class="icon-group"></i> #{msg['nav.groups']}</a></li>
+				</ul>
+			</li>
+			<li><a href="#"><i class="icon-cog"></i> #{msg['nav.settings']}</a></li>
+		</ul>
+	</nav>
+	
+</ui:composition>
