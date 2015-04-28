@@ -14,9 +14,26 @@ $(document).ready(function() {
 		}
 	});
 	
-	// Folding Navigation
+	/**
+	 * Navigation
+	 */
 	$(".mainnav .parent > a").click(function() {
 		var child = $(this).parent().find("ul");
+		
+		$(".mainnav").find("li").each(function() {
+			if ($(this).hasClass("parent") && ! $(this).hasClass("idle")) {
+				$(this).removeClass("active");
+			}
+			
+			$(this).removeClass("idle");
+			$(this).removeClass("open");
+		});
+		
+		$(".mainnav").find("ul ul").each(function() {
+			$(this).slideUp(function() {
+				$(this).removeClass("flyout");
+			});
+		});
 		
 		if (child.is(":hidden")) {
 			$(".mainnav").find("li.active").addClass("idle");
@@ -27,14 +44,8 @@ $(document).ready(function() {
 			}
 			
 			child.slideDown();
-		}
-		else {
-			$(".mainnav").find("li.active").removeClass("idle");
-			$(this).parent("li").removeClass("active");
-			
-			child.slideUp(function() {
-				$(this).removeClass("flyout");
-			});
+					
+			$(this).parent("li").addClass("open");
 		}
 		
 		$(this).blur();
@@ -45,22 +56,35 @@ $(document).ready(function() {
 	// Hide menu in narrow mode when mouse leaves
 	$(".wrapper").on("mouseleave", ".sidebar.narrow .parent", function() {
 		$(this).find("ul").css("display", "none");
-		$(this).find("ul").removeClass("flyout");
+		$(".mainnav").find("li.active").removeClass("idle");
+		$(this).removeClass("active");
 	});
 	
 	// Narrow Menu Bar
 	$(".menu-trigger a").click(function() {
 		if ($(".sidebar").hasClass("narrow")) {
 			$(".sidebar").removeClass("narrow");
-			$(".wrapper").removeClass("wide");
+			$(".wrapper").removeClass("wide");;
+			$(".mainnav").find("ul").removeClass("flyout");
+			$(".mainnav").find(".open ul").css("display", "block");
 		}
 		else {
 			$(".sidebar").addClass("narrow");
 			$(".wrapper").addClass("wide");
+			
+			if ($(".mainnav").find(".open").length) {
+				var openMenu = $(".mainnav").find(".open");
+				openMenu.find("ul").addClass("flyout");
+				openMenu.find("ul").hide();
+			}
 		}
 		
 		$(this).blur();
 		
 		return false;
 	});
+	
+	if ($(".mainnav .open").length) {
+		$(".mainnav .open").find("ul").css("display", "block");
+	}
 });
