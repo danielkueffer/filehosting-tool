@@ -5,15 +5,14 @@
 	
 	<nav class="mainnav">
 		<ul>
-			<li class="#{pageName == msg['files.title'] ? 'active' : ''}"><a href="#"><i class="icon-docs"></i> <span class="menu-text">#{msg['nav.files']}</span></a></li>
-			<li class="parent"><a href="#"><i class="icon-users"></i> <span class="menu-text">#{msg['nav.usermanagement']}</span></a>
+			<li class="#{pageName == msg['files.title'] ? 'active' : ''}"><a href="#"><span class="menu-item"><i class="icon-docs"></i> <span class="menu-text">#{msg['nav.files']}</span></span></a></li>
+			<li class="parent"><a href="#"><span class="menu-item"><i class="icon-users"></i> <span class="menu-text">#{msg['nav.usermanagement']} <i class="icon-angle-down"></i></span></span></a>
 				<ul>
-					<li><a href="#"><i class="icon-user"></i> <span class="menu-text">#{msg['nav.users']}</span></a></li>
-					<li><a href="#"><i class="icon-group"></i> <span class="menu-text">#{msg['nav.groups']}</span></a></li>
+					<li><a href="#"><span class="menu-item"><i class="icon-user"></i> <span class="menu-text">#{msg['nav.users']}</span></span></a></li>
+					<li><a href="#"><span class="menu-item"><i class="icon-group"></i> <span class="menu-text">#{msg['nav.groups']}</span></span></a></li>
 				</ul>
 			</li>
-			<li><a href="#"><i class="icon-cog"></i> <span class="menu-text">#{msg['nav.settings']}</span></a></li>
+			<li><a href="#"><span class="menu-item"><i class="icon-cog"></i> <span class="menu-text">#{msg['nav.settings']}</span></span></a></li>
 		</ul>
 	</nav>
-	
 </ui:composition>

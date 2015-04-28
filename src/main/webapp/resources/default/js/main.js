@@ -38,9 +38,11 @@ $(document).ready(function() {
 	$(".menu-trigger a").click(function() {
 		if ($(".sidebar").hasClass("narrow")) {
 			$(".sidebar").removeClass("narrow");
+			$(".wrapper").removeClass("wide");
 		}
 		else {
 			$(".sidebar").addClass("narrow");
+			$(".wrapper").addClass("wide");
 		}
 		
 		$(this).blur();

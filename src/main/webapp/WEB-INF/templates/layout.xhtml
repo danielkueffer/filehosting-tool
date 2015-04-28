@@ -24,7 +24,7 @@
 	</h:head>
 	<h:body>
 		<div class="wrapper">
-			<div class="header-wrapper">
+			<header class="header-wrapper">
 				<h1>Filehosting Tool</h1>
 				
 				<ul class="header-nav">
@@ -39,24 +39,21 @@
 						</h:form>
 					</li>
 				</ul>
-			</div>
+			</header>
 			
-			<div class="container-row">
-				<div class="sidebar">
-					<div class="menu-trigger">
-						<a href="#"><i class="icon-th-list"></i></a>
-					</div>
-				
-					<ui:include src="/WEB-INF/includes/searchform.xhtml" />
-					<ui:include src="/WEB-INF/includes/navigation.xhtml" />
+			<aside class="sidebar">
+				<div class="menu-trigger">
+					<a href="#"><i class="icon-th-list"></i></a>
 				</div>
-				
-				<div class="content-wrapper">
-					<div class="content">
-						<ui:insert name="content">Content</ui:insert>
-					</div>
-				</div>
-				
+			
+				<ui:include src="/WEB-INF/includes/searchform.xhtml" />
+				<ui:include src="/WEB-INF/includes/navigation.xhtml" />
+			</aside>
+			
+			<div class="content-wrapper">
+				<section class="content">
+					<ui:insert name="content">Content</ui:insert>
+				</section>
 			</div>
 		</div>
 	</h:body>
