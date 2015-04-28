@@ -268,6 +268,7 @@ h2 {
 .mainnav ul ul {
 	display: none;
 	padding: 0 0 0 15px;
+	background: #F5F5F5;
 }
 
 .mainnav li a {
@@ -277,6 +278,7 @@ h2 {
 	border-width: 1px 0;
 	color: #333;
 	text-decoration: none;
+	background: #F5F5F5;
 }
 
 .mainnav li.active.parent ul a {
@@ -335,6 +337,10 @@ h2 {
 	margin-right: 13px;
 }
 
+.sidebar.narrow .mainnav li ul {
+	display: none;
+}
+
 .sidebar.narrow .mainnav li {
 	height: 49px;
 }
@@ -343,18 +349,24 @@ h2 {
 	border: none;
 }
 
-.sidebar.narrow .mainnav li a:hover,
-.sidebar.narrow .mainnav li a:focus {
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 1001;
-	width: 200px;
+.sidebar.narrow .mainnav li:hover,
+.sidebar.narrow .mainnav li:focus {
+	display: block;
+	position: relative;
+	width: 229px;
 }
 
-.sidebar.narrow .mainnav li a:hover .menu-text,
-.sidebar.narrow .mainnav li a:focus .menu-text {
+.sidebar.narrow .mainnav li:hover .menu-text,
+.sidebar.narrow .mainnav li:focus .menu-text,
+.sidebar.narrow .mainnav li:hover ul .menu-text,
+.sidebar.narrow .mainnav li:focus ul .menu-text {
 	display: inline;
+}
+
+.flyout {
+	position: absolute;
+	left: 50px;
+	top: 49px;
 }
 
 /**

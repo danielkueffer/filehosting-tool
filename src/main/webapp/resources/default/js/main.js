@@ -21,17 +21,31 @@ $(document).ready(function() {
 		if (child.is(":hidden")) {
 			$(".mainnav").find("li.active").addClass("idle");
 			$(this).parent("li").addClass("active");
+			
+			if ($(".narrow").length) {
+				child.addClass("flyout");
+			}
+			
 			child.slideDown();
 		}
 		else {
 			$(".mainnav").find("li.active").removeClass("idle");
 			$(this).parent("li").removeClass("active");
-			child.slideUp();
+			
+			child.slideUp(function() {
+				$(this).removeClass("flyout");
+			});
 		}
 		
 		$(this).blur();
 		
 		return false;
+	});
+	
+	// Hide menu in narrow mode when mouse leaves
+	$(".wrapper").on("mouseleave", ".sidebar.narrow .parent", function() {
+		$(this).find("ul").css("display", "none");
+		$(this).find("ul").removeClass("flyout");
 	});
 	
 	// Narrow Menu Bar
