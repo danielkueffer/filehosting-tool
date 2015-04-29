@@ -3,14 +3,21 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
+
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
 	<!-- By default go to secured page -->
 	<welcome-file-list>
 		<welcome-file>files.xhtml</welcome-file>
+		<welcome-file>list.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<!-- Starting JSF -->
@@ -25,7 +32,7 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-
+	
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>

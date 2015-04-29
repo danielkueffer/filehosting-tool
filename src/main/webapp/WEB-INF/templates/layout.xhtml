@@ -21,6 +21,8 @@
 		<h:outputText value="&lt;!--[if lt IE 9]&gt; " escape="false"/>
 			<h:outputScript library="default" name="js/vendor/html5-3.6-respond-1.4.2.min.js"></h:outputScript>
 		<h:outputText value=" &lt;![endif]--&gt;" escape="false"/>
+		
+		<ui:param name="ctx" value="#{request.contextPath}" />
 	</h:head>
 	<h:body>
 		<div class="wrapper">

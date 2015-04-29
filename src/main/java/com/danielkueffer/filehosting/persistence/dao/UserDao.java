@@ -6,7 +6,7 @@ import com.danielkueffer.filehosting.persistence.model.User;
 
 
 /**
- * The user dao
+ * The user DAO
  * 
  * @author dkueffer
  *

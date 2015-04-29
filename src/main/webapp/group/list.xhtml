@@ -1,0 +1,25 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:param name="pageName" value="#{msg['groups.title']}" />
+	
+	<ui:define name="content">
+		<h2>#{msg['groups.title']}</h2>
+		
+		<a href="${ctx}/groups/add.xhtml">#{msg['groups.add']}</a>
+		
+		<h:dataTable value="#{groupController.getGroups()}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
+			<h:column>
+				<f:facet name="header">ID</f:facet>#{group.getId()}</h:column>
+			<h:column>
+				<f:facet name="header">Name</f:facet>#{group.getTitle()}</h:column>
+			<h:column>
+				<f:facet name="header">Administrator</f:facet>#{group.getIsAdmin()}</h:column>
+			<h:column>
+				<f:facet name="header"></f:facet><a href="#">Edit</a> <a href="#">Del</a></h:column>
+		</h:dataTable>
+	</ui:define>
+</ui:composition>
