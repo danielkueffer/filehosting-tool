@@ -2,6 +2,7 @@ package com.danielkueffer.filehosting.controller;
 
 import java.util.Locale;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,6 +15,7 @@ import com.danielkueffer.filehosting.i18n.CurrentLocale;
  * 
  */
 @Named
+@RequestScoped
 public class FileController {
 	
 	@Inject

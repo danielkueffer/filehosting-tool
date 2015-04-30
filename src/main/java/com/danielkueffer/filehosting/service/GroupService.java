@@ -12,4 +12,6 @@ import com.danielkueffer.filehosting.persistence.model.Group;
  */
 public interface GroupService {
 	List<Group> getAllGroups();
+	
+	void addGroup(Group group);
 }

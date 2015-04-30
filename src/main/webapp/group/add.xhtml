@@ -1,0 +1,23 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:param name="pageName" value="#{msg['groups.add']}" />
+	
+	<ui:define name="content">
+		<h2>#{msg['groups.add']}</h2>
+		
+		<h:form id="user-form">
+			<div>
+				<h:outputLabel for="title">#{msg['groups.name']}: </h:outputLabel>
+				<h:inputText id="title" value="#{groupController.group.title}"/>
+			</div>
+			
+			<h:commandButton value="Speichern" action="#{groupController.addGroup()}"/>
+		</h:form>
+		
+		<a href="${ctx}/group/list.xhtml">#{msg['common.back']}</a>
+	</ui:define>
+</ui:composition>

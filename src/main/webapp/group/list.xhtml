@@ -9,7 +9,7 @@
 	<ui:define name="content">
 		<h2>#{msg['groups.title']}</h2>
 		
-		<a href="${ctx}/groups/add.xhtml">#{msg['groups.add']}</a>
+		<a href="${ctx}/group/add.xhtml">#{msg['groups.add']}</a>
 		
 		<h:dataTable value="#{groupController.getGroups()}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
 			<h:column>
@@ -17,7 +17,7 @@
 			<h:column>
 				<f:facet name="header">Name</f:facet>#{group.getTitle()}</h:column>
 			<h:column>
-				<f:facet name="header">Administrator</f:facet>#{group.getIsAdmin()}</h:column>
+				<f:facet name="header">Administrator</f:facet>#{group.getIsAdmin() == '1' ? msg['common.yes'] : msg['common.no']}</h:column>
 			<h:column>
 				<f:facet name="header"></f:facet><a href="#">Edit</a> <a href="#">Del</a></h:column>
 		</h:dataTable>

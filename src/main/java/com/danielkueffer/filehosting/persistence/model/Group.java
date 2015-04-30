@@ -28,7 +28,7 @@ public class Group implements Serializable {
 	private static final long serialVersionUID = -3165312403093453404L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	private String title;
