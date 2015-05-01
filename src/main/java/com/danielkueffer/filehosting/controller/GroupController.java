@@ -49,6 +49,24 @@ public class GroupController {
 	}
 
 	/**
+	 * Set the group to be updated
+	 */
+	public void initUpdate() {
+		this.group = this.groupService.getGroupById(this.group.getId());
+	}
+	
+	/**
+	 * Update a group
+	 * 
+	 * @return
+	 */
+	public String updateGroup() {
+		this.groupService.updateGroup(this.group);
+		
+		return "/group/list.xhtml?faces-redirect=true";
+	}
+
+	/**
 	 * @return the group
 	 */
 	public Group getGroup() {

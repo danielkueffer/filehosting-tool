@@ -14,4 +14,8 @@ public interface GroupService {
 	List<Group> getAllGroups();
 	
 	void addGroup(Group group);
+	
+	Group getGroupById(int id);
+	
+	void updateGroup(Group group);
 }

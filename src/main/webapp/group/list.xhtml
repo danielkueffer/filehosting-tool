@@ -11,15 +11,15 @@
 		
 		<a href="${ctx}/group/add.xhtml">#{msg['groups.add']}</a>
 		
-		<h:dataTable value="#{groupController.getGroups()}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
+		<h:dataTable value="#{groupController.groups}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
 			<h:column>
-				<f:facet name="header">ID</f:facet>#{group.getId()}</h:column>
+				<f:facet name="header">ID</f:facet>#{group.id}</h:column>
 			<h:column>
-				<f:facet name="header">Name</f:facet>#{group.getTitle()}</h:column>
+				<f:facet name="header">Name</f:facet>#{group.title}</h:column>
 			<h:column>
-				<f:facet name="header">Administrator</f:facet>#{group.getIsAdmin() == '1' ? msg['common.yes'] : msg['common.no']}</h:column>
+				<f:facet name="header">Administrator</f:facet>#{group.isAdmin == '1' ? msg['common.yes'] : msg['common.no']}</h:column>
 			<h:column>
-				<f:facet name="header"></f:facet><a href="#">Edit</a> <a href="#">Del</a></h:column>
+				<f:facet name="header"></f:facet><a href="${ctx}/group/edit.xhtml?id=#{group.id}">Edit</a> <a href="#">Del</a></h:column>
 		</h:dataTable>
 	</ui:define>
 </ui:composition>

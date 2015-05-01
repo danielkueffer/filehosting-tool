@@ -12,12 +12,13 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * The LoggedIn qualifier
+ * The logged in qualifier
  * 
  * @author dkueffer
- *
+ * 
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
-public @interface LoggedIn {}
+@Target({ METHOD, FIELD, PARAMETER, TYPE })
+public @interface LoggedIn {
+}

@@ -6,7 +6,7 @@
 	<nav class="mainnav">
 		<ul>
 			<li class="#{pageName == msg['files.title'] ? 'active' : ''}"><a href="#{ctx}/files.xhtml"><span class="menu-item"><i class="icon-docs"></i> <span class="menu-text">#{msg['nav.files']}</span></span></a></li>
-			<li class="parent #{pageName == msg['groups.title'] || pageName == msg['groups.add'] || pageName == msg['users.title'] ? 'active open' : ''}"><a href="#"><span class="menu-item"><i class="icon-users"></i> <span class="menu-text">#{msg['nav.usermanagement']} <i class="icon-angle-down"></i></span></span></a>
+			<li class="parent #{pageName == msg['groups.title'] || pageName == msg['groups.add'] || pageName == msg['groups.edit'] || pageName == msg['users.title'] ? 'active open' : ''}"><a href="#"><span class="menu-item"><i class="icon-users"></i> <span class="menu-text">#{msg['nav.usermanagement']} <i class="icon-angle-down"></i></span></span></a>
 				<ul>
 					<li><a href="#{ctx}/user/list.xhtml"><span class="menu-item"><i class="icon-user"></i> <span class="menu-text">#{msg['nav.users']}</span></span></a></li>
 					<li><a href="#{ctx}/group/list.xhtml"><span class="menu-item"><i class="icon-group"></i> <span class="menu-text">#{msg['nav.groups']}</span></span></a></li>

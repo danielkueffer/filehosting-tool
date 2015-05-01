@@ -1,15 +1,13 @@
-package com.danielkueffer.filehosting.controller;
+package com.danielkueffer.filehosting.i18n;
 
 import java.io.Serializable;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
-import com.danielkueffer.filehosting.i18n.CurrentLocale;
+import javax.inject.Named;
 
 /**
  * The locale controller Used to change the language in the FacesContext
@@ -17,9 +15,9 @@ import com.danielkueffer.filehosting.i18n.CurrentLocale;
  * @author dkueffer
  * 
  */
-@ManagedBean
+@Named
 @SessionScoped
-public class LocaleController implements Serializable {
+public class LocaleManager implements Serializable {
 
 	private static final long serialVersionUID = -1923457167900152264L;
 

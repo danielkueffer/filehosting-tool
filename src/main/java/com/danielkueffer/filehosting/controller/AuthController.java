@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import com.danielkueffer.filehosting.auth.Credentials;
 import com.danielkueffer.filehosting.auth.LoggedIn;
+import com.danielkueffer.filehosting.i18n.LocaleManager;
 import com.danielkueffer.filehosting.i18n.MessageProvider;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.UserService;
@@ -25,7 +25,7 @@ import com.danielkueffer.filehosting.service.UserService;
  * @author dkueffer
  * 
  */
-@ManagedBean
+@Named
 @SessionScoped
 public class AuthController implements Serializable {
 
@@ -39,11 +39,12 @@ public class AuthController implements Serializable {
 
 	@EJB
 	UserService userService;
-	
-	@ManagedProperty(value = "#{localeController}")
-	LocaleController localeManager;
+
+	@Inject
+	LocaleManager localeManager;
 
 	private User user;
+
 	private String message;
 
 	/**
@@ -92,6 +93,24 @@ public class AuthController implements Serializable {
 	}
 
 	/**
+	 * @return the loggedIn
+	 */
+	public boolean isLoggedIn() {
+		return this.user != null;
+	}
+
+	/**
+	 * Get the current user
+	 * 
+	 * @return
+	 */
+	@Produces
+	@LoggedIn
+	public User getCurrentUser() {
+		return user;
+	}
+
+	/**
 	 * @return the message
 	 */
 	public String getMessage() {
@@ -104,31 +123,5 @@ public class AuthController implements Serializable {
 	 */
 	public void setMessage(String message) {
 		this.message = message;
-	}
-
-	/**
-	 * @return the loggedIn
-	 */
-	public boolean isLoggedIn() {
-		return this.user != null;
-	}
-
-	/**
-	 * Set the logged in user qualifier
-	 * 
-	 * @return
-	 */
-	@Produces
-	@LoggedIn
-	public User getCurrentUser() {
-		return this.user;
-	}
-
-	/**
-	 * @param localeManager
-	 *            the localeManager to set
-	 */
-	public void setLocaleManager(LocaleController localeManager) {
-		this.localeManager = localeManager;
 	}
 }
