@@ -54,7 +54,7 @@ public class GroupController {
 	public void initUpdate() {
 		this.group = this.groupService.getGroupById(this.group.getId());
 	}
-	
+
 	/**
 	 * Update a group
 	 * 
@@ -62,7 +62,18 @@ public class GroupController {
 	 */
 	public String updateGroup() {
 		this.groupService.updateGroup(this.group);
-		
+
+		return "/group/list.xhtml?faces-redirect=true";
+	}
+
+	/**
+	 * Delete a group
+	 * 
+	 * @param id
+	 */
+	public String deleteGroup() {
+		this.groupService.deleteGroup(this.group.getId());
+
 		return "/group/list.xhtml?faces-redirect=true";
 	}
 

@@ -5,6 +5,7 @@
 	version="2.2">
 
 	<application>
+		<message-bundle>resources.application</message-bundle>
 		<locale-config>
 			<default-locale>en</default-locale>
 			<supported-locale>de</supported-locale>

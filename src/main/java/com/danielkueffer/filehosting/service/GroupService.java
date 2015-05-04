@@ -17,5 +17,7 @@ public interface GroupService {
 	
 	Group getGroupById(int id);
 	
-	void updateGroup(Group group);
+	boolean updateGroup(Group group);
+	
+	boolean deleteGroup(int id);
 }

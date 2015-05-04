@@ -1,5 +1,7 @@
 package com.danielkueffer.filehosting.persistence.dao;
 
+import java.util.List;
+
 import com.danielkueffer.filehosting.persistence.model.Group;
 
 /**
@@ -9,5 +11,5 @@ import com.danielkueffer.filehosting.persistence.model.Group;
  * 
  */
 public interface GroupDao extends Dao<Group> {
-
+	List<Group> getAdminGroup();
 }

@@ -19,7 +19,21 @@
 			<h:column>
 				<f:facet name="header">Administrator</f:facet>#{group.isAdmin == '1' ? msg['common.yes'] : msg['common.no']}</h:column>
 			<h:column>
-				<f:facet name="header"></f:facet><a href="${ctx}/group/edit.xhtml?id=#{group.id}">Edit</a> <a href="#">Del</a></h:column>
+				<f:facet name="header"></f:facet>
+				
+				<h:panelGroup rendered="#{group.isAdmin != '1'}">
+					<a href="${ctx}/group/edit.xhtml?id=#{group.id}">Edit</a>
+					<a href="${ctx}/group/delete.xhtml?id=#{group.id}" class="group-delete">Delete</a>
+				</h:panelGroup>
+			</h:column>
 		</h:dataTable>
+		
+		<script>
+			$(document).ready(function() {
+				$(".group-delete").click(function() {
+					return confirm("#{msg['common.delete-confirm']}");
+				});
+			});
+		</script>
 	</ui:define>
 </ui:composition>

@@ -25,10 +25,10 @@ public class GroupServiceImpl implements GroupService {
 
 	@EJB
 	GroupDao groupDao;
-	
+
 	@Inject
 	AuthManager authManager;
-	
+
 	@Inject
 	@CurrentLocale
 	Locale locale;
@@ -63,13 +63,53 @@ public class GroupServiceImpl implements GroupService {
 	 * Update a group
 	 */
 	@Override
-	public void updateGroup(Group group) {
-		Group updGroup = this.groupDao.get(group.getId());
-		updGroup.setIsAdmin(0);
-		updGroup.setTitle(group.getTitle());
-		updGroup.setLastUpdated(DateUtil.getSQLTimestamp());
-		updGroup.setUpdatedUser(this.authManager.getCurrentUser().getUsername());
+	public boolean updateGroup(Group group) {
 
-		this.groupDao.update(updGroup);
+		// Administrator group can't be updated
+		if (this.getAdminGroup().getId() != group.getId()) {
+			Group updGroup = this.groupDao.get(group.getId());
+			updGroup.setIsAdmin(0);
+			updGroup.setTitle(group.getTitle());
+			updGroup.setLastUpdated(DateUtil.getSQLTimestamp());
+			updGroup.setUpdatedUser(this.authManager.getCurrentUser()
+					.getUsername());
+
+			this.groupDao.update(updGroup);
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Delete a group
+	 */
+	@Override
+	public boolean deleteGroup(int id) {
+
+		// Administrator group can't be deleted
+		if (this.getAdminGroup().getId() != id) {
+			this.groupDao.deleteById(id);
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Get the Administrator group
+	 * 
+	 * @return
+	 */
+	private Group getAdminGroup() {
+		List<Group> groupList = this.groupDao.getAdminGroup();
+
+		if (groupList.isEmpty()) {
+			return null;
+		} else {
+			return groupList.get(0);
+		}
 	}
 }
