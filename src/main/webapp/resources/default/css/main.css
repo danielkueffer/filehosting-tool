@@ -72,6 +72,17 @@ h2 {
 	margin: 0 0 16px;
 }
 
+a,
+a:visited {
+	color: #1470B2;
+	text-decoration: none;
+}
+
+a:hover,
+a:focus {
+	color: #333;
+}
+
 /**
  * Structure
  */
@@ -119,7 +130,7 @@ h2 {
 }
 
 .content {
-	padding: 20px 0 0 250px;
+	padding: 20px 20px 0 250px;
 }
 
 .wrapper.wide .content {
@@ -404,6 +415,89 @@ h2 {
 
 .open:hover a {
 	background: #eee;
+}
+
+/**
+ * Content
+ */
+.content-item {
+	padding: 20px;
+	margin: 0 0 20px;
+	border: 1px solid #e8e8e8;
+}
+
+.add-link {
+	float: left;
+	margin: 0 0 20px;
+}
+
+/**
+ * Tables
+ */
+.table-controls,
+.table-controls:visited {
+	color: #333;
+}
+
+.table-controls span {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+}
+
+.data-table {
+	width: 100%;
+	border: 1px solid #ddd;
+}
+
+.data-table th {
+	background: #eee;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+
+.data-table th,
+.data-table td {
+	padding: 5px 10px;
+}
+
+.data-table .odd {
+	background: #f5f5f5;
+}
+
+/**
+ * Forms
+ */
+.app-form button span,
+.app-form input {
+	font-size: 0.857em;
+}
+
+.app-form input[type="text"] {
+	float: left;
+	margin: 0 15px 0 0;
+	width: 150px;
+}
+
+.app-form label {
+	float: left;
+	width: 80px;
+}
+
+.app-form div {
+	float: left;
+	width: 100%;
+	margin: 0 0 10px;
+}
+
+.app-form div.ui-message {
+	width: auto;
+	margin: 0;
+	padding: 0 5px;
+}
+
+.app-form button {
+	margin: 0 0 0 80px;
 }
 
 /**

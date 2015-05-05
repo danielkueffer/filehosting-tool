@@ -2,7 +2,8 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 	
 	<ui:param name="pageName" value="#{msg['groups.edit']}" />
 	
@@ -14,14 +15,19 @@
 	<ui:define name="content">
 		<h2>#{msg['groups.edit']}</h2>
 		
-		<h:form id="user-form">
-			<div>
-				<h:outputLabel for="title">#{msg['groups.name']}: </h:outputLabel>
-				<h:inputText id="title" value="#{groupController.group.title}"/>
-			</div>
-			
-			<h:commandButton value="Speichern" action="#{groupController.updateGroup()}"/>
-		</h:form>
+		<section class="content-item clearfix">
+			<h:form class="app-form">
+				<h:panelGroup id="panel">
+					<div>
+						<h:outputLabel for="title">#{msg['groups.name']}: </h:outputLabel>
+						<p:inputText id="title" value="#{groupController.group.title}"/>
+						<p:message for="title" />
+					</div>
+					
+					<p:commandButton value="#{msg['common.save']}" update="panel" icon="ui-icon-check" validateClient="true" action="#{groupController.updateGroup()}"/>
+				</h:panelGroup>
+			</h:form>
+		</section>
 		
 		<a href="${ctx}/group/list.xhtml">#{msg['common.back']}</a>
 	</ui:define>

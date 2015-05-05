@@ -9,31 +9,33 @@
 	<ui:define name="content">
 		<h2>#{msg['groups.title']}</h2>
 		
-		<a href="${ctx}/group/add.xhtml">#{msg['groups.add']}</a>
-		
-		<h:dataTable value="#{groupController.groups}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
-			<h:column>
-				<f:facet name="header">ID</f:facet>#{group.id}</h:column>
-			<h:column>
-				<f:facet name="header">Name</f:facet>#{group.title}</h:column>
-			<h:column>
-				<f:facet name="header">Administrator</f:facet>#{group.isAdmin == '1' ? msg['common.yes'] : msg['common.no']}</h:column>
-			<h:column>
-				<f:facet name="header"></f:facet>
-				
-				<h:panelGroup rendered="#{group.isAdmin != '1'}">
-					<a href="${ctx}/group/edit.xhtml?id=#{group.id}">Edit</a>
-					<a href="${ctx}/group/delete.xhtml?id=#{group.id}" class="group-delete">Delete</a>
-				</h:panelGroup>
-			</h:column>
-		</h:dataTable>
-		
-		<script>
-			$(document).ready(function() {
-				$(".group-delete").click(function() {
-					return confirm("#{msg['common.delete-confirm']}");
+		<section class="content-item">
+			<a href="${ctx}/group/add.xhtml" class="add-link"><i class="icon-plus"></i> #{msg['groups.add']}</a>
+			
+			<h:dataTable value="#{groupController.groups}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
+				<h:column>
+					<f:facet name="header">ID</f:facet>#{group.id}</h:column>
+				<h:column>
+					<f:facet name="header">#{msg['common.name']}</f:facet>#{group.title}</h:column>
+				<h:column>
+					<f:facet name="header">#{msg['common.administrator']}</f:facet>#{group.isAdmin == '1' ? msg['common.yes'] : msg['common.no']}</h:column>
+				<h:column>
+					<f:facet name="header">#{msg['common.action']}</f:facet>
+					
+					<h:panelGroup rendered="#{group.isAdmin != '1'}">
+						<a href="${ctx}/group/edit.xhtml?id=#{group.id}" class="table-controls"><i class="icon-pencil"></i> <span>Edit</span></a>
+						<a href="${ctx}/group/delete.xhtml?id=#{group.id}" class="group-delete table-controls"><i class="icon-cancel"></i> <span>Delete</span></a>
+					</h:panelGroup>
+				</h:column>
+			</h:dataTable>
+			
+			<script>
+				$(document).ready(function() {
+					$(".group-delete").click(function() {
+						return confirm("#{msg['common.delete-confirm']}");
+					});
 				});
-			});
-		</script>
+			</script>
+		</section>
 	</ui:define>
 </ui:composition>
