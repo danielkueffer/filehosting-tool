@@ -1,0 +1,55 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:param name="pageName" value="#{msg['users.add']}" />
+	
+	<ui:define name="content">
+		<h2>#{msg['users.add']}</h2>
+		
+		<section class="content-item clearfix">
+			<h:form class="app-form">
+				<h:panelGroup id="panel">
+					<div>
+						<h:outputLabel for="username">#{msg['users.username']}: </h:outputLabel>
+						<p:inputText id="username" value="#{userController.user.username}" autocomplete="off"/>
+						<p:message for="username" />
+					</div>
+					
+					<div>
+						<h:outputLabel for="password">#{msg['common.password']}: </h:outputLabel>
+						<p:password id="password" value="#{userController.user.password}" autocomplete="off"/>
+						<p:message for="password" />
+					</div>
+					
+					<div>
+						<h:outputLabel for="diskQuota">#{msg['common.quota']}: </h:outputLabel>
+						<p:selectOneMenu id="diskQuota" value="#{userController.user.diskQuota}">
+							<f:selectItem itemLabel="#{msg['common.unlimited']}" itemValue="0" />
+							<f:selectItem itemLabel="1 GB" itemValue="1" />
+							<f:selectItem itemLabel="2 GB" itemValue="2" />
+							<f:selectItem itemLabel="5 GB" itemValue="5" />
+							<f:selectItem itemLabel="10 GB" itemValue="10" />
+							<f:selectItem itemLabel="20 GB" itemValue="20" />
+							<f:selectItem itemLabel="50 GB" itemValue="50" />
+							<f:selectItem itemLabel="100 GB" itemValue="100" />
+							<f:selectItem itemLabel="200 GB" itemValue="200" />
+							<f:selectItem itemLabel="500 GB" itemValue="500" />
+							<f:selectItem itemLabel="750 GB" itemValue="750" />
+							<f:selectItem itemLabel="1000 GB" itemValue="1000" />
+						</p:selectOneMenu>
+					</div>
+					
+					<div>
+						<p:commandButton value="#{msg['common.save']}" update="panel" icon="ui-icon-check" validateClient="true" action="#{userController.addUser()}"/>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</section>
+		
+		<a href="${ctx}/user/list.xhtml">#{msg['common.back']}</a>
+	</ui:define>
+</ui:composition>

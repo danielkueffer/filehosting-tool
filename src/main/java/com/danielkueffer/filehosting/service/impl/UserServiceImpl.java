@@ -29,9 +29,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User login(String username, String password) {
 		String md5Pass = DigestUtils.md5Hex(password);
-		
+
 		List<User> result = this.userDao.login(username, md5Pass);
-		
+
 		User user = null;
 
 		if (!result.isEmpty()) {
@@ -55,5 +55,21 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return user;
+	}
+
+	/**
+	 * Get all users
+	 */
+	@Override
+	public List<User> getAllUsers() {
+		return this.userDao.getAll();
+	}
+
+	/**
+	 * Create a user
+	 */
+	@Override
+	public void addUser(User user) {
+		this.userDao.create(user);
 	}
 }

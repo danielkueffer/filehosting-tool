@@ -1,5 +1,7 @@
 package com.danielkueffer.filehosting.service;
 
+import java.util.List;
+
 import com.danielkueffer.filehosting.persistence.model.User;
 
 /**
@@ -12,4 +14,8 @@ public interface UserService {
 	User login(String username, String password);
 
 	User getUserFromUsername(String username);
+	
+	List<User> getAllUsers();
+	
+	void addUser(User user);
 }

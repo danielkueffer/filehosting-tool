@@ -473,7 +473,8 @@ a:focus {
 	font-size: 0.857em;
 }
 
-.app-form input[type="text"] {
+.app-form input[type="text"],
+.app-form input[type="password"] {
 	float: left;
 	margin: 0 15px 0 0;
 	width: 150px;
@@ -481,7 +482,7 @@ a:focus {
 
 .app-form label {
 	float: left;
-	width: 80px;
+	width: 120px;
 }
 
 .app-form div {
@@ -497,7 +498,7 @@ a:focus {
 }
 
 .app-form button {
-	margin: 0 0 0 80px;
+	margin: 0 0 0 120px;
 }
 
 /**
