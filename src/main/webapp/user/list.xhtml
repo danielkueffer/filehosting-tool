@@ -14,13 +14,13 @@
 			
 			<h:dataTable value="#{userController.users}" var="user" class="data-table" cellspacing="1" rowClasses="even,odd">
 				<h:column>
-					<f:facet name="header">ID</f:facet>#{user.id}</h:column>
-				<h:column>
 					<f:facet name="header">#{msg['users.username']}</f:facet>#{user.username}</h:column>
 				<h:column>
 					<f:facet name="header">#{msg['common.fullname']}</f:facet>#{user.displayName}</h:column>
 				<h:column>
-					<f:facet name="header">#{msg['common.quota']}</f:facet>#{user.diskQuota} GB</h:column>
+					<f:facet name="header">#{msg['common.quota']}</f:facet>#{user.diskQuota == 0 ? msg['common.unlimited'] : user.diskQuota} #{user.diskQuota != 0 ? 'GB' : ''}</h:column>
+				<h:column>
+					<f:facet name="header">#{msg['users.active']}</f:facet>#{user.active == 1 ? msg['common.yes'] : msg['common.no']}</h:column>
 				<h:column>
 					<f:facet name="header">#{msg['common.action']}</f:facet>
 						<a href="${ctx}/user/edit.xhtml?id=#{user.id}" class="table-controls"><i class="icon-pencil"></i> <span>Edit</span></a>

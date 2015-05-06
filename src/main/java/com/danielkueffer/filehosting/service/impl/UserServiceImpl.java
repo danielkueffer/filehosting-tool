@@ -83,27 +83,31 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void addUser(User user) {
 
-		// Set active
-		if (user.isCheckboxActive()) {
-			user.setActive(1);
+		// Only Administrator can add users
+		if (this.authManager.getCurrentUser().isAdmin()) {
+			// Set active
+			if (user.isCheckboxActive()) {
+				user.setActive(1);
+			}
+
+			// Set the groups selected
+			List<Group> groupList = new ArrayList<Group>();
+
+			for (String id : user.getGroupIds()) {
+				groupList.add(this.groupService.getGroupById(Integer
+						.valueOf(id)));
+			}
+
+			user.setGroups(groupList);
+
+			// Convert the password to md5
+			user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+
+			user.setNotificationDiskFull(1);
+			user.setDateCreated(DateUtil.getSQLTimestamp());
+
+			this.userDao.create(user);
 		}
-
-		// Set the groups selected
-		List<Group> groupList = new ArrayList<Group>();
-
-		for (String id : user.getGroupIds()) {
-			groupList.add(this.groupService.getGroupById(Integer.valueOf(id)));
-		}
-
-		user.setGroups(groupList);
-
-		// Convert the password to md5
-		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
-
-		user.setNotificationDiskFull(1);
-		user.setDateCreated(DateUtil.getSQLTimestamp());
-
-		this.userDao.create(user);
 	}
 
 	/**
@@ -111,9 +115,15 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public boolean deleteUser(int id) {
-		this.userDao.deleteById(id);
 
-		return true;
+		// Only Administrators can delete users
+		if (this.authManager.getCurrentUser().isAdmin()) {
+			this.userDao.deleteById(id);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -143,35 +153,40 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public boolean updateUser(User user) {
-		User updUser = this.userDao.get(user.getId());
-		
-		// Set the password only if it has changed
-		if (! user.getPassword().equals(updUser.getPassword())) {
-			updUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
-		}
-		
-		updUser.setLanguage(user.getLanguage());
-		updUser.setDiskQuota(user.getDiskQuota());
-		
-		// Set active
-		if (user.isCheckboxActive()) {
-			updUser.setActive(1);
-		}
-		else {
-			updUser.setActive(0);
+
+		// Only Administrator can update a user
+		if (this.authManager.getCurrentUser().isAdmin()) {
+			User updUser = this.userDao.get(user.getId());
+
+			// Set the password only if it has changed
+			if (!user.getPassword().equals(updUser.getPassword())) {
+				updUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
+			}
+
+			updUser.setLanguage(user.getLanguage());
+			updUser.setDiskQuota(user.getDiskQuota());
+
+			// Set active
+			if (user.isCheckboxActive()) {
+				updUser.setActive(1);
+			} else {
+				updUser.setActive(0);
+			}
+
+			// Set the groups selected
+			List<Group> groupList = new ArrayList<Group>();
+
+			for (String id : user.getGroupIds()) {
+				groupList.add(this.groupService.getGroupById(Integer
+						.valueOf(id)));
+			}
+
+			updUser.setGroups(groupList);
+
+			this.userDao.update(updUser);
+			return true;
 		}
 
-		// Set the groups selected
-		List<Group> groupList = new ArrayList<Group>();
-
-		for (String id : user.getGroupIds()) {
-			groupList.add(this.groupService.getGroupById(Integer.valueOf(id)));
-		}
-
-		updUser.setGroups(groupList);
-		
-		this.userDao.update(updUser);
-		
-		return true;
+		return false;
 	}
 }

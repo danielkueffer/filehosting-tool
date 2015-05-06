@@ -16,8 +16,6 @@
 			
 			<h:dataTable value="#{groupController.groups}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
 				<h:column>
-					<f:facet name="header">ID</f:facet>#{group.id}</h:column>
-				<h:column>
 					<f:facet name="header">#{msg['common.name']}</f:facet>#{group.title}</h:column>
 				<h:column>
 					<f:facet name="header">#{msg['common.administrator']}</f:facet>#{group.isAdmin == '1' ? msg['common.yes'] : msg['common.no']}</h:column>

@@ -16,6 +16,7 @@ import com.danielkueffer.filehosting.auth.Credentials;
 import com.danielkueffer.filehosting.auth.LoggedIn;
 import com.danielkueffer.filehosting.i18n.LocaleManager;
 import com.danielkueffer.filehosting.i18n.MessageProvider;
+import com.danielkueffer.filehosting.persistence.model.Group;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.UserService;
 
@@ -56,13 +57,29 @@ public class AuthController implements Serializable {
 
 		User user = this.userService.login(this.credentials.getUsername(),
 				this.credentials.getPassword());
+		
+		boolean login = false;
+		
+		if (user != null) {
+			if (user.getActive() == 1) {
+				login = true;
+			}
+		}
 
 		// Login success
-		if (user != null) {
+		if (login) {
 			this.user = user;
 
+			// Set the locale
 			Locale l = new Locale(user.getLanguage());
 			this.localeManager.setLanguage(l.getLanguage());
+			
+			// Set if user is a administrator
+			for (Group g : this.user.getGroups()) {
+				if (g.getIsAdmin() == 1) {
+					this.user.setAdmin(true);
+				}
+			}
 
 			return "/files.xhtml?faces-redirect=true";
 		} else {

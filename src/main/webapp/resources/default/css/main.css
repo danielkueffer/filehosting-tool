@@ -483,6 +483,17 @@ a:focus {
 .app-form label {
 	float: left;
 	width: 120px;
+	font-size: 0.857em;
+	font-weight: bold;
+}
+
+.ui-selectonemenu-list {
+	font-size: 0.857em !important;
+}
+
+.app-form .ui-selectmanycheckbox label {
+	margin: 0 0 10px 10px;
+	font-weight: normal;
 }
 
 .app-form div {
@@ -491,7 +502,8 @@ a:focus {
 	margin: 0 0 10px;
 }
 
-.app-form div.ui-message {
+.app-form div.ui-message,
+.app-form .ui-chkbox {
 	width: auto;
 	margin: 0;
 	padding: 0 5px;

@@ -70,6 +70,9 @@ public class User implements Serializable {
 	
 	@Transient
 	private List<String> groupIds;
+	
+	@Transient
+	private boolean isAdmin;
 
 	/**
 	 * @return the id
@@ -292,5 +295,19 @@ public class User implements Serializable {
 	 */
 	public void setGroupIds(List<String> groupIds) {
 		this.groupIds = groupIds;
+	}
+
+	/**
+	 * @return the isAdmin
+	 */
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	/**
+	 * @param isAdmin the isAdmin to set
+	 */
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

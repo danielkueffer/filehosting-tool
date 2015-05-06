@@ -30,7 +30,7 @@
 				<h1>Filehosting Tool</h1>
 				
 				<ul class="header-nav">
-					<li><i class="icon-user"></i> <a href="#"><h:outputText value="#{authManager.currentUser.displayName}" /></a></li>
+					<li><i class="icon-user"></i> <a href="#"><h:outputText value="#{authManager.currentUser.displayName == null ? authManager.currentUser.username : authManager.currentUser.displayName}" /></a></li>
 					<li>
 						<span class="logout-icon-wrap">
 							<i class="icon-logout"></i>

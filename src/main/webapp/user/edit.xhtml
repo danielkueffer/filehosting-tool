@@ -56,12 +56,12 @@
 					</div>
 					
 					<div>
-						<h:outputLabel for="active">#{msg['users.active']}</h:outputLabel>
+						<h:outputLabel for="active">#{msg['users.active']}: </h:outputLabel>
 						<p:selectBooleanCheckbox id="active" value="#{userController.user.checkboxActive}" />
 					</div>
 					
 					<div>
-						<h:outputLabel for="groups">#{msg['users.groups']}</h:outputLabel>
+						<h:outputLabel for="groups">#{msg['users.groups']}: </h:outputLabel>
 						<p:selectManyCheckbox id="groups" value="#{userController.user.groupIds}" layout="pageDirection">
 							<f:selectItems value="#{userController.groups}" var="group" itemLabel="#{group.title}" itemValue="#{group.id}" />
 						</p:selectManyCheckbox>
