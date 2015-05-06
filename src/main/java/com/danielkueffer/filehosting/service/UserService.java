@@ -18,4 +18,10 @@ public interface UserService {
 	List<User> getAllUsers();
 	
 	void addUser(User user);
+	
+	boolean deleteUser(int id);
+	
+	User getUserById(int id);
+	
+	boolean updateUser(User user);
 }

@@ -12,6 +12,8 @@
 		<section class="content-item">
 			<a href="${ctx}/group/add.xhtml" class="add-link"><i class="icon-plus"></i> #{msg['groups.add']}</a>
 			
+			<h:messages />
+			
 			<h:dataTable value="#{groupController.groups}" var="group" class="data-table" cellspacing="1" rowClasses="even,odd">
 				<h:column>
 					<f:facet name="header">ID</f:facet>#{group.id}</h:column>

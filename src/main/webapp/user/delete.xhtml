@@ -1,0 +1,11 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<f:metadata>
+		<f:viewParam name="id" value="#{userController.user.id}" />
+		<f:viewAction action="#{userController.deleteUser}" />
+	</f:metadata>
+</ui:composition>

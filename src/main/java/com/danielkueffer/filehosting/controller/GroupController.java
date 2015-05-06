@@ -5,8 +5,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.danielkueffer.filehosting.i18n.MessageProvider;
 import com.danielkueffer.filehosting.persistence.model.Group;
 import com.danielkueffer.filehosting.service.GroupService;
 
@@ -23,7 +27,12 @@ public class GroupController {
 	@EJB
 	GroupService groupService;
 
+	@Inject
+	MessageProvider messageProvider;
+
 	Group group;
+
+	private String message;
 
 	@PostConstruct
 	public void init() {
@@ -72,9 +81,19 @@ public class GroupController {
 	 * @param id
 	 */
 	public String deleteGroup() {
-		this.groupService.deleteGroup(this.group.getId());
+		boolean success = this.groupService.deleteGroup(this.group.getId());
 
-		return "/group/list.xhtml?faces-redirect=true";
+		if (success) {
+			return "/group/list.xhtml?faces-redirect=true";
+
+		} else {
+			message = this.messageProvider.getValue("groups.deletefail");
+
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, message, ""));
+
+			return "/group/list.xhtml";
+		}
 	}
 
 	/**
@@ -82,5 +101,12 @@ public class GroupController {
 	 */
 	public Group getGroup() {
 		return group;
+	}
+
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
 	}
 }

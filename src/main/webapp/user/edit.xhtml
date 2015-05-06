@@ -5,10 +5,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:param name="pageName" value="#{msg['users.add']}" />
+	<ui:param name="pageName" value="#{msg['users.edit']}" />
+	
+	<f:metadata>
+		<f:viewParam name="id" value="#{userController.user.id}" />
+		<f:viewAction action="#{userController.initUpdate}" />
+	</f:metadata>
 	
 	<ui:define name="content">
-		<h2>#{msg['users.add']}</h2>
+		<h2>#{msg['users.edit']}</h2>
 		
 		<section class="content-item clearfix">
 			<h:form class="app-form">
@@ -21,7 +26,7 @@
 					
 					<div>
 						<h:outputLabel for="password">#{msg['common.password']}: </h:outputLabel>
-						<p:password id="password" value="#{userController.user.password}" autocomplete="off"/>
+						<p:password id="password" value="#{userController.user.password}" autocomplete="off" redisplay="true"/>
 						<p:message for="password" />
 					</div>
 					
@@ -63,7 +68,7 @@
 					</div>
 					
 					<div>
-						<p:commandButton value="#{msg['common.save']}" update="panel" icon="ui-icon-check" validateClient="true" action="#{userController.addUser()}"/>
+						<p:commandButton value="#{msg['common.save']}" update="panel" icon="ui-icon-check" validateClient="true" action="#{userController.updateUser()}"/>
 					</div>
 				</h:panelGroup>
 			</h:form>

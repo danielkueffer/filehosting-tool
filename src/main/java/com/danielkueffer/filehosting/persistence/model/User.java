@@ -10,8 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -52,7 +55,8 @@ public class User implements Serializable {
 	@Column(name = "notification_disk_full")
 	private int notificationDiskFull;
 
-	@ManyToMany(mappedBy = "members", fetch = FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(name = "group_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
 	private List<Group> groups;
 
 	@Column(name = "date_created")
@@ -60,6 +64,12 @@ public class User implements Serializable {
 
 	@Column(name = "last_login")
 	private Timestamp lastLogin;
+	
+	@Transient
+	private boolean checkboxActive;
+	
+	@Transient
+	private List<String> groupIds;
 
 	/**
 	 * @return the id
@@ -254,5 +264,33 @@ public class User implements Serializable {
 	 */
 	public void setLastLogin(Timestamp lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+
+	/**
+	 * @return the checkboxActive
+	 */
+	public boolean isCheckboxActive() {
+		return checkboxActive;
+	}
+
+	/**
+	 * @param checkboxActive the checkboxActive to set
+	 */
+	public void setCheckboxActive(boolean checkboxActive) {
+		this.checkboxActive = checkboxActive;
+	}
+
+	/**
+	 * @return the groupIds
+	 */
+	public List<String> getGroupIds() {
+		return groupIds;
+	}
+
+	/**
+	 * @param groupIds the groupIds to set
+	 */
+	public void setGroupIds(List<String> groupIds) {
+		this.groupIds = groupIds;
 	}
 }

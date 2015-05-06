@@ -1,6 +1,8 @@
 package com.danielkueffer.filehosting.i18n;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
@@ -10,7 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
- * The locale controller Used to change the language in the FacesContext
+ * The locale manager
  * 
  * @author dkueffer
  * 
@@ -56,6 +58,21 @@ public class LocaleManager implements Serializable {
 	public void setLanguage(String language) {
 		locale = new Locale(language);
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+	}
+
+	/**
+	 * Get the supported languages
+	 * 
+	 * @return
+	 */
+	public List<String> getSupportedLanguages() {
+		List<String> langList = new ArrayList<String>();
+
+		for (Languages l : Languages.values()) {
+			langList.add(l.toString());
+		}
+
+		return langList;
 	}
 
 }

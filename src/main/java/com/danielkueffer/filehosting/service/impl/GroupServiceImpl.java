@@ -75,10 +75,10 @@ public class GroupServiceImpl implements GroupService {
 					.getUsername());
 
 			this.groupDao.update(updGroup);
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -90,11 +90,19 @@ public class GroupServiceImpl implements GroupService {
 
 		// Administrator group can't be deleted
 		if (this.getAdminGroup().getId() != id) {
-			this.groupDao.deleteById(id);
+
+			// The group can't be deleted if she is used by users
+			Group group = this.groupDao.get(id);
 			
+			if (!group.getMembers().isEmpty()) {
+				return false;
+			}
+
+			this.groupDao.deleteById(id);
+
 			return true;
 		}
-		
+
 		return false;
 	}
 

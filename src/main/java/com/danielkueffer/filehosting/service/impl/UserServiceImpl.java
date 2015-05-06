@@ -1,15 +1,21 @@
 package com.danielkueffer.filehosting.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.danielkueffer.filehosting.auth.AuthManager;
 import com.danielkueffer.filehosting.persistence.dao.UserDao;
+import com.danielkueffer.filehosting.persistence.model.Group;
 import com.danielkueffer.filehosting.persistence.model.User;
+import com.danielkueffer.filehosting.service.GroupService;
 import com.danielkueffer.filehosting.service.UserService;
+import com.danielkueffer.filehosting.util.DateUtil;
 
 /**
  * The user service implementation
@@ -22,6 +28,12 @@ public class UserServiceImpl implements UserService {
 
 	@EJB
 	UserDao userDao;
+
+	@EJB
+	GroupService groupService;
+
+	@Inject
+	AuthManager authManager;
 
 	/**
 	 * Check the login data
@@ -70,6 +82,96 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void addUser(User user) {
+
+		// Set active
+		if (user.isCheckboxActive()) {
+			user.setActive(1);
+		}
+
+		// Set the groups selected
+		List<Group> groupList = new ArrayList<Group>();
+
+		for (String id : user.getGroupIds()) {
+			groupList.add(this.groupService.getGroupById(Integer.valueOf(id)));
+		}
+
+		user.setGroups(groupList);
+
+		// Convert the password to md5
+		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+
+		user.setNotificationDiskFull(1);
+		user.setDateCreated(DateUtil.getSQLTimestamp());
+
 		this.userDao.create(user);
+	}
+
+	/**
+	 * Delete a user
+	 */
+	@Override
+	public boolean deleteUser(int id) {
+		this.userDao.deleteById(id);
+
+		return true;
+	}
+
+	/**
+	 * Get a user by id and populate the required form fields
+	 */
+	@Override
+	public User getUserById(int id) {
+		User user = this.userDao.get(id);
+
+		if (user.getActive() == 1) {
+			user.setCheckboxActive(true);
+		}
+
+		List<String> groupIds = new ArrayList<String>();
+
+		for (Group group : user.getGroups()) {
+			groupIds.add(group.getId() + "");
+		}
+
+		user.setGroupIds(groupIds);
+
+		return user;
+	}
+
+	/**
+	 * Update a user
+	 */
+	@Override
+	public boolean updateUser(User user) {
+		User updUser = this.userDao.get(user.getId());
+		
+		// Set the password only if it has changed
+		if (! user.getPassword().equals(updUser.getPassword())) {
+			updUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
+		}
+		
+		updUser.setLanguage(user.getLanguage());
+		updUser.setDiskQuota(user.getDiskQuota());
+		
+		// Set active
+		if (user.isCheckboxActive()) {
+			updUser.setActive(1);
+		}
+		else {
+			updUser.setActive(0);
+		}
+
+		// Set the groups selected
+		List<Group> groupList = new ArrayList<Group>();
+
+		for (String id : user.getGroupIds()) {
+			groupList.add(this.groupService.getGroupById(Integer.valueOf(id)));
+		}
+
+		updUser.setGroups(groupList);
+		
+		this.userDao.update(updUser);
+		
+		return true;
 	}
 }
