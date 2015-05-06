@@ -69,6 +69,9 @@ public class User implements Serializable {
 	private boolean checkboxActive;
 	
 	@Transient
+	private boolean checkboxDiskFull;
+	
+	@Transient
 	private List<String> groupIds;
 	
 	@Transient
@@ -309,5 +312,19 @@ public class User implements Serializable {
 	 */
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	/**
+	 * @return the checkboxDiskFull
+	 */
+	public boolean isCheckboxDiskFull() {
+		return checkboxDiskFull;
+	}
+
+	/**
+	 * @param checkboxDiskFull the checkboxDiskFull to set
+	 */
+	public void setCheckboxDiskFull(boolean checkboxDiskFull) {
+		this.checkboxDiskFull = checkboxDiskFull;
 	}
 }

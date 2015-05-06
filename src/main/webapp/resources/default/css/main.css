@@ -426,9 +426,25 @@ a:focus {
 	border: 1px solid #e8e8e8;
 }
 
+.content-col {
+	float: left;
+	width: 33%;
+	margin: 0 2.08% 0 0;
+}
+
 .add-link {
 	float: left;
 	margin: 0 0 20px;
+}
+
+/**
+ * User profile
+ */
+.profile-details dt {
+	width: 130px;
+	float: left;
+	font-weight: bold;
+	color: #555;
 }
 
 /**
@@ -482,7 +498,7 @@ a:focus {
 
 .app-form label {
 	float: left;
-	width: 120px;
+	width: 130px;
 	font-size: 0.857em;
 	font-weight: bold;
 }
@@ -510,7 +526,12 @@ a:focus {
 }
 
 .app-form button {
-	margin: 0 0 0 120px;
+	margin: 0 0 0 130px;
+}
+
+.app-form label.notification-label {
+	width: auto;
+	font-weight: normal;
 }
 
 /**

@@ -24,4 +24,6 @@ public interface UserService {
 	User getUserById(int id);
 	
 	boolean updateUser(User user);
+	
+	boolean updateUserProfile(User user);
 }

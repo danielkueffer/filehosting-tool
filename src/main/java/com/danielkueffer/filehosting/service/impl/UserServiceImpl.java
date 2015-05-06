@@ -2,6 +2,7 @@ package com.danielkueffer.filehosting.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.danielkueffer.filehosting.auth.AuthManager;
+import com.danielkueffer.filehosting.i18n.LocaleManager;
 import com.danielkueffer.filehosting.persistence.dao.UserDao;
 import com.danielkueffer.filehosting.persistence.model.Group;
 import com.danielkueffer.filehosting.persistence.model.User;
@@ -34,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	AuthManager authManager;
+	
+	@Inject
+	LocaleManager localeManager;
 
 	/**
 	 * Check the login data
@@ -188,5 +193,36 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Update user profile
+	 */
+	@Override
+	public boolean updateUserProfile(User user) {
+		User updUser = this.userDao.get(user.getId());
+
+		// Set the password only if it has changed
+		if (!user.getPassword().equals(updUser.getPassword())) {
+			updUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
+		}
+
+		updUser.setEmail(user.getEmail());
+		
+		// Set the language in the locale manager
+		if (! user.getLanguage().equals(updUser.getLanguage())) {
+			Locale l = new Locale(user.getLanguage());
+			this.localeManager.setLanguage(l.getLanguage());
+		}
+		
+		updUser.setLanguage(user.getLanguage());
+
+		if (user.isCheckboxDiskFull()) {
+			updUser.setNotificationDiskFull(1);
+		}
+
+		this.userDao.update(updUser);
+
+		return true;
 	}
 }

@@ -1,0 +1,68 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:param name="pageName" value="#{msg['profile.title']}" />
+	
+	<ui:define name="content">
+		<h2>#{msg['profile.title']}</h2>
+		
+		<section class="content-item clearfix">
+			<div class="content-col profile-details">
+				<dl>
+					<dt>#{msg['users.username']}:</dt>
+						<dd>#{profileController.user.username}</dd>
+					<dt>#{msg['common.quota']}:</dt>
+						<dd>#{profileController.user.diskQuota == 0 ? msg['common.unlimited'] : profileController.user.diskQuota} #{profileController.user.diskQuota != 0 ? 'GB' : ''}</dd>
+				</dl>
+			</div>
+			<div class="content-col">
+			
+			</div>
+		</section>
+		
+		<section class="content-item clearfix">
+			<h:form class="app-form">
+				<h:panelGroup id="panel">
+					<div>
+						<h:outputLabel for="displayName">#{msg['common.fullname']}: </h:outputLabel>
+						<p:inputText id="displayName" value="#{profileController.user.displayName}"/>
+					</div>
+					
+					<div>
+						<h:outputLabel for="email">#{msg['common.email']}: </h:outputLabel>
+						<p:inputText id="email" required="true" label="email" validatorMessage="Invalid email format" value="#{profileController.user.email}">
+							<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+					</div>
+					
+					<div>
+						<h:outputLabel for="password">#{msg['common.password']}: </h:outputLabel>
+						<p:password id="password" value="#{profileController.user.password}" autocomplete="off" redisplay="true"/>
+						<p:message for="password" />
+					</div>
+					
+					<div>
+						<h:outputLabel for="language">#{msg['common.language']}: </h:outputLabel>
+						<p:selectOneMenu id="language" value="#{profileController.user.language}">
+							<f:selectItems value="#{userController.languages}" />
+						</p:selectOneMenu>
+					</div>
+					
+					<div>
+						<label>#{msg['profile.notifications']}: </label>
+						<p:selectBooleanCheckbox id="notification-disk-full" value="#{profileController.user.checkboxDiskFull}" />
+						<h:outputLabel for="notification-disk-full" class="notification-label">#{msg['profile.diskfull']}: </h:outputLabel>
+					</div>
+					
+					<div>
+						<p:commandButton value="#{msg['common.save']}" update="panel" icon="ui-icon-check" validateClient="true" action="#{profileController.updateProfile()}"/>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</section>
+	</ui:define>
+</ui:composition>
