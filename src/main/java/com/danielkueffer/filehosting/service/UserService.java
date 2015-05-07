@@ -2,6 +2,8 @@ package com.danielkueffer.filehosting.service;
 
 import java.util.List;
 
+import org.primefaces.model.UploadedFile;
+
 import com.danielkueffer.filehosting.persistence.model.User;
 
 /**
@@ -26,4 +28,8 @@ public interface UserService {
 	boolean updateUser(User user);
 	
 	boolean updateUserProfile(User user);
+	
+	boolean saveProfileImage(UploadedFile file);
+	
+	String getProfileImage(User user);
 }

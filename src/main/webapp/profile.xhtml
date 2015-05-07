@@ -25,6 +25,23 @@
 		</section>
 		
 		<section class="content-item clearfix">
+			<h3>#{msg['profile.image']}</h3>
+			
+			<div class="profile-image">
+				<img src="/profile-img/#{profileController.profileImagePath}" alt="profile image"/>
+			</div>
+			
+			<h:form enctype="multipart/form-data">
+				<p:growl id="messages" showDetail="true" />
+				<p:fileUpload value="#{profileController.file}" mode="simple" label="#{msg['profile.imagechange']}" uploadLabel="#{msg['common.save']}" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+ 
+				<p:commandButton value="Submit" ajax="false" actionListener="#{profileController.upload}"/>
+			</h:form>
+		</section>
+		
+		<section class="content-item clearfix">
+			<h3>#{msg['profile.userdetails']}</h3>
+			
 			<h:form class="app-form">
 				<h:panelGroup id="panel">
 					<div>
@@ -34,9 +51,10 @@
 					
 					<div>
 						<h:outputLabel for="email">#{msg['common.email']}: </h:outputLabel>
-						<p:inputText id="email" required="true" label="email" validatorMessage="Invalid email format" value="#{profileController.user.email}">
+						<p:inputText id="email" required="true" label="email" validatorMessage="#{msg['profile.emailerror']}" value="#{profileController.user.email}">
 							<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 						</p:inputText>
+						<p:message for="email" />
 					</div>
 					
 					<div>

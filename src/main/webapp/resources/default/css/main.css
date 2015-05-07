@@ -447,6 +447,15 @@ a:focus {
 	color: #555;
 }
 
+.profile-image img {
+	width: 100%;
+}
+
+.profile-image {
+	width: 200px;
+	margin: 0 0 20px;
+}
+
 /**
  * Tables
  */

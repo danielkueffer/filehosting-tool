@@ -1,5 +1,8 @@
 package com.danielkueffer.filehosting.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +12,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.model.UploadedFile;
 
 import com.danielkueffer.filehosting.auth.AuthManager;
 import com.danielkueffer.filehosting.i18n.LocaleManager;
@@ -28,6 +34,9 @@ import com.danielkueffer.filehosting.util.DateUtil;
 @Stateless
 public class UserServiceImpl implements UserService {
 
+	private static final String BASE_DIR = "jboss.server.data.dir";
+	private static final String PROFILE_IMAGE_DIR = "profile-images";
+
 	@EJB
 	UserDao userDao;
 
@@ -36,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	AuthManager authManager;
-	
+
 	@Inject
 	LocaleManager localeManager;
 
@@ -208,13 +217,13 @@ public class UserServiceImpl implements UserService {
 		}
 
 		updUser.setEmail(user.getEmail());
-		
+
 		// Set the language in the locale manager
-		if (! user.getLanguage().equals(updUser.getLanguage())) {
+		if (!user.getLanguage().equals(updUser.getLanguage())) {
 			Locale l = new Locale(user.getLanguage());
 			this.localeManager.setLanguage(l.getLanguage());
 		}
-		
+
 		updUser.setLanguage(user.getLanguage());
 
 		if (user.isCheckboxDiskFull()) {
@@ -224,5 +233,46 @@ public class UserServiceImpl implements UserService {
 		this.userDao.update(updUser);
 
 		return true;
+	}
+
+	/**
+	 * Save the profile image
+	 */
+	@Override
+	public boolean saveProfileImage(UploadedFile file) {
+		File dataDir = new File(System.getProperty(BASE_DIR) + "/"
+				+ PROFILE_IMAGE_DIR);
+
+		String filename = FilenameUtils.getBaseName(file.getFileName());
+		String extension = FilenameUtils.getExtension(file.getFileName());
+
+		try {
+			File tmpFile = File.createTempFile(filename + "-", "." + extension,
+					dataDir);
+
+			User currentUser = this.authManager.getCurrentUser();
+			User updUser = this.userDao.get(currentUser.getId());
+			updUser.setProfileImage(tmpFile.getName());
+
+			this.userDao.update(updUser);
+
+			// create an InputStream from the uploaded file
+			InputStream inputStr = null;
+			inputStr = file.getInputstream();
+			FileUtils.copyInputStreamToFile(inputStr, tmpFile);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the profile image from user
+	 */
+	@Override
+	public String getProfileImage(User user) {
+		return this.userDao.get(user.getId()).getProfileImage();
 	}
 }
