@@ -34,9 +34,6 @@ public class AuthorizationFilter implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 
-		System.out.println(authManager.getCurrentUser().isAdmin() + " ::: "
-				+ authManager.getCurrentUser().getUsername());
-
 		if (this.authManager.getCurrentUser().isAdmin()) {
 			chain.doFilter(request, response);
 		} else {

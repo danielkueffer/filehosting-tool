@@ -23,7 +23,7 @@ import com.danielkueffer.filehosting.controller.AuthController;
  * 
  */
 @WebFilter("/*")
-public class AuthFilter implements Filter {
+public class AuthenticationFilter implements Filter {
 
 	@Inject
 	AuthController authController;
