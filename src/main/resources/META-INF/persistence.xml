@@ -8,6 +8,7 @@
 		<jta-data-source>java:/jdbc/DefaultDS</jta-data-source>
 		<class>com.danielkueffer.filehosting.persistence.model.User</class>
 		<class>com.danielkueffer.filehosting.persistence.model.Group</class>
+		<class>com.danielkueffer.filehosting.persistence.model.Configuration</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 		</properties>

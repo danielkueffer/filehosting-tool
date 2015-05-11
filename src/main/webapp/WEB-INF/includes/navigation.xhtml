@@ -13,7 +13,7 @@
 						<li><a href="#{ctx}/group/list.xhtml"><span class="menu-item"><i class="icon-group"></i> <span class="menu-text">#{msg['nav.groups']}</span></span></a></li>
 					</ul>
 				</li>
-				<li class="parent"><a href="#"><span class="menu-item"><i class="icon-cog"></i> <span class="menu-text">#{msg['nav.settings']}</span></span></a></li>
+				<li class="#{pageName == msg['settings.title'] ? 'active' : ''}"><a href="#{ctx}/settings.xhtml"><span class="menu-item"><i class="icon-cog"></i> <span class="menu-text">#{msg['nav.settings']}</span></span></a></li>
 			</h:panelGroup>
 		</ul>
 	</nav>

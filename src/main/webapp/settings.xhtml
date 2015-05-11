@@ -1,0 +1,33 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:param name="pageName" value="#{msg['settings.title']}" />
+	
+	<ui:define name="content">
+		<h2>#{msg['settings.title']}</h2>
+		
+		<section class="content-item clearfix">
+			<h:form class="app-form">
+				<h:panelGroup id="panel">
+					<div>
+						<h:outputLabel for="maxUploadSize">#{msg['settings.maxuploadsize']}: </h:outputLabel>
+						<p:inputText id="maxUploadSize" value="#{configurationController.formConfiguration.maxUploadSize}"/>
+					</div>
+					<div>
+						<h:outputLabel for="deletedRestoreTime">#{msg['settings.deletedrestoretime']}: </h:outputLabel>
+						<p:inputText id="deletedRestoreTime" value="#{configurationController.formConfiguration.deletedRestoreTime}"/>
+					</div>
+				</h:panelGroup>
+				
+				<div>
+					<p:commandButton value="#{msg['common.save']}" update="panel" icon="ui-icon-check" validateClient="true" action="#{configurationController.updateConfiguration}"/>
+				</div>
+			</h:form>
+		</section>
+		
+	</ui:define>
+</ui:composition>
