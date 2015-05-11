@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.danielkueffer.filehosting.controller.AuthController;
 
 /**
- * Filter checks if LoginController has loginIn property set to true. If it is
+ * Filter checks if AuthController has loginIn property set to true. If it is
  * not set then request is being redirected to the login.xhml page.
  * 
  * @author dkueffer
