@@ -51,6 +51,7 @@ textarea {
 html,
 body {
 	height: 100%;
+	min-height: 100%;
 }
 
 body {
@@ -87,6 +88,8 @@ a:focus {
  * Structure
  */
 .wrapper {
+	float: left;
+	width: 100%;
 	font-size: 0.875em; /* 14px */
 	min-height: 100%;
 	background: url("#{resource['default:img/nav-bg.png']}") repeat-y 0 0 ;

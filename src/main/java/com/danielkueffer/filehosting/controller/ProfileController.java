@@ -3,6 +3,8 @@ package com.danielkueffer.filehosting.controller;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
@@ -10,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.primefaces.model.UploadedFile;
 
 import com.danielkueffer.filehosting.auth.AuthManager;
+import com.danielkueffer.filehosting.i18n.MessageProvider;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.UserService;
 
@@ -28,6 +31,9 @@ public class ProfileController {
 
 	@Inject
 	AuthManager authManager;
+	
+	@Inject
+	MessageProvider messageProvider;
 
 	private User user;
 
@@ -35,6 +41,8 @@ public class ProfileController {
 	private UploadedFile file;
 
 	private String profileImagePath;
+	
+	private String message;
 
 	@PostConstruct
 	public void init() {
@@ -55,12 +63,20 @@ public class ProfileController {
 	 * Upload the profile image
 	 */
 	public String upload() {
-		if (file != null) {
+		if (file.getSize() > 0) {
 			this.userService.saveProfileImage(file);
 			this.profileImagePath = this.userService.getProfileImage(this.user);
+			
+			return "/profile.xhtml?faces-redirect=true";
 		}
-		
-		return "/profile.xhtml?faces-redirect=true";
+		else {
+			message = this.messageProvider.getValue("profile.imageempty");
+
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, message, ""));
+			
+			return "/profile.xhtml";
+		}
 	}
 
 	/**
@@ -95,5 +111,19 @@ public class ProfileController {
 	 */
 	public String getProfileImagePath() {
 		return profileImagePath;
+	}
+
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

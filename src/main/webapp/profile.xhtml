@@ -28,14 +28,16 @@
 			<h3>#{msg['profile.image']}</h3>
 			
 			<div class="profile-image">
-				<img src="/profile-img/#{profileController.profileImagePath}" alt="profile image"/>
+				<h:panelGroup rendered="#{profileController.profileImagePath != null and profileController.profileImagePath != ''}">
+					<img src="/profile-img/#{profileController.profileImagePath}" alt="profile image"/>
+				</h:panelGroup>
 			</div>
 			
 			<h:form enctype="multipart/form-data">
 				<p:growl id="messages" showDetail="true" />
 				<p:fileUpload value="#{profileController.file}" mode="simple" label="#{msg['profile.imagechange']}" uploadLabel="#{msg['common.save']}" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
  
-				<p:commandButton value="Submit" ajax="false" actionListener="#{profileController.upload}"/>
+				<p:commandButton value="#{msg['common.save']}" ajax="false" actionListener="#{profileController.upload}"/>
 			</h:form>
 		</section>
 		
