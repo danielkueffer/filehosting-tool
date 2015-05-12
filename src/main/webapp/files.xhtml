@@ -8,5 +8,13 @@
 	
 	<ui:define name="content">
 		<h2>#{msg['files.title']}</h2>
+		
+		<table class="file-table">
+			<tr>
+				<th>#{msg['files.name']}</th>
+				<th>#{msg['files.type']}</th>
+				<th>#{msg['files.lastmodified']}</th>
+			</tr>
+		</table>
 	</ui:define>
 </ui:composition>

@@ -3,6 +3,10 @@ $(document).ready(function() {
 		$(".login").find("input[type='text']").focus();
 	}
 	
+	if ($(".file-wrapper").length) {
+		$(".file-wrapper").filelist();
+	}
+	
 	// Remove search text on focus
 	$(".search").click(function() {
 		if ($(this).val() == "Suchen") {

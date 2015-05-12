@@ -15,17 +15,19 @@
 		<h:outputStylesheet library="default" name="fonts/fontello/css/fontello.css"/>
 		<h:outputStylesheet library="default" name="css/main.css"/>
 	
-		<h:outputScript library="primefaces" name="jquery/jquery.js" />
-		<h:outputScript library="default" name="js/main.js"></h:outputScript>
+		<h:outputScript library="primefaces" name="jquery/jquery.js"/>
+		<h:outputScript library="default" name="js/vendor/dropzone.js"/>
+		<h:outputScript library="default" name="js/jquery.filelist.js"/>
+		<h:outputScript library="default" name="js/main.js"/>
 	
 		<h:outputText value="&lt;!--[if lt IE 9]&gt; " escape="false"/>
-			<h:outputScript library="default" name="js/vendor/html5-3.6-respond-1.4.2.min.js"></h:outputScript>
+			<h:outputScript library="default" name="js/vendor/html5-3.6-respond-1.4.2.min.js"/>
 		<h:outputText value=" &lt;![endif]--&gt;" escape="false"/>
 		
 		<ui:param name="ctx" value="#{request.contextPath}" />
 	</h:head>
 	<h:body>
-		<div class="wrapper">
+		<div class="wrapper #{pageName == msg['files.title'] ? 'file-wrapper' : ''}">
 			<header class="header-wrapper">
 				<h1>Filehosting Tool</h1>
 				
