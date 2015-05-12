@@ -47,6 +47,11 @@ public class ProfileController {
 	@PostConstruct
 	public void init() {
 		this.user = this.authManager.getCurrentUser();
+		
+		if (this.user.getNotificationDiskFull() == 1) {
+			this.user.setCheckboxDiskFull(true);
+		}
+		
 		this.profileImagePath = this.userService.getProfileImage(this.user);
 	}
 

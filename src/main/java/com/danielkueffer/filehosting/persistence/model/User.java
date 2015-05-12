@@ -38,6 +38,7 @@ public class User implements Serializable {
 	
 	@NotNull
 	private String password;
+	
 	private String email;
 	private String language;
 

@@ -51,14 +51,15 @@ public class AuthenticationFilter implements Filter {
 	}
 
 	/**
-	 * Exclude a path from the filter
+	 * Exclude path's from the filter
 	 * 
 	 * @param path
 	 * @return
 	 */
 	private boolean excludeFromFilter(String path) {
 		if (path.startsWith("/login")
-				|| path.startsWith("/javax.faces.resource")) {
+				|| path.startsWith("/javax.faces.resource")
+				|| path.startsWith("/resource")) {
 			return true;
 		}
 

@@ -3,6 +3,7 @@ package com.danielkueffer.filehosting.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +11,9 @@ import java.util.Locale;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.stream.JsonGenerator;
+import javax.json.stream.JsonGeneratorFactory;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -105,8 +109,7 @@ public class UserServiceImpl implements UserService {
 		List<Group> groupList = new ArrayList<Group>();
 
 		for (String id : user.getGroupIds()) {
-			groupList.add(this.groupService.getGroupById(Integer
-					.valueOf(id)));
+			groupList.add(this.groupService.getGroupById(Integer.valueOf(id)));
 		}
 
 		user.setGroups(groupList);
@@ -178,8 +181,7 @@ public class UserServiceImpl implements UserService {
 		List<Group> groupList = new ArrayList<Group>();
 
 		for (String id : user.getGroupIds()) {
-			groupList.add(this.groupService.getGroupById(Integer
-					.valueOf(id)));
+			groupList.add(this.groupService.getGroupById(Integer.valueOf(id)));
 		}
 
 		updUser.setGroups(groupList);
@@ -194,6 +196,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean updateUserProfile(User user) {
 		User updUser = this.userDao.get(user.getId());
+
+		updUser.setDisplayName(user.getDisplayName());
 
 		// Set the password only if it has changed
 		if (!user.getPassword().equals(updUser.getPassword())) {
@@ -258,5 +262,48 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String getProfileImage(User user) {
 		return this.userDao.get(user.getId()).getProfileImage();
+	}
+
+	/**
+	 * Get the user info as JSON
+	 */
+	@Override
+	public String getUserInfoAsJson() {
+
+		JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+		StringWriter writer = new StringWriter();
+		JsonGenerator gen = factory.createGenerator(writer);
+
+		gen.writeStartArray();
+
+		User user = this.authManager.getCurrentUser();
+
+		String displayName = "";
+		String email = "";
+		String profileImage = "";
+
+		if (user.getDisplayName() != null) {
+			displayName = user.getDisplayName();
+		}
+
+		if (user.getEmail() != null) {
+			email = user.getEmail();
+		}
+
+		if (user.getProfileImage() != null) {
+			profileImage = user.getProfileImage();
+		}
+
+		gen.writeStartObject().write("id", user.getId())
+				.write("username", user.getUsername())
+				.write("displayName", displayName).write("email", email)
+				.write("language", user.getLanguage())
+				.write("diskQuota", user.getDiskQuota())
+				.write("profileImage", profileImage)
+				.write("dateCreated", user.getDateCreated() + "").writeEnd();
+
+		gen.writeEnd().flush();
+
+		return writer.toString();
 	}
 }

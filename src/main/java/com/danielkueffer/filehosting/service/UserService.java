@@ -32,4 +32,6 @@ public interface UserService {
 	boolean saveProfileImage(UploadedFile file);
 	
 	String getProfileImage(User user);
+	
+	String getUserInfoAsJson();
 }
