@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 
 import com.danielkueffer.filehosting.persistence.dao.AbstractDao;
 import com.danielkueffer.filehosting.persistence.dao.FileDao;
-import com.danielkueffer.filehosting.persistence.model.File;
+import com.danielkueffer.filehosting.persistence.model.UploadFile;
 
 /**
  * The file DAO implementation
@@ -13,6 +13,6 @@ import com.danielkueffer.filehosting.persistence.model.File;
  * 
  */
 @Stateless
-public class FileDaoImpl extends AbstractDao<File> implements FileDao {
+public class FileDaoImpl extends AbstractDao<UploadFile> implements FileDao {
 
 }

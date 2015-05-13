@@ -12,4 +12,6 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
  */
 public interface FileService {
 	String uploadFiles(List<InputPart> inputParts);
+	
+	String getFilesFormCurrentUser();
 }

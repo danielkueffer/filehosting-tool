@@ -1,6 +1,6 @@
 package com.danielkueffer.filehosting.persistence.dao;
 
-import com.danielkueffer.filehosting.persistence.model.File;
+import com.danielkueffer.filehosting.persistence.model.UploadFile;
 
 /**
  * The file DAO
@@ -8,6 +8,6 @@ import com.danielkueffer.filehosting.persistence.model.File;
  * @author dkueffer
  * 
  */
-public interface FileDao extends Dao<File> {
+public interface FileDao extends Dao<UploadFile> {
 
 }

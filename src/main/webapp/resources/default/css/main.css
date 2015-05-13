@@ -133,6 +133,7 @@ a:focus {
 }
 
 .content {
+	position: relative;
 	padding: 20px 20px 0 250px;
 }
 
@@ -457,6 +458,39 @@ a:focus {
 .profile-image {
 	width: 200px;
 	margin: 0 0 20px;
+}
+
+/**
+ * Filelist
+ */
+.dropzone-previews {
+	position: absolute;
+	left: 250px;
+	bottom: 20px;
+}
+
+.wrapper.wide .dropzone-previews {
+	left: 73px;
+}
+
+.dropzone-previews .dz-error-mark,
+.dropzone-previews .dz-success-mark {
+	display: none;
+}
+
+.dz-preview {
+	float: left;
+	width: 100%;
+	padding: 5px 20px;
+	background: #FAF1BF;
+}
+
+.dz-preview .dz-filename {
+	float: left;
+}
+
+.dz-preview .dz-size {
+	float: right;
 }
 
 /**

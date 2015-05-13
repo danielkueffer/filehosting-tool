@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "file")
-public class File {
+public class UploadFile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class File {
 	private String mimeType;
 
 	private int parrent;
-	private int size;
+	private long size;
 
 	@Column(name = "last_modified")
 	private Timestamp lastModified;
@@ -133,7 +133,7 @@ public class File {
 	/**
 	 * @return the size
 	 */
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 
@@ -141,7 +141,7 @@ public class File {
 	 * @param size
 	 *            the size to set
 	 */
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
 
