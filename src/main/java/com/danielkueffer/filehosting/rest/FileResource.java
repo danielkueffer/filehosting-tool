@@ -1,5 +1,6 @@
 package com.danielkueffer.filehosting.rest;
 
+import java.io.File;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
@@ -7,9 +8,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
@@ -53,5 +56,23 @@ public class FileResource implements Serializable {
 		this.fileService.uploadFiles(input.getFormDataMap().get("file"));
 
 		return Response.status(200).build();
+	}
+
+	/**
+	 * Download a file
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	@GET
+	@Path("download/{filePath:.*}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response downloadFile(@PathParam("filePath") String filePath) {
+		File file = this.fileService.getDownloadFile(filePath);
+		
+		ResponseBuilder rb = Response.ok(file);
+		rb.header("Content-Disposition", "attachment; filename=" + file.getName());
+
+		return rb.build();
 	}
 }

@@ -493,6 +493,52 @@ a:focus {
 	float: right;
 }
 
+.file-table {
+	width: 100%;
+}
+
+.file-table th {
+	text-align: left;
+	padding: 0 0 5px;
+	color: #999;
+	font-size: 0.857em;
+	border-bottom: 2px solid #ddd;
+}
+
+.file-table td {
+	padding: 8px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+.file-icon {
+	float: left;
+	margin: 0 10px 0 0;
+	font-size: 1.571em;
+}
+
+.file-name,
+.file-name:visited {
+	display: block;
+	width: auto;
+	margin: 7px 0 0;
+	color: #333;
+}
+
+.file-name:hover {
+	text-decoration: underline;
+}
+
+.file-delete,
+.file-delete:visited {
+	color: #333;
+}
+
+.file-delete span {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+}
+
 /**
  * Tables
  */

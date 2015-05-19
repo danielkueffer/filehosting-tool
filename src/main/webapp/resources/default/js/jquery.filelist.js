@@ -47,13 +47,39 @@
 				fileTable.find(".data-row").remove();
 				
 				$.each(json, function(key, val) {
+						var icon = "";
+						
+						if (val.type == "document") {
+							var iconClass = "";
+							
+							switch(val.documentType) {
+								case "doc" : iconClass = "icon-file-word file-icon";
+								break;
+								case "spreadsheet" : iconClass = "icon-file-excel file-icon";
+								break;
+								case "presentation" : iconClass = "icon-file-powerpoint file-icon";
+								break;
+								case "pdf" : iconClass = "icon-file-pdf file-icon";
+								break;
+							}
+							
+							icon = '<i class="' + iconClass + '"></i>';
+						} else if (val.type == "audio") {
+							icon = '<i class="icon-file-audio file-icon"></i>';
+						} else if (val.type == "video") {
+							icon = '<i class="icon-file-video file-icon"></i>';
+						} else if (val.type == "image") {
+							icon = '<i class="icon-file-image file-icon"></i>';
+						} else {
+							icon = '<i class="icon-doc file-icon"></i>';
+						}
+					
 						var row = "<tr class=\"data-row\">" +
-						"<td>" + val.name + "</td>" +
-						"<td>" + val.type + "</td>" +
+						"<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\">" + val.name + "</a></td>" +
+						"<td>" + val.typeLabel + "</td>" +
 						"<td>" + val.lastModified + "</td>" +
 						"<td>" +
-						"<a class=\"edit\" href=\"#\" data-id=\"" + val.id + "\">bearbeiten</a>" +
-						"<a class=\"delete\" href=\"#\" data-id=\"" + val.id + "\">löschen</a>" +
+						"<a class=\"file-delete\" href=\"#\" data-id=\"" + val.id + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>" +
 						"</td>" +
 						"</tr>";
 					

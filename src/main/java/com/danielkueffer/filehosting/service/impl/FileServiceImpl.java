@@ -32,6 +32,7 @@ import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.FileService;
 import com.danielkueffer.filehosting.util.DateUtil;
 import com.danielkueffer.filehosting.util.FileUtil;
+import com.danielkueffer.filehosting.util.MimeType;
 
 /**
  * The file service implementation
@@ -185,28 +186,54 @@ public class FileServiceImpl implements FileService {
 
 		gen.writeStartArray();
 
-		for (UploadFile uf : this.fileDao.getAll()) {
+		for (UploadFile uf : this.fileDao.getFilesByUser(currentUser)) {
 
 			String type = "";
+			String typeLabel = "";
 			String mime = uf.getMimeType();
+			String docType = "";
+			String thumbnail = "";
 
+			// Check the MIME type and assign values
 			if (mime.startsWith("image")) {
-				type = bundle.getString("files.image");
+				typeLabel = bundle.getString("files.image");
+				type = "image";
+
+				// Create thumbnail
+
 			} else if (mime.startsWith("audio")) {
-				type = bundle.getString("files.audio");
+				typeLabel = bundle.getString("files.audio");
+				type = "audio";
 			} else if (mime.startsWith("video")) {
-				type = bundle.getString("files.video");
+				typeLabel = bundle.getString("files.video");
+				type = "video";
 			} else if (Arrays.asList(FileUtil.documentTypes).contains(mime)) {
-				type = bundle.getString("files.document");
+				typeLabel = bundle.getString("files.document");
+				type = "document";
+
+				if (Arrays.asList(FileUtil.wordDocumentTypes).contains(mime)) {
+					docType = "doc";
+				} else if (Arrays.asList(FileUtil.presentationDocumentTypes)
+						.contains(mime)) {
+					docType = "presentation";
+				} else if (Arrays.asList(FileUtil.spreadsheetDocumentTypes)
+						.contains(mime)) {
+					docType = "spreadsheet";
+				} else if (mime.equals(MimeType.pdf.getContentType())) {
+					docType = "pdf";
+				}
 			} else {
-				type = bundle.getString("files.file");
+				typeLabel = bundle.getString("files.file");
+				type = "file";
 			}
 
 			gen.writeStartObject().write("id", uf.getId())
 					.write("path", uf.getPath())
 					.write("parrent", uf.getParrent())
 					.write("name", uf.getName()).write("type", type)
-					.write("size", uf.getSize())
+					.write("typeLabel", typeLabel)
+					.write("thumbnail", thumbnail)
+					.write("documentType", docType).write("size", uf.getSize())
 					.write("lastModified", uf.getLastModified().toString())
 					.writeEnd();
 		}
@@ -214,5 +241,28 @@ public class FileServiceImpl implements FileService {
 		gen.writeEnd().flush();
 
 		return writer.toString();
+	}
+
+	/**
+	 * Get a file to download
+	 */
+	@Override
+	public File getDownloadFile(String filePath) {
+		List<UploadFile> fileList = this.fileDao.getSingleFileByUser(filePath,
+				this.authManager.getCurrentUser());
+
+		UploadFile uf = null;
+
+		if (!fileList.isEmpty()) {
+			uf = fileList.get(0);
+
+			String path = System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
+					+ this.authManager.getCurrentUser().getUsername() + "/"
+					+ uf.getPath();
+
+			return FileUtil.getFile(path);
+		}
+
+		return null;
 	}
 }
