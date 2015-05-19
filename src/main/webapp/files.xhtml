@@ -7,7 +7,16 @@
 	<ui:param name="pageName" value="#{msg['files.title']}" />
 	
 	<ui:define name="content">
-		<h2>#{msg['files.title']}</h2>
+		<div class="file-header">
+			<ul class="file-breadcrumb">
+				<li class="breadcumb-home"><a href="#{ctx}"><i class="icon-home"></i></a> <i class="icon-angle-right"></i></li>
+			</ul>
+			
+			<ul class="file-metanav">
+				<li class="file-upload"><a href="#"><i class="icon-upload"></i> <span>Upload file</span></a></li>
+				<li class="folder-new"><a href="#"><i class="icon-folder"></i> <span>New folder</span></a></li>
+			</ul>
+		</div>
 		
 		<table class="file-table">
 			<tr>
