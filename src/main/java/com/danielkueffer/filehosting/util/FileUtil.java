@@ -1,6 +1,8 @@
 package com.danielkueffer.filehosting.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -50,5 +52,39 @@ public class FileUtil {
 		Path p = fs.getPath(path);
 
 		return p.toFile();
+	}
+
+	/**
+	 * Delete a file from disk
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static boolean deleteFile(String path) {
+		FileSystem fs = FileSystems.getDefault();
+
+		Path p = fs.getPath(path);
+
+		return p.toFile().delete();
+	}
+
+	/**
+	 * Write a file to disk
+	 * 
+	 * @param content
+	 * @param filename
+	 * @throws IOException
+	 */
+	public static void writeFile(byte[] content, String filename)
+			throws IOException {
+		File file = new File(filename);
+
+		file.createNewFile();
+
+		FileOutputStream fop = new FileOutputStream(file);
+
+		fop.write(content);
+		fop.flush();
+		fop.close();
 	}
 }

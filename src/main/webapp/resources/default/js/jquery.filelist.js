@@ -18,7 +18,7 @@
 			 * Create the drop zone to upload files
 			 */
 			var mainDropzone = new Dropzone(".wrapper", {
-				url : "resource/file/upload",
+				url : "resource/file",
 				createImageThumbnails : false,
 				addRemoveLinks : false,
 				clickable : false,
@@ -79,7 +79,7 @@
 						"<td>" + val.typeLabel + "</td>" +
 						"<td>" + val.lastModified + "</td>" +
 						"<td>" +
-						"<a class=\"file-delete\" href=\"#\" data-id=\"" + val.id + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>" +
+						"<a class=\"file-delete\" href=\"#\" data-path=\"" + val.path + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>" +
 						"</td>" +
 						"</tr>";
 					
@@ -98,6 +98,22 @@
 					populateTable(msg);
 				});
 			}
+			
+			/**
+			 * Delete a file
+			 */
+			$this.on("click", ".file-delete", function() {
+				var path = $(this).data("path");
+				
+				$.ajax({
+					url: "resource/file/" + path,
+					type: "DELETE"
+				}).success(function() {
+					loadFileTable()
+				});
+				
+				return false;
+			});
 
 			loadFileTable();
 		});

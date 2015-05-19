@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -44,18 +45,35 @@ public class FileResource implements Serializable {
 	}
 
 	/**
-	 * Upload a file
+	 * Upload and create a file
 	 * 
 	 * @param input
 	 * @return
 	 */
 	@POST
-	@Path("upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(MultipartFormDataInput input) {
 		this.fileService.uploadFiles(input.getFormDataMap().get("file"));
 
-		return Response.status(200).build();
+		return Response.ok().build();
+	}
+
+	/**
+	 * Delete a file
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	@DELETE
+	@Path("{filePath:.*}")
+	public Response deleteFile(@PathParam("filePath") String filePath) {
+		boolean deleted = this.fileService.deleteFile(filePath);
+		
+		if (!deleted) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		return Response.ok().build();
 	}
 
 	/**
@@ -69,9 +87,14 @@ public class FileResource implements Serializable {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response downloadFile(@PathParam("filePath") String filePath) {
 		File file = this.fileService.getDownloadFile(filePath);
-		
+
+		if (file == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
 		ResponseBuilder rb = Response.ok(file);
-		rb.header("Content-Disposition", "attachment; filename=" + file.getName());
+		rb.header("Content-Disposition",
+				"attachment; filename=" + file.getName());
 
 		return rb.build();
 	}

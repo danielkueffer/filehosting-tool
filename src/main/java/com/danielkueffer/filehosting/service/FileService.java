@@ -17,4 +17,6 @@ public interface FileService {
 	String getFilesFormCurrentUser();
 	
 	File getDownloadFile(String filePath);
+
+	boolean deleteFile(String filePath);
 }

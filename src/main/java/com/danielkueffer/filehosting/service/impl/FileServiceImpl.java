@@ -1,7 +1,6 @@
 package com.danielkueffer.filehosting.service.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -81,7 +80,7 @@ public class FileServiceImpl implements FileService {
 						+ "/" + this.authManager.getCurrentUser().getUsername()
 						+ "/" + fileName;
 
-				writeFile(bytes, filePath);
+				FileUtil.writeFile(bytes, filePath);
 
 				// Get the MIME type
 				Path path = Paths.get(filePath);
@@ -131,25 +130,6 @@ public class FileServiceImpl implements FileService {
 			}
 		}
 		return "unknown";
-	}
-
-	/**
-	 * Write a file to disk
-	 * 
-	 * @param content
-	 * @param filename
-	 * @throws IOException
-	 */
-	private void writeFile(byte[] content, String filename) throws IOException {
-		File file = new File(filename);
-
-		file.createNewFile();
-
-		FileOutputStream fop = new FileOutputStream(file);
-
-		fop.write(content);
-		fop.flush();
-		fop.close();
 	}
 
 	/**
@@ -264,5 +244,33 @@ public class FileServiceImpl implements FileService {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Delete a file
+	 */
+	@Override
+	public boolean deleteFile(String filePath) {
+		List<UploadFile> fileList = this.fileDao.getSingleFileByUser(filePath,
+				this.authManager.getCurrentUser());
+
+		UploadFile uf = null;
+
+		if (!fileList.isEmpty()) {
+			uf = fileList.get(0);
+
+			String path = System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
+					+ this.authManager.getCurrentUser().getUsername() + "/"
+					+ uf.getPath();
+
+			// Delete the file form the file system and from the database
+			if (FileUtil.deleteFile(path)) {
+				this.fileDao.delete(uf);
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
