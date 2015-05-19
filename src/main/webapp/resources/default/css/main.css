@@ -59,6 +59,12 @@ body {
 }
 
 h1 {
+	font-size: 1em;
+	margin: 0;
+}
+
+h1 a,
+h1 a:visited {
 	float: left;
 	font: normal 1.285em titilliumbold_italic, Arial, Helvertica, sans-serif;
 	/* 18px */
@@ -516,10 +522,38 @@ a:focus {
 	font-size: 1.571em;
 }
 
+.icon-file-word.file-icon {
+	color: #5097CD;
+}
+
+.icon-file-powerpoint.file-icon {
+	color: #F18862;
+}
+
+.icon-file-excel.file-icon {
+	color: #63D08F;
+}
+
+.icon-file-pdf.file-icon {
+	color: #EA7B73;
+}
+
+.icon-doc.file-icon {
+	color: #6BAEFB;
+}
+
+.icon-file-video.file-icon,
+.icon-file-audio.file-icon {
+	color: #DC87DF;
+}
+
+.icon-file-image.file-icon {
+	color: #D5CB72;
+}
+
 .file-name,
 .file-name:visited {
-	display: block;
-	width: auto;
+	display: inline-block;
 	margin: 7px 0 0;
 	color: #333;
 }

@@ -73,11 +73,14 @@
 						} else {
 							icon = '<i class="icon-doc file-icon"></i>';
 						}
+						
+						var date = getDateFromTimestamp(val.lastModified);
+						var dateStr = date.getDate() + "." + date.getMonth() + 1 + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
 					
 						var row = "<tr class=\"data-row\">" +
 						"<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\">" + val.name + "</a></td>" +
 						"<td>" + val.typeLabel + "</td>" +
-						"<td>" + val.lastModified + "</td>" +
+						"<td>" + dateStr + "</td>" +
 						"<td>" +
 						"<a class=\"file-delete\" href=\"#\" data-path=\"" + val.path + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>" +
 						"</td>" +
@@ -114,6 +117,18 @@
 				
 				return false;
 			});
+			
+			/**
+			 * Get a date object from a SQL timestamp
+			 */
+			var getDateFromTimestamp = function(timestamp) {
+				var t = timestamp.split(/[- :]/);
+
+				// Apply each element to the Date function
+				var date = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+				
+				return date;
+			}
 
 			loadFileTable();
 		});
