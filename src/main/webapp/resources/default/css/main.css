@@ -610,6 +610,14 @@ a:focus {
 	margin: 0 4.5% 0 0;
 }
 
+.file-breadcrumb a,
+.file-breadcrumb a:visited {
+	float: left;
+	color: #666;
+	padding: 1px 0 0;
+	font-size: 1.143em; /* 16px */
+}
+
 .file-breadcrumb .breadcumb-home {
 	margin: -7px 0 0 -6px;
 }
@@ -621,17 +629,16 @@ a:focus {
 	font-size: 1.571em;
 }
 
-.file-breadcrumb a,
-.file-breadcrumb a:visited {
-	float: left;
-	color: #666;
-}
-
+.file-breadcrumb .breadcumb-home .icon-angle-right,
 .file-breadcrumb .icon-angle-right {
 	float: left;
 	font-size: 1.286em;
 	margin: 6px 0 0;
 	color: #888;
+}
+
+.file-breadcrumb .icon-angle-right {
+	margin: -1px 0 0;
 }
 
 .file-metanav li {

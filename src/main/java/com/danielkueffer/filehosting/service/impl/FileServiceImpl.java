@@ -177,7 +177,7 @@ public class FileServiceImpl implements FileService {
 
 		List<UploadFile> fileList = this.fileDao.getFilesByUser(currentUser);
 
-		return this.getJsonFileList(fileList, currentUser);
+		return this.getJsonFileList(fileList, currentUser, 0);
 	}
 
 	/**
@@ -188,13 +188,12 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public String getFilesFromCurrentUser(int parent) {
-		System.out.println(parent);
-
 		User currentUser = this.authManager.getCurrentUser();
 
-		List<UploadFile> fileList = this.fileDao.getFilesByUser(currentUser, parent);
+		List<UploadFile> fileList = this.fileDao.getFilesByUser(currentUser,
+				parent);
 
-		return this.getJsonFileList(fileList, currentUser);
+		return this.getJsonFileList(fileList, currentUser, parent);
 	}
 
 	/**
@@ -203,7 +202,8 @@ public class FileServiceImpl implements FileService {
 	 * @param fileList
 	 * @return
 	 */
-	private String getJsonFileList(List<UploadFile> fileList, User currentUser) {
+	private String getJsonFileList(List<UploadFile> fileList, User currentUser,
+			int parent) {
 
 		ResourceBundle bundle = ResourceBundle.getBundle(
 				"com.danielkueffer.filehosting.i18n.messages", new Locale(
@@ -213,7 +213,18 @@ public class FileServiceImpl implements FileService {
 		StringWriter writer = new StringWriter();
 		JsonGenerator gen = factory.createGenerator(writer);
 
-		gen.writeStartArray();
+		UploadFile parentFolder = this.fileDao.get(parent);
+
+		String folderPath = "";
+
+		if (parentFolder != null) {
+			folderPath = parentFolder.getPath();
+		}
+
+		// Write the bread crumb array
+		gen.writeStartObject().writeStartArray("breadcrumb").writeStartObject()
+				.write("folderPath", folderPath).writeEnd().writeEnd()
+				.writeStartArray("files");
 
 		for (UploadFile uf : fileList) {
 
@@ -259,6 +270,7 @@ public class FileServiceImpl implements FileService {
 				type = "file";
 			}
 
+			// Write the uploadFile object
 			gen.writeStartObject().write("id", uf.getId())
 					.write("path", uf.getPath())
 					.write("parent", uf.getParent())
@@ -270,7 +282,7 @@ public class FileServiceImpl implements FileService {
 					.writeEnd();
 		}
 
-		gen.writeEnd().flush();
+		gen.writeEnd().writeEnd().flush();
 
 		return writer.toString();
 	}

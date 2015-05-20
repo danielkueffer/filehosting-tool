@@ -52,10 +52,10 @@ public class FileResource implements Serializable {
 	 * @return
 	 */
 	@GET
-	@Path("{parrent}")
+	@Path("{parent}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllFromParrent(@PathParam("parrent") int parrent) {
-		return this.fileService.getFilesFromCurrentUser(parrent);
+	public String getAllFromParrent(@PathParam("parent") int parent) {
+		return this.fileService.getFilesFromCurrentUser(parent);
 	}
 
 	/**

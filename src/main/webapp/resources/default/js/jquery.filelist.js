@@ -16,6 +16,7 @@
 			
 			var fileTable = $this.find(".file-table");
 			var folderForm = $this.find(".folder-form");
+			var breadcrumb = $this.find(".file-breadcrumb");
 
 			/**
 			 * Create the drop zone to upload files
@@ -38,9 +39,33 @@
 						$(this).remove();
 					});
 					
-					loadFileTable(parent);
+					loadFileTable();
 				}, 3000);
 			});
+			
+			/**
+			 * Create breadcrumb
+			 */
+			var createBreadcrumb = function(json) {
+				
+				// Remove breadcrumb items
+				breadcrumb.find("li").each(function() {
+					if (! $(this).hasClass("breadcumb-home")) {
+						$(this).remove();
+					}
+				});
+				
+				// Populate breadcrumb
+				$.each(json, function(key, val) {
+					var folderPath = val.folderPath;
+					
+					if (folderPath != "") {
+						var bItem = "<li class=\"breadcumb-item\"><a href=\"#\">" + folderPath + "</a> <i class=\"icon-angle-right\"></i></li>";
+						
+						breadcrumb.append(bItem);
+					}
+				});
+			}
 
 			/**
 			 * Populate the Table with the files
@@ -104,12 +129,13 @@
 			/**
 			 * Get all files of the current user
 			 */
-			var loadFileTable = function(parent) {
+			var loadFileTable = function() {
 				$.ajax({
 					url : "resource/file/" + parent,
 					type : "GET"
 				}).success(function(msg) {
-					populateTable(msg);
+					populateTable(msg["files"]);
+					createBreadcrumb(msg["breadcrumb"]);
 				});
 			}
 			
@@ -123,7 +149,7 @@
 					url: "resource/file/" + path,
 					type: "DELETE"
 				}).success(function() {
-					loadFileTable(parent)
+					loadFileTable();
 				});
 				
 				return false;
@@ -156,7 +182,7 @@
 					// Submit the folder
 					var data = {
 						"folder": folderName,
-						"parent": "0"
+						"parent": parent
 					};
 					
 					$.ajax({
@@ -164,7 +190,7 @@
 						type: "POST",
 						data: data
 					}).success(function(msg) {
-						loadFileTable(parent);
+						loadFileTable();
 					});
 					
 					jQuery.fancybox.close();
@@ -172,12 +198,21 @@
 					$(this).find("#folder").val("");
 				}
 				
-				
-				
 				return false;
 			});
 
-			loadFileTable(parent);
+			/**
+			 * Open a folder
+			 */
+			$this.on("click", ".folder-name", function() {
+				
+				parent = $(this).data("folder-id");
+				loadFileTable();
+				
+				return false;
+			});
+			
+			loadFileTable();
 		});
 	}
 })(jQuery);
