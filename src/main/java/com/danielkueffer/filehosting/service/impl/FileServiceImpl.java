@@ -89,16 +89,35 @@ public class FileServiceImpl implements FileService {
 				// Get the file size
 				long size = Files.size(path);
 
-				UploadFile uf = new UploadFile();
-				uf.setUser(this.authManager.getCurrentUser());
-				uf.setPath(fileName);
-				uf.setParrent(0);
-				uf.setName(fileName);
-				uf.setMimeType(type);
-				uf.setSize(size);
-				uf.setLastModified(DateUtil.getSQLTimestamp());
+				// Check if the file already exists in the database
+				List<UploadFile> fileList = this.fileDao.getSingleFileByUser(
+						fileName, this.authManager.getCurrentUser());
 
-				this.fileDao.create(uf);
+				UploadFile uf = null;
+
+				if (!fileList.isEmpty()) {
+
+					// Update existing
+					uf = fileList.get(0);
+
+					uf.setSize(size);
+					uf.setLastModified(DateUtil.getSQLTimestamp());
+
+					this.fileDao.update(uf);
+				} else {
+
+					// Create new
+					uf = new UploadFile();
+					uf.setUser(this.authManager.getCurrentUser());
+					uf.setPath(fileName);
+					uf.setParrent(0);
+					uf.setName(fileName);
+					uf.setMimeType(type);
+					uf.setSize(size);
+					uf.setLastModified(DateUtil.getSQLTimestamp());
+
+					this.fileDao.create(uf);
+				}
 
 			} catch (IOException e) {
 				e.printStackTrace();
