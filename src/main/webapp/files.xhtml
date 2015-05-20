@@ -14,7 +14,7 @@
 			
 			<ul class="file-metanav">
 				<li class="file-upload fileinput-button dz-clickable"><a href="#"><i class="icon-upload"></i> <span>Upload file</span></a></li>
-				<li class="folder-new"><a href="#"><i class="icon-folder"></i> <span>New folder</span></a></li>
+				<li class="folder-new"><a href="#new-folder" class="overlay"><i class="icon-folder"></i> <span>New folder</span></a></li>
 			</ul>
 		</div>
 		
@@ -26,5 +26,18 @@
 				<th></th>
 			</tr>
 		</table>
+		
+		<div id="new-folder">
+			<h3>#{msg['files.foldertitle']}</h3>
+		
+			<form action="" class="folder-form">
+				<div>
+					<label for="folder">#{msg['files.foldername']}</label>
+					<input type="text" name="folder" id="folder"/>
+				</div>
+				
+				<input type="submit" name="submit" value="#{msg['common.save']}"/>
+			</form>
+		</div>
 	</ui:define>
 </ui:composition>

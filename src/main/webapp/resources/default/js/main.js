@@ -3,6 +3,7 @@ $(document).ready(function() {
 		$(".login").find("input[type='text']").focus();
 	}
 	
+	// File list
 	if ($(".file-wrapper").length) {
 		$(".file-wrapper").filelist();
 	}
@@ -90,5 +91,20 @@ $(document).ready(function() {
 	
 	if ($(".mainnav .open").length) {
 		$(".mainnav .open").find("ul").css("display", "block");
+	}
+	
+	// Fancybox overlay
+	if ($(".overlay").length) {
+		$(".overlay").fancybox({
+			maxWidth	: 600,
+			maxHeight	: 400,
+			fitToView	: false,
+			width		: '60%',
+			height		: '50%',
+			autoSize	: false,
+			closeClick	: false,
+			openEffect	: 'none',
+			closeEffect	: 'none'
+		});
 	}
 });

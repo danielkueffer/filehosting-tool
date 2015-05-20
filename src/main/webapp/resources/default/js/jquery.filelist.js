@@ -13,6 +13,7 @@
 			preview.appendTo($this);
 			
 			var fileTable = $this.find(".file-table");
+			var folderForm = $this.find(".folder-form");
 
 			/**
 			 * Create the drop zone to upload files
@@ -129,6 +130,28 @@
 				
 				return date;
 			}
+			
+			/**
+			 * New folder submit
+			 */
+			folderForm.submit(function() {
+				var folderName = $(this).find("#folder").val();
+				
+				// Value can't be empty
+				if ($.trim(folderName) == '') {
+					$(this).find("#folder").addClass("error");
+				}
+				else {
+					// Save the folder
+					jQuery.fancybox.close();
+					$(this).find("#folder").removeClass("error");
+					$(this).find("#folder").val("");
+				}
+				
+				
+				
+				return false;
+			});
 
 			loadFileTable();
 		});

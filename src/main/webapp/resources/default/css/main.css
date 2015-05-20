@@ -66,16 +66,19 @@ h1 {
 h1 a,
 h1 a:visited {
 	float: left;
-	font: normal 1.285em titilliumbold_italic, Arial, Helvertica, sans-serif;
-	/* 18px */
+	font: normal 1.285em titilliumbold_italic, Arial, Helvertica, sans-serif; /* 18px */
 	margin: 0 0 0 20px;
 	text-transform: uppercase;
 	color: #FCF9DA;
 }
 
 h2 {
-	font: bold 1.285em titilliumregular, Arial, Helvertica, sans-serif;
-	/* 18px */
+	font: bold 1.285em titilliumregular, Arial, Helvertica, sans-serif; /* 18px */
+	margin: 0 0 16px;
+}
+
+h3 {
+	font: bold 1.143em titilliumregular, Arial, Helvertica, sans-serif; /* 16px */
 	margin: 0 0 16px;
 }
 
@@ -635,6 +638,44 @@ a:focus {
 .file-metanav a:visited {
 	color: #666;
 	font-size: 1.286em;
+}
+
+#new-folder {
+	display: none;
+}
+
+#new-folder h3 {
+	margin: 0 0 30px;
+}
+
+.folder-form label {
+	display: block;
+	font-size: 0.785em; /* 11px */
+	font-weight: bold;
+	margin: 0 0 10px;
+}
+
+.folder-form {
+	padding: 20px 3%;
+	background: #fff;
+	border: 1px solid #ddd;
+}
+
+.folder-form div {
+	margin: 0 0 25px 0;
+}
+
+.folder-form input[type="text"] {
+	width: 98%;
+	padding: 5px 1%;
+}
+
+.folder-form input[type="submit"] {
+	font-size: 0.857em; /* 12px */
+}
+
+.folder-form .error {
+	border: 1px solid #F6A2A0;
 }
 
 /**
