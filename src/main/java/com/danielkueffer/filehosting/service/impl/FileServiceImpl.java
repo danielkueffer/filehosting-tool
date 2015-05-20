@@ -110,7 +110,7 @@ public class FileServiceImpl implements FileService {
 					uf = new UploadFile();
 					uf.setUser(this.authManager.getCurrentUser());
 					uf.setPath(fileName);
-					uf.setParrent(0);
+					uf.setParent(0);
 					uf.setName(fileName);
 					uf.setMimeType(type);
 					uf.setSize(size);
@@ -172,8 +172,38 @@ public class FileServiceImpl implements FileService {
 	 * Get the files from the current user
 	 */
 	@Override
-	public String getFilesFormCurrentUser() {
+	public String getFilesFromCurrentUser() {
 		User currentUser = this.authManager.getCurrentUser();
+
+		List<UploadFile> fileList = this.fileDao.getFilesByUser(currentUser);
+
+		return this.getJsonFileList(fileList, currentUser);
+	}
+
+	/**
+	 * Get the files from the current user under the parent directory
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	@Override
+	public String getFilesFromCurrentUser(int parent) {
+		System.out.println(parent);
+
+		User currentUser = this.authManager.getCurrentUser();
+
+		List<UploadFile> fileList = this.fileDao.getFilesByUser(currentUser, parent);
+
+		return this.getJsonFileList(fileList, currentUser);
+	}
+
+	/**
+	 * Get a JSON string from the file list
+	 * 
+	 * @param fileList
+	 * @return
+	 */
+	private String getJsonFileList(List<UploadFile> fileList, User currentUser) {
 
 		ResourceBundle bundle = ResourceBundle.getBundle(
 				"com.danielkueffer.filehosting.i18n.messages", new Locale(
@@ -185,7 +215,7 @@ public class FileServiceImpl implements FileService {
 
 		gen.writeStartArray();
 
-		for (UploadFile uf : this.fileDao.getFilesByUser(currentUser)) {
+		for (UploadFile uf : fileList) {
 
 			String type = "";
 			String typeLabel = "";
@@ -221,6 +251,9 @@ public class FileServiceImpl implements FileService {
 				} else if (mime.equals(MimeType.pdf.getContentType())) {
 					docType = "pdf";
 				}
+			} else if (mime.equals("folder")) {
+				typeLabel = bundle.getString("files.folder");
+				type = "folder";
 			} else {
 				typeLabel = bundle.getString("files.file");
 				type = "file";
@@ -228,7 +261,7 @@ public class FileServiceImpl implements FileService {
 
 			gen.writeStartObject().write("id", uf.getId())
 					.write("path", uf.getPath())
-					.write("parrent", uf.getParrent())
+					.write("parent", uf.getParent())
 					.write("name", uf.getName()).write("type", type)
 					.write("typeLabel", typeLabel)
 					.write("thumbnail", thumbnail)
@@ -291,5 +324,41 @@ public class FileServiceImpl implements FileService {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Create a folder
+	 */
+	@Override
+	public boolean createFolder(String folder, int parent) {
+
+		File f = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
+				+ this.authManager.getCurrentUser().getUsername() + "/"
+				+ folder);
+
+		f.mkdirs();
+
+		// Get the MIME type
+		Path path = Paths.get(f.toURI());
+		long size = 0;
+
+		try {
+			size = Files.size(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		UploadFile uf = new UploadFile();
+		uf.setUser(this.authManager.getCurrentUser());
+		uf.setPath(folder);
+		uf.setParent(0);
+		uf.setName(folder);
+		uf.setMimeType("folder");
+		uf.setSize(size);
+		uf.setLastModified(DateUtil.getSQLTimestamp());
+
+		this.fileDao.create(uf);
+
+		return true;
 	}
 }

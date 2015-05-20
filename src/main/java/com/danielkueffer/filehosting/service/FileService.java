@@ -14,9 +14,13 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 public interface FileService {
 	String uploadFiles(List<InputPart> inputParts);
 	
-	String getFilesFormCurrentUser();
+	String getFilesFromCurrentUser();
+	
+	String getFilesFromCurrentUser(int parent);
 	
 	File getDownloadFile(String filePath);
 
 	boolean deleteFile(String filePath);
+	
+	boolean createFolder(String folder, int parent);
 }

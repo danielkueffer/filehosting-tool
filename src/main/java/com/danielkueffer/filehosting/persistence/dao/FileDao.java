@@ -14,5 +14,7 @@ import com.danielkueffer.filehosting.persistence.model.User;
 public interface FileDao extends Dao<UploadFile> {
 	List<UploadFile> getFilesByUser(User user);
 	
+	List<UploadFile> getFilesByUser(User user, int parent);
+	
 	List<UploadFile> getSingleFileByUser(String filePath, User user);
 }

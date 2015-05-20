@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -41,7 +42,20 @@ public class FileResource implements Serializable {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAll() {
-		return this.fileService.getFilesFormCurrentUser();
+		return this.fileService.getFilesFromCurrentUser();
+	}
+
+	/**
+	 * Get all files from current user under the specified parrent directory
+	 * 
+	 * @param parrent
+	 * @return
+	 */
+	@GET
+	@Path("{parrent}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllFromParrent(@PathParam("parrent") int parrent) {
+		return this.fileService.getFilesFromCurrentUser(parrent);
 	}
 
 	/**
@@ -51,6 +65,7 @@ public class FileResource implements Serializable {
 	 * @return
 	 */
 	@POST
+	@Path("upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(MultipartFormDataInput input) {
 		this.fileService.uploadFiles(input.getFormDataMap().get("file"));
@@ -68,11 +83,11 @@ public class FileResource implements Serializable {
 	@Path("{filePath:.*}")
 	public Response deleteFile(@PathParam("filePath") String filePath) {
 		boolean deleted = this.fileService.deleteFile(filePath);
-		
+
 		if (!deleted) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		
+
 		return Response.ok().build();
 	}
 
@@ -97,5 +112,20 @@ public class FileResource implements Serializable {
 				"attachment; filename=" + file.getName());
 
 		return rb.build();
+	}
+
+	/**
+	 * Create a folder
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("folder/add")
+	public Response createFolder(@FormParam("folder") String folderName,
+			@FormParam("parrent") int parrent) {
+
+		this.fileService.createFolder(folderName, parrent);
+
+		return Response.ok().build();
 	}
 }

@@ -34,7 +34,7 @@ public class UploadFile {
 	private String name;
 	private String mimeType;
 
-	private int parrent;
+	private int parent;
 	private long size;
 
 	@Column(name = "last_modified")
@@ -116,18 +116,18 @@ public class UploadFile {
 	}
 
 	/**
-	 * @return the parrent
+	 * @return the parent
 	 */
-	public int getParrent() {
-		return parrent;
+	public int getParent() {
+		return parent;
 	}
 
 	/**
-	 * @param parrent
-	 *            the parrent to set
+	 * @param parent
+	 *            the parent to set
 	 */
-	public void setParrent(int parrent) {
-		this.parrent = parrent;
+	public void setParent(int parent) {
+		this.parent = parent;
 	}
 
 	/**

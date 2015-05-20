@@ -8,6 +8,8 @@
 		return this.each(function() {
 
 			var $this = $(this);
+			
+			var parent = 0;
 
 			var preview = $("<div/>").addClass("dropzone-previews").addClass("upload-status");
 			preview.appendTo($this);
@@ -19,7 +21,7 @@
 			 * Create the drop zone to upload files
 			 */
 			var mainDropzone = new Dropzone(".wrapper", {
-				url : "resource/file",
+				url : "resource/file/upload",
 				createImageThumbnails : false,
 				addRemoveLinks : false,
 				clickable : ".fileinput-button",
@@ -36,7 +38,7 @@
 						$(this).remove();
 					});
 					
-					loadFileTable();
+					loadFileTable(parent);
 				}, 3000);
 			});
 
@@ -71,6 +73,8 @@
 							icon = '<i class="icon-file-video file-icon"></i>';
 						} else if (val.type == "image") {
 							icon = '<i class="icon-file-image file-icon"></i>';
+						} else if (val.type == "folder") {
+							icon = '<i class="icon-folder file-icon"></i>';
 						} else {
 							icon = '<i class="icon-doc file-icon"></i>';
 						}
@@ -78,14 +82,20 @@
 						var date = getDateFromTimestamp(val.lastModified);
 						var dateStr = date.getDate() + "." + date.getMonth() + 1 + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
 					
-						var row = "<tr class=\"data-row\">" +
-						"<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\">" + val.name + "</a></td>" +
-						"<td>" + val.typeLabel + "</td>" +
-						"<td>" + dateStr + "</td>" +
-						"<td>" +
-						"<a class=\"file-delete\" href=\"#\" data-path=\"" + val.path + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>" +
-						"</td>" +
-						"</tr>";
+						var row = "<tr class=\"data-row\">";
+						
+						if (val.type == "folder") {
+							row += "<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a></td>";
+						} else {
+							row += "<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\">" + val.name + "</a></td>";
+						}
+						
+						row += "<td>" + val.typeLabel + "</td>";
+						row += "<td>" + dateStr + "</td>";
+						row += "<td>";
+						row += "<a class=\"file-delete\" href=\"#\" data-path=\"" + val.path + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>";
+						row += "</td>";
+						row += "</tr>";
 					
 					fileTable.append(row);
 				});
@@ -94,9 +104,9 @@
 			/**
 			 * Get all files of the current user
 			 */
-			var loadFileTable = function() {
+			var loadFileTable = function(parent) {
 				$.ajax({
-					url : "resource/file",
+					url : "resource/file/" + parent,
 					type : "GET"
 				}).success(function(msg) {
 					populateTable(msg);
@@ -113,7 +123,7 @@
 					url: "resource/file/" + path,
 					type: "DELETE"
 				}).success(function() {
-					loadFileTable()
+					loadFileTable(parent)
 				});
 				
 				return false;
@@ -142,7 +152,21 @@
 					$(this).find("#folder").addClass("error");
 				}
 				else {
-					// Save the folder
+					
+					// Submit the folder
+					var data = {
+						"folder": folderName,
+						"parent": "0"
+					};
+					
+					$.ajax({
+						url: "resource/file/folder/add",
+						type: "POST",
+						data: data
+					}).success(function(msg) {
+						loadFileTable(parent);
+					});
+					
 					jQuery.fancybox.close();
 					$(this).find("#folder").removeClass("error");
 					$(this).find("#folder").val("");
@@ -153,7 +177,7 @@
 				return false;
 			});
 
-			loadFileTable();
+			loadFileTable(parent);
 		});
 	}
 })(jQuery);

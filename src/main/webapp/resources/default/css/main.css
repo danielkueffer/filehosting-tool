@@ -554,6 +554,10 @@ a:focus {
 	color: #D5CB72;
 }
 
+.icon-folder.file-icon {
+	color: #75B2E1;
+}
+
 .file-name,
 .file-name:visited {
 	display: inline-block;

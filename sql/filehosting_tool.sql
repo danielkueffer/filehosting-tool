@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `filehosting_tool`.`file` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `path` VARCHAR(4000) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NULL,
-  `parrent` INT NULL,
+  `parent` INT NULL,
   `name` VARCHAR(250) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NULL,
   `mimetype` VARCHAR(100) NULL,
   `size` BIGINT NULL,
