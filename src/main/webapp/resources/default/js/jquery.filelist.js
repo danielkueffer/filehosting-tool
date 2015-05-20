@@ -21,7 +21,7 @@
 				url : "resource/file",
 				createImageThumbnails : false,
 				addRemoveLinks : false,
-				clickable : false,
+				clickable : ".fileinput-button",
 				parallelUploads : 1,
 				previewsContainer : ".upload-status"
 			});
