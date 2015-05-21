@@ -1,6 +1,7 @@
 package com.danielkueffer.filehosting.rest;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
@@ -46,7 +47,7 @@ public class FileResource implements Serializable {
 	}
 
 	/**
-	 * Get all files from current user under the specified parrent directory
+	 * Get all files from current user under the specified parent directory
 	 * 
 	 * @param parrent
 	 * @return
@@ -54,7 +55,7 @@ public class FileResource implements Serializable {
 	@GET
 	@Path("{parent}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllFromParrent(@PathParam("parent") int parent) {
+	public String getAllFromParent(@PathParam("parent") int parent) {
 		return this.fileService.getFilesFromCurrentUser(parent);
 	}
 
@@ -68,7 +69,16 @@ public class FileResource implements Serializable {
 	@Path("upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(MultipartFormDataInput input) {
-		this.fileService.uploadFiles(input.getFormDataMap().get("file"));
+		int parent = 0;
+
+		try {
+			parent = input.getFormDataMap().get("parent").get(0)
+					.getBody(Integer.class, null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		this.fileService.uploadFiles(input.getFormDataMap().get("file"), parent);
 
 		return Response.ok().build();
 	}
@@ -85,7 +95,7 @@ public class FileResource implements Serializable {
 		boolean deleted = this.fileService.deleteFile(filePath);
 
 		if (!deleted) {
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 		return Response.ok().build();
@@ -122,7 +132,7 @@ public class FileResource implements Serializable {
 	@POST
 	@Path("folder/add")
 	public Response createFolder(@FormParam("folder") String folderName,
-			@FormParam("parrent") int parrent) {
+			@FormParam("parent") int parrent) {
 
 		this.fileService.createFolder(folderName, parrent);
 

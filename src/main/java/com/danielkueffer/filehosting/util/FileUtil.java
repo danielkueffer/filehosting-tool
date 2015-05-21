@@ -7,6 +7,8 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
+import org.apache.commons.io.FileUtils;
+
 public class FileUtil {
 
 	/**
@@ -55,17 +57,31 @@ public class FileUtil {
 	}
 
 	/**
-	 * Delete a file from disk
+	 * Delete a file of directory from disk
 	 * 
 	 * @param path
 	 * @return
+	 * @throws IOException
 	 */
 	public static boolean deleteFile(String path) {
 		FileSystem fs = FileSystems.getDefault();
 
 		Path p = fs.getPath(path);
 
-		return p.toFile().delete();
+		File f = p.toFile();
+
+		if (f.isDirectory()) {
+			try {
+				FileUtils.deleteDirectory(f);
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			return f.delete();
+		}
+
+		return false;
 	}
 
 	/**

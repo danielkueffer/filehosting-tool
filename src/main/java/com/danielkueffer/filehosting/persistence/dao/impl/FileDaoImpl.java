@@ -66,4 +66,38 @@ public class FileDaoImpl extends AbstractDao<UploadFile> implements FileDao {
 
 		return q.getResultList();
 	}
+
+	/**
+	 * Get a single file by user and parent
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UploadFile> getSingleFileByUserAndParent(String filePath,
+			User user, int parent) {
+
+		Query q = this
+				.getEm()
+				.createQuery(
+						"SELECT u FROM UploadFile u WHERE u.user = :qUser AND u.path = :qPath AND u.parent = :qParent");
+
+		q.setParameter("qUser", user);
+		q.setParameter("qPath", filePath);
+		q.setParameter("qParent", parent);
+
+		return q.getResultList();
+	}
+
+	/**
+	 * Get files by parent folder
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UploadFile> getFilesByParent(int parent) {
+		Query q = this.getEm().createQuery(
+				"SELECT u FROM UploadFile u WHERE u.parent = :qParent");
+
+		q.setParameter("qParent", parent);
+
+		return q.getResultList();
+	}
 }

@@ -22,12 +22,19 @@
 			 * Create the drop zone to upload files
 			 */
 			var mainDropzone = new Dropzone(".wrapper", {
-				url : "resource/file/upload",
-				createImageThumbnails : false,
-				addRemoveLinks : false,
-				clickable : ".fileinput-button",
-				parallelUploads : 1,
-				previewsContainer : ".upload-status"
+				url: "resource/file/upload",
+				createImageThumbnails: false,
+				addRemoveLinks: false,
+				clickable: ".fileinput-button",
+				parallelUploads: 1,
+				previewsContainer: ".upload-status"
+			});
+			
+			/**
+			 * Drop zone send event, add the parent parameter
+			 */
+			mainDropzone.on("sending", function(file, xhr, formData){
+				formData.append("parent", parent);
 			});
 
 			/**

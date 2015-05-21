@@ -45,6 +45,9 @@ public class FileServiceImpl implements FileService {
 	private static final String BASE_DIR = "jboss.server.data.dir";
 	private static final String FILE_DIR = "files";
 
+	private String altFolder;
+	private int altNum;
+
 	@EJB
 	FileDao fileDao;
 
@@ -58,7 +61,7 @@ public class FileServiceImpl implements FileService {
 	 * Upload files
 	 */
 	@Override
-	public String uploadFiles(List<InputPart> inputParts) {
+	public String uploadFiles(List<InputPart> inputParts, int parent) {
 
 		// Check if a directory for the current user exists
 		this.createUserDir();
@@ -75,15 +78,23 @@ public class FileServiceImpl implements FileService {
 
 				byte[] bytes = IOUtils.toByteArray(inputStream);
 
-				// constructs upload file path
-				String filePath = System.getProperty(BASE_DIR) + "/" + FILE_DIR
-						+ "/" + this.authManager.getCurrentUser().getUsername()
-						+ "/" + fileName;
+				String filePath = fileName;
 
-				FileUtil.writeFile(bytes, filePath);
+				if (parent != 0) {
+					UploadFile uf = this.fileDao.get(parent);
+					filePath = uf.getPath() + "/" + fileName;
+				}
+
+				// constructs upload file path
+				String systemFilePath = System.getProperty(BASE_DIR) + "/"
+						+ FILE_DIR + "/"
+						+ this.authManager.getCurrentUser().getUsername() + "/"
+						+ filePath;
+
+				FileUtil.writeFile(bytes, systemFilePath);
 
 				// Get the MIME type
-				Path path = Paths.get(filePath);
+				Path path = Paths.get(systemFilePath);
 				String type = Files.probeContentType(path);
 
 				// Get the file size
@@ -91,7 +102,7 @@ public class FileServiceImpl implements FileService {
 
 				// Check if the file already exists in the database
 				List<UploadFile> fileList = this.fileDao.getSingleFileByUser(
-						fileName, this.authManager.getCurrentUser());
+						filePath, this.authManager.getCurrentUser());
 
 				UploadFile uf = null;
 
@@ -109,8 +120,8 @@ public class FileServiceImpl implements FileService {
 					// Create new
 					uf = new UploadFile();
 					uf.setUser(this.authManager.getCurrentUser());
-					uf.setPath(fileName);
-					uf.setParent(0);
+					uf.setPath(filePath);
+					uf.setParent(parent);
 					uf.setName(fileName);
 					uf.setMimeType(type);
 					uf.setSize(size);
@@ -329,6 +340,12 @@ public class FileServiceImpl implements FileService {
 
 			// Delete the file form the file system and from the database
 			if (FileUtil.deleteFile(path)) {
+
+				if (uf.getMimeType().equals("folder")) {
+					this.deleteFolderContents(uf.getId());
+				}
+
+				// Delete the file or folder on disk
 				this.fileDao.delete(uf);
 
 				return true;
@@ -344,33 +361,101 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public boolean createFolder(String folder, int parent) {
 
+		User currentUser = this.authManager.getCurrentUser();
+
+		UploadFile parentFile = null;
+		int qParent = 0;
+
+		String folderPath = folder;
+
+		// Create the path
+		if (parent != 0) {
+			parentFile = this.fileDao.get(parent);
+			qParent = parentFile.getId();
+			folderPath = parentFile.getPath() + "/" + folderPath;
+		}
+
+		List<UploadFile> fileList = this.fileDao.getSingleFileByUserAndParent(
+				folderPath, currentUser, qParent);
+
+		// Check if the folder name already exists and append a number to the
+		// folder name
+		if (!fileList.isEmpty()) {
+			this.checkFolderDuplicateName(folderPath, currentUser, 1);
+			folderPath = this.altFolder;
+			folder = folder + " (" + this.altNum + ")";
+		}
+
+		// Create a file from the system path
 		File f = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
 				+ this.authManager.getCurrentUser().getUsername() + "/"
-				+ folder);
+				+ folderPath);
 
+		// Create the folder
 		f.mkdirs();
 
 		// Get the MIME type
 		Path path = Paths.get(f.toURI());
-		long size = 0;
 
+		// Get the file size
+		long size = 0;
 		try {
 			size = Files.size(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		// Create the uploadFile object
 		UploadFile uf = new UploadFile();
 		uf.setUser(this.authManager.getCurrentUser());
-		uf.setPath(folder);
-		uf.setParent(0);
+		uf.setPath(folderPath);
+		uf.setParent(parent);
 		uf.setName(folder);
 		uf.setMimeType("folder");
 		uf.setSize(size);
 		uf.setLastModified(DateUtil.getSQLTimestamp());
 
+		// Save the uploadFile
 		this.fileDao.create(uf);
 
 		return true;
+	}
+
+	/**
+	 * Delete the folder content in the database
+	 * 
+	 * @param id
+	 */
+	private void deleteFolderContents(int id) {
+		if (this.fileDao.get(id) != null) {
+			List<UploadFile> fileList = this.fileDao.getFilesByParent(id);
+
+			for (UploadFile uf : fileList) {
+
+				if (uf.getMimeType().equals("folder")) {
+					this.deleteFolderContents(uf.getId());
+				}
+
+				this.fileDao.delete(uf);
+			}
+		}
+	}
+
+	/**
+	 * Check for duplicate folder and assign alternative name
+	 * 
+	 * @param folderName
+	 * @param currentUser
+	 */
+	private void checkFolderDuplicateName(String folderName, User currentUser,
+			int startNum) {
+
+		this.altFolder = folderName + " (" + startNum + ")";
+		this.altNum = startNum;
+
+		if (!this.fileDao.getSingleFileByUser(this.altFolder, currentUser)
+				.isEmpty()) {
+			this.checkFolderDuplicateName(folderName, currentUser, startNum + 1);
+		}
 	}
 }
