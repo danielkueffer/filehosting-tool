@@ -7,7 +7,9 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -47,6 +49,7 @@ public class FileServiceImpl implements FileService {
 
 	private String altFolder;
 	private int altNum;
+	private List<UploadFile> childFolders = new ArrayList<UploadFile>();
 
 	@EJB
 	FileDao fileDao;
@@ -224,19 +227,22 @@ public class FileServiceImpl implements FileService {
 		StringWriter writer = new StringWriter();
 		JsonGenerator gen = factory.createGenerator(writer);
 
+		// Get a list with the child folders for the bread crumb array
 		UploadFile parentFolder = this.fileDao.get(parent);
+		this.getChildFolders(parentFolder);
+		Collections.reverse(this.childFolders);
 
-		String folderPath = "";
+		// Create the bread crumb array
+		gen.writeStartObject().writeStartArray("breadcrumb");
 
-		if (parentFolder != null) {
-			folderPath = parentFolder.getPath();
+		for (UploadFile uf : this.childFolders) {
+			gen.writeStartObject().write("folderId", uf.getId())
+					.write("folderName", uf.getName()).writeEnd();
 		}
 
-		// Write the bread crumb array
-		gen.writeStartObject().writeStartArray("breadcrumb").writeStartObject()
-				.write("folderPath", folderPath).writeEnd().writeEnd()
-				.writeStartArray("files");
+		gen.writeEnd().writeStartArray("files");
 
+		// Create file array
 		for (UploadFile uf : fileList) {
 
 			String type = "";
@@ -361,6 +367,11 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public boolean createFolder(String folder, int parent) {
 
+		// No slashes or backslashes in the folder name allowed
+		if (folder.indexOf("/") > -1 || folder.indexOf("\\") > -1) {
+			return false;
+		}
+
 		User currentUser = this.authManager.getCurrentUser();
 
 		UploadFile parentFile = null;
@@ -456,6 +467,17 @@ public class FileServiceImpl implements FileService {
 		if (!this.fileDao.getSingleFileByUser(this.altFolder, currentUser)
 				.isEmpty()) {
 			this.checkFolderDuplicateName(folderName, currentUser, startNum + 1);
+		}
+	}
+
+	/**
+	 * Get all child folders
+	 */
+	private void getChildFolders(UploadFile folder) {
+		if (folder != null) {
+			this.childFolders.add(folder);
+			int parent = folder.getParent();
+			this.getChildFolders(this.fileDao.get(parent));
 		}
 	}
 }

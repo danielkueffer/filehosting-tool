@@ -64,11 +64,11 @@
 				
 				// Populate breadcrumb
 				$.each(json, function(key, val) {
-					var folderPath = val.folderPath;
+					var folderId = val.folderId;
+					var folderName = val.folderName;
 					
-					if (folderPath != "") {
-						var bItem = "<li class=\"breadcumb-item\"><a href=\"#\">" + folderPath + "</a> <i class=\"icon-angle-right\"></i></li>";
-						
+					if (folderName != "") {
+						var bItem = "<li class=\"breadcumb-item\"><a href=\"#\" data-folder-id=" + folderId + " class=\"folder-name\">" + folderName + "</a> <i class=\"icon-angle-right\"></i></li>";
 						breadcrumb.append(bItem);
 					}
 				});
@@ -180,15 +180,15 @@
 			folderForm.submit(function() {
 				var folderName = $(this).find("#folder").val();
 				
-				// Value can't be empty
-				if ($.trim(folderName) == '') {
+				// Value can't be empty or have slashes or backslashes
+				if ($.trim(folderName) == '' || folderName.indexOf("/") > -1 || folderName.indexOf("\\") > -1) {
 					$(this).find("#folder").addClass("error");
 				}
 				else {
 					
 					// Submit the folder
 					var data = {
-						"folder": folderName,
+						"folder": $.trim(folderName),
 						"parent": parent
 					};
 					
