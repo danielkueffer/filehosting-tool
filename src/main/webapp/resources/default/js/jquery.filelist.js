@@ -21,7 +21,7 @@
 			/**
 			 * Create the drop zone to upload files
 			 */
-			var mainDropzone = new Dropzone(".wrapper", {
+			$this.dropzone({
 				url: "resource/file/upload",
 				createImageThumbnails: false,
 				addRemoveLinks: false,
@@ -31,23 +31,22 @@
 			});
 			
 			/**
-			 * Drop zone send event, add the parent parameter
+			 * Drop zone events
 			 */
-			mainDropzone.on("sending", function(file, xhr, formData){
-				formData.append("parent", parent);
-			});
-
-			/**
-			 * Successful uploaded
-			 */
-			mainDropzone.on("success", function(file) {
-				setTimeout(function() {
-					$this.find(".dz-preview").fadeOut(function() {
-						$(this).remove();
-					});
-					
-					loadFileTable();
-				}, 3000);
+			$this.each(function() {
+				Dropzone.forElement(this).on('sending', function(file, xhr, formData) {
+					formData.append("parent", parent);
+				});
+				
+				Dropzone.forElement(this).on("success", function(file) {
+					setTimeout(function() {
+						$this.find(".dz-preview").fadeOut(function() {
+							$(this).remove();
+						});
+						
+						loadFileTable();
+					}, 3000);
+				});
 			});
 			
 			/**
