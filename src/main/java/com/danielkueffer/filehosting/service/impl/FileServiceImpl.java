@@ -1,6 +1,8 @@
 package com.danielkueffer.filehosting.service.impl;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -23,6 +25,10 @@ import javax.json.stream.JsonGeneratorFactory;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.tika.detect.Detector;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.parser.AutoDetectParser;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 
 import com.danielkueffer.filehosting.auth.AuthManager;
@@ -96,9 +102,17 @@ public class FileServiceImpl implements FileService {
 
 				FileUtil.writeFile(bytes, systemFilePath);
 
-				// Get the MIME type
 				Path path = Paths.get(systemFilePath);
-				String type = Files.probeContentType(path);
+				
+				InputStream is = new BufferedInputStream(new FileInputStream(new File(systemFilePath)));
+				
+				AutoDetectParser parser = new AutoDetectParser();
+			    Detector detector = parser.getDetector();
+			    Metadata md = new Metadata();
+			    md.add(Metadata.RESOURCE_NAME_KEY, systemFilePath);
+			    MediaType mediaType = detector.detect(is, md);
+				
+				String type = mediaType.toString();
 
 				// Get the file size
 				long size = Files.size(path);

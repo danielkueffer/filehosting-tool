@@ -57,6 +57,13 @@
 			<version>2.4</version>
 		</dependency>
 
+		<!-- File utils -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>1.8</version>
+		</dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>junit</groupId>
