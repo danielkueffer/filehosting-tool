@@ -78,8 +78,25 @@ public class FileResource implements Serializable {
 			e.printStackTrace();
 		}
 
-		this.fileService.uploadFiles(input.getFormDataMap().get("file"), parent);
+		this.fileService
+				.uploadFiles(input.getFormDataMap().get("file"), parent);
 
+		return Response.ok().build();
+	}
+
+	/**
+	 * Update the filename
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	@POST
+	@Path("update")
+	public Response updateFileName(@FormParam("fileName") String fileName,
+			@FormParam("id") int id) {
+		
+		this.fileService.updateFileName(fileName, id);
+		
 		return Response.ok().build();
 	}
 
@@ -95,7 +112,8 @@ public class FileResource implements Serializable {
 		boolean deleted = this.fileService.deleteFile(filePath);
 
 		if (!deleted) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
 		}
 
 		return Response.ok().build();

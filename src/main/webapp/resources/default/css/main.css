@@ -515,6 +515,7 @@ a:focus {
 }
 
 .file-table td {
+	position: relative;
 	padding: 8px 0;
 	border-bottom: 1px solid #ddd;
 }
@@ -685,8 +686,22 @@ a:focus {
 	font-size: 0.857em; /* 12px */
 }
 
-.folder-form .error {
+.folder-form .error,
+.update-form .error {
 	border: 1px solid #F6A2A0;
+}
+
+.update-file {
+	display: none;
+	padding: 0 0 0 15px;
+	color: #333;
+}
+
+.update-form {
+	position: absolute;
+	left: 35px;
+	top: 12px;
+	background: #fff;
 }
 
 /**

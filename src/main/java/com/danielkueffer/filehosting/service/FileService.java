@@ -23,4 +23,6 @@ public interface FileService {
 	boolean deleteFile(String filePath);
 	
 	boolean createFolder(String folder, int parent);
+	
+	boolean updateFileName(String fileName, int id);
 }

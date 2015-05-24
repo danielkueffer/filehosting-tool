@@ -116,9 +116,9 @@
 						var row = "<tr class=\"data-row\">";
 						
 						if (val.type == "folder") {
-							row += "<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a></td>";
+							row += "<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a> </a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
 						} else {
-							row += "<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\">" + val.name + "</a></td>";
+							row += "<td>" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\" data-folder-id=" + val.id + ">" + val.name + "</a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
 						}
 						
 						row += "<td>" + val.typeLabel + "</td>";
@@ -214,6 +214,87 @@
 				
 				parent = $(this).data("folder-id");
 				loadFileTable();
+				
+				return false;
+			});
+			
+			/**
+			 * Table row hover
+			 */
+			$this.on("mouseover", ".data-row", function() {
+				var updateFile = $(this).find(".update-file");
+				if (! $(this).find(".update-form").length) {
+					updateFile.show();
+				}
+			}).on("mouseleave", ".data-row", function() {
+				$(this).find(".update-file").hide();
+			});
+			
+			/**
+			 * Show update filename form
+			 */
+			$this.on("click", ".update-file", function() {
+				
+				$this.find(".update-form").remove();
+				$(this).hide();
+				
+				var form = "<div class=\"update-form\">" +
+					"<input type=\"text\" name=\"fileName\" id=\"filename-update\"/>" +
+					"<button id=\"filename-button\">" +
+					"<i class=\"icon-pencil\"></i>" +
+					"</button>" + 
+					"<button id=\"filename-button-cancel\">" +
+					"<i class=\"icon-cancel\"></i>" +
+					"</button>" + 
+					"</div>";
+				
+				$(this).parent().append(form);
+				var fileName = $(this).parent().find(".file-name");
+				var inputWidth = 150;
+				
+				if(fileName.width() > 150) {
+					inputWidth = fileName.width();
+				}
+				
+				$(this).parent().find("#filename-update").css("width", inputWidth);
+				
+				return false;
+			});
+			
+			/**
+			 * Remove update filename form
+			 */
+			$this.on("click", "#filename-button-cancel", function() {
+				$(this).parent("td").find(".update-file").show();
+				$(this).parent().remove();
+			});
+			
+			/**
+			 * Submit filename update
+			 */
+			$this.on("click", "#filename-button", function() {
+				var updateVal = $(this).parent().find("#filename-update").val();
+				
+				// Value can't be empty or have slashes or backslashes
+				if ($.trim(updateVal) == '' || updateVal.indexOf("/") > -1 || updateVal.indexOf("\\") > -1) {
+					$(this).parent().find("#filename-update").addClass("error");
+				}
+				else {
+					var id = $(this).parents("td:first").find(".file-name").attr("data-folder-id");
+					
+					var data = {
+						"fileName": updateVal,
+						"id": id
+					};
+					
+					$.ajax({
+						url: "resource/file/update",
+						type: "POST",
+						data: data
+					}).success(function(msg) {
+						loadFileTable();
+					});
+				}
 				
 				return false;
 			});

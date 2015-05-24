@@ -103,15 +103,16 @@ public class FileServiceImpl implements FileService {
 				FileUtil.writeFile(bytes, systemFilePath);
 
 				Path path = Paths.get(systemFilePath);
-				
-				InputStream is = new BufferedInputStream(new FileInputStream(new File(systemFilePath)));
-				
+
+				InputStream is = new BufferedInputStream(new FileInputStream(
+						new File(systemFilePath)));
+
 				AutoDetectParser parser = new AutoDetectParser();
-			    Detector detector = parser.getDetector();
-			    Metadata md = new Metadata();
-			    md.add(Metadata.RESOURCE_NAME_KEY, systemFilePath);
-			    MediaType mediaType = detector.detect(is, md);
-				
+				Detector detector = parser.getDetector();
+				Metadata md = new Metadata();
+				md.add(Metadata.RESOURCE_NAME_KEY, systemFilePath);
+				MediaType mediaType = detector.detect(is, md);
+
 				String type = mediaType.toString();
 
 				// Get the file size
@@ -493,5 +494,39 @@ public class FileServiceImpl implements FileService {
 			int parent = folder.getParent();
 			this.getChildFolders(this.fileDao.get(parent));
 		}
+	}
+
+	/**
+	 * Rename a file or folder
+	 */
+	@Override
+	public boolean updateFileName(String fileName, int id) {
+
+		// No slashes or backslashes in the file name allowed
+		if (fileName.indexOf("/") > -1 || fileName.indexOf("\\") > -1) {
+			return false;
+		}
+
+		UploadFile uf = this.fileDao.get(id);
+		String oldFileName = uf.getName();
+		String path = uf.getPath();
+		path = path.replace(oldFileName, fileName);
+
+		File old = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
+				+ this.authManager.getCurrentUser().getUsername() + "/"
+				+ uf.getPath());
+
+		File newFile = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR
+				+ "/" + this.authManager.getCurrentUser().getUsername() + "/"
+				+ path);
+
+		old.renameTo(newFile);
+
+		uf.setName(fileName);
+		uf.setPath(path);
+
+		this.fileDao.update(uf);
+
+		return false;
 	}
 }
