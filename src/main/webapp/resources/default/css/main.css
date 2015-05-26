@@ -520,6 +520,10 @@ a:focus {
 	border-bottom: 1px solid #ddd;
 }
 
+.file-table .filename-col {
+	width: 40%;
+}
+
 .file-icon {
 	float: left;
 	margin: 0 10px 0 0;
@@ -691,7 +695,8 @@ a:focus {
 	border: 1px solid #F6A2A0;
 }
 
-.update-file {
+.update-file,
+.update-file:visited {
 	display: none;
 	padding: 0 0 0 15px;
 	color: #333;
