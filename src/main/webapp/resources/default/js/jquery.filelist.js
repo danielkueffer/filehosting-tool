@@ -36,6 +36,7 @@
 			$this.each(function() {
 				Dropzone.forElement(this).on('sending', function(file, xhr, formData) {
 					formData.append("parent", parent);
+					formData.append("my-filename", new Blob([file.name], { type: "application/x-www-form-urlencoded; charset=UTF-8" }));
 				});
 				
 				Dropzone.forElement(this).on("success", function(file) {
@@ -153,7 +154,8 @@
 				
 				$.ajax({
 					url: "resource/file/" + path,
-					type: "DELETE"
+					type: "DELETE",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8"
 				}).success(function() {
 					loadFileTable();
 				});
@@ -194,7 +196,8 @@
 					$.ajax({
 						url: "resource/file/folder/add",
 						type: "POST",
-						data: data
+						data: data,
+						contentType: "application/x-www-form-urlencoded; charset=UTF-8"
 					}).success(function(msg) {
 						loadFileTable();
 					});
@@ -292,7 +295,8 @@
 					$.ajax({
 						url: "resource/file/update",
 						type: "POST",
-						data: data
+						data: data,
+						contentType: "application/x-www-form-urlencoded; charset=UTF-8"
 					}).success(function(msg) {
 						loadFileTable();
 					});

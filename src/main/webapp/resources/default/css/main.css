@@ -709,6 +709,11 @@ a:focus {
 	background: #fff;
 }
 
+#filename-button,
+#filename-button-cancel {
+	height: 25px;
+}
+
 /**
  * Tables
  */

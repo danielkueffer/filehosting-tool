@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.detect.Detector;
@@ -70,7 +69,7 @@ public class FileServiceImpl implements FileService {
 	 * Upload files
 	 */
 	@Override
-	public String uploadFiles(List<InputPart> inputParts, int parent) {
+	public String uploadFiles(List<InputPart> inputParts, int parent, String fileName) {
 
 		// Check if a directory for the current user exists
 		this.createUserDir();
@@ -78,14 +77,12 @@ public class FileServiceImpl implements FileService {
 		for (InputPart inputPart : inputParts) {
 
 			try {
-
-				MultivaluedMap<String, String> header = inputPart.getHeaders();
-				String fileName = getFileName(header);
-
 				InputStream inputStream = inputPart.getBody(InputStream.class,
 						null);
 
 				byte[] bytes = IOUtils.toByteArray(inputStream);
+				
+				inputStream.close();
 
 				String filePath = fileName;
 
@@ -114,6 +111,8 @@ public class FileServiceImpl implements FileService {
 				MediaType mediaType = detector.detect(is, md);
 
 				String type = mediaType.toString();
+				
+				is.close();
 
 				// Get the file size
 				long size = Files.size(path);
@@ -155,29 +154,6 @@ public class FileServiceImpl implements FileService {
 		}
 
 		return "{\"success\": true, \"message\": \"created\"}";
-	}
-
-	/**
-	 * Get the filename from the uploaded file
-	 * 
-	 * @param header
-	 * @return
-	 */
-	private String getFileName(MultivaluedMap<String, String> header) {
-
-		String[] contentDisposition = header.getFirst("Content-Disposition")
-				.split(";");
-
-		for (String filename : contentDisposition) {
-			if ((filename.trim().startsWith("filename"))) {
-
-				String[] name = filename.split("=");
-
-				String finalFileName = name[1].trim().replaceAll("\"", "");
-				return finalFileName;
-			}
-		}
-		return "unknown";
 	}
 
 	/**

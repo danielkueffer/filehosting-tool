@@ -67,19 +67,23 @@ public class FileResource implements Serializable {
 	 */
 	@POST
 	@Path("upload")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Consumes(MediaType.MULTIPART_FORM_DATA + "; charset=UTF-8")
 	public Response uploadFile(MultipartFormDataInput input) {
 		int parent = 0;
+		String filename = "";
 
 		try {
 			parent = input.getFormDataMap().get("parent").get(0)
 					.getBody(Integer.class, null);
+
+			filename = input.getFormDataMap().get("my-filename").get(0)
+					.getBodyAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		this.fileService
-				.uploadFiles(input.getFormDataMap().get("file"), parent);
+				.uploadFiles(input.getFormDataMap().get("file"), parent, filename);
 
 		return Response.ok().build();
 	}
@@ -94,9 +98,9 @@ public class FileResource implements Serializable {
 	@Path("update")
 	public Response updateFileName(@FormParam("fileName") String fileName,
 			@FormParam("id") int id) {
-		
+
 		this.fileService.updateFileName(fileName, id);
-		
+
 		return Response.ok().build();
 	}
 
