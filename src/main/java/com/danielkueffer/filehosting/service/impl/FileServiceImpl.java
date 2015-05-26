@@ -69,7 +69,8 @@ public class FileServiceImpl implements FileService {
 	 * Upload files
 	 */
 	@Override
-	public String uploadFiles(List<InputPart> inputParts, int parent, String fileName) {
+	public String uploadFiles(List<InputPart> inputParts, int parent,
+			String fileName) {
 
 		// Check if a directory for the current user exists
 		this.createUserDir();
@@ -81,7 +82,7 @@ public class FileServiceImpl implements FileService {
 						null);
 
 				byte[] bytes = IOUtils.toByteArray(inputStream);
-				
+
 				inputStream.close();
 
 				String filePath = fileName;
@@ -111,7 +112,7 @@ public class FileServiceImpl implements FileService {
 				MediaType mediaType = detector.detect(is, md);
 
 				String type = mediaType.toString();
-				
+
 				is.close();
 
 				// Get the file size

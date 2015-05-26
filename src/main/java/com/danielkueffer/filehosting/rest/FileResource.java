@@ -82,8 +82,8 @@ public class FileResource implements Serializable {
 			e.printStackTrace();
 		}
 
-		this.fileService
-				.uploadFiles(input.getFormDataMap().get("file"), parent, filename);
+		this.fileService.uploadFiles(input.getFormDataMap().get("file"),
+				parent, filename);
 
 		return Response.ok().build();
 	}
@@ -131,7 +131,7 @@ public class FileResource implements Serializable {
 	 */
 	@GET
 	@Path("download/{filePath:.*}")
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces(MediaType.APPLICATION_OCTET_STREAM + "; charset=UTF-8")
 	public Response downloadFile(@PathParam("filePath") String filePath) {
 		File file = this.fileService.getDownloadFile(filePath);
 
@@ -139,9 +139,8 @@ public class FileResource implements Serializable {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-		ResponseBuilder rb = Response.ok(file);
-		rb.header("Content-Disposition",
-				"attachment; filename=" + file.getName());
+		ResponseBuilder rb = Response.ok(file).header("Content-Disposition",
+				"attachment; filename=\"" + file.getName() + "\"");
 
 		return rb.build();
 	}
