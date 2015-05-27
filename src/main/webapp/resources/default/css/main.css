@@ -174,6 +174,10 @@ a:focus {
 	color: #CBE7FC;
 }
 
+.header-nav li .user-name-text {
+	display: none;
+}
+
 .logout-icon-wrap,
 .header-nav li form {
 	float: left;
@@ -806,12 +810,9 @@ a:focus {
  * Media Queries
  */
 @media only screen and (min-width: 480px) {
-}
-
-@media only screen and (min-width: 768px) {
-}
-
-@media only screen and (min-width: 1140px) {
+	.header-nav li .user-name-text {
+		display: inline-block;
+	}
 }
 
 /**

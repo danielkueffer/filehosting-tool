@@ -119,6 +119,26 @@ $(document).ready(function() {
 		wideMenu();
 	}
 	
+	// Set the initial menu folding
+	setInitialMenuFold = function() {
+		var winWidth = $(window).width();
+		
+		if (winWidth < 780) {
+			narrowMenu();
+		} else {
+			if (Cookies.get("menunarrow") != "true") {
+				wideMenu();
+			}
+		}
+	}
+	
+	setInitialMenuFold();
+	
+	// Window resize
+	$(window).resize(function() {
+		setInitialMenuFold();
+	});
+	
 	// Fancybox overlay
 	if ($(".overlay").length) {
 		$(".overlay").fancybox({
