@@ -65,23 +65,42 @@ $(document).ready(function() {
 		$(this).removeClass("active");
 	});
 	
-	// Narrow Menu Bar
+	/**
+	 * Show the wide menu
+	 */
+	var wideMenu = function() {
+		$(".sidebar").removeClass("narrow");
+		$(".wrapper").removeClass("wide");;
+		$(".mainnav").find("ul").removeClass("flyout");
+		$(".mainnav").find(".open ul").css("display", "block");
+	}
+	
+	/**
+	 * Show the narrow menu
+	 */
+	var narrowMenu = function() {
+		$(".sidebar").addClass("narrow");
+		$(".wrapper").addClass("wide");
+		
+		if ($(".mainnav").find(".open").length) {
+			var openMenu = $(".mainnav").find(".open");
+			openMenu.find("ul").addClass("flyout");
+			openMenu.find("ul").hide();
+		}
+	}
+	
+	/**
+	 * Menu trigger click
+	 */
 	$(".menu-trigger a").click(function() {
 		if ($(".sidebar").hasClass("narrow")) {
-			$(".sidebar").removeClass("narrow");
-			$(".wrapper").removeClass("wide");;
-			$(".mainnav").find("ul").removeClass("flyout");
-			$(".mainnav").find(".open ul").css("display", "block");
-		}
-		else {
-			$(".sidebar").addClass("narrow");
-			$(".wrapper").addClass("wide");
+			wideMenu();
 			
-			if ($(".mainnav").find(".open").length) {
-				var openMenu = $(".mainnav").find(".open");
-				openMenu.find("ul").addClass("flyout");
-				openMenu.find("ul").hide();
-			}
+			Cookies.set("menunarrow", false);
+		} else {
+			narrowMenu();
+			
+			Cookies.set("menunarrow", true);
 		}
 		
 		$(this).blur();
@@ -91,6 +110,13 @@ $(document).ready(function() {
 	
 	if ($(".mainnav .open").length) {
 		$(".mainnav .open").find("ul").css("display", "block");
+	}
+	
+	// Check if the cookie for the narrow menu is set
+	if (Cookies.get("menunarrow") == "true") {
+		narrowMenu();
+	} else {
+		wideMenu();
 	}
 	
 	// Fancybox overlay
