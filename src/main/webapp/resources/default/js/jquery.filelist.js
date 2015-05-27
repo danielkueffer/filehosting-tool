@@ -17,6 +17,9 @@
 			var fileTable = $this.find(".file-table");
 			var folderForm = $this.find(".folder-form");
 			var breadcrumb = $this.find(".file-breadcrumb");
+			
+			// Initialize Table sorter
+			fileTable.tablesorter();
 
 			/**
 			 * Create the drop zone to upload files
@@ -150,7 +153,11 @@
 				// Merge the folder and file arrays
 				var fileListArr = folderArr.concat(fileArr);
 				
-				fileTable.append($(fileListArr));
+				// Append the HTML to the table
+				fileTable.find("tbody").append($(fileListArr));
+				
+				// Update Table sorter
+				fileTable.trigger("update");
 			}
 
 			/**
