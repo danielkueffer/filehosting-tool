@@ -2,13 +2,13 @@
 	font-family: 'fontello';
 	src: url("#{resource['default:fonts/fontello/font/fontello.eot']}");
 	src:
-		url("#{resource['default:fonts/fontello/font/fontello.eot#iefix']}")
+		url("#{resource['default:fonts/fontello/font/fontello.eot']}#iefix")
 		format('embedded-opentype'),
 		url("#{resource['default:fonts/fontello/font/fontello.woff']}")
 		format('woff'),
 		url("#{resource['default:fonts/fontello/font/fontello.ttf']}")
 		format('truetype'),
-		url("#{resource['default:fonts/fontello/font/fontello.svg#fontello']}")
+		url("#{resource['default:fonts/fontello/font/fontello.svg']}#fontello")
 		format('svg');
 	font-weight: normal;
 	font-style: normal;

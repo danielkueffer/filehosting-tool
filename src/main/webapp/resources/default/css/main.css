@@ -618,9 +618,10 @@ a:focus {
 .file-breadcrumb a,
 .file-breadcrumb a:visited {
 	float: left;
+	font-family: titilliumregular, Arial, Helvertica, sans-serif;
 	color: #666;
-	padding: 1px 0 0;
-	font-size: 1.143em; /* 16px */
+	margin: -1px 0 0;
+	font-size: 1.286em; /* 18px */
 }
 
 .file-breadcrumb .breadcumb-home {
