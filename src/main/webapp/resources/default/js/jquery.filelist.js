@@ -73,7 +73,7 @@
 					}
 				});
 			}
-
+			
 			/**
 			 * Populate the Table with the files
 			 */
@@ -81,56 +81,76 @@
 				
 				fileTable.find(".data-row").remove();
 				
+				var row = [];
+				
+				var i = 0;
 				$.each(json, function(key, val) {
-						var icon = "";
+					var icon = "";
+					
+					if (val.type == "document") {
+						var iconClass = "";
 						
-						if (val.type == "document") {
-							var iconClass = "";
-							
-							switch(val.documentType) {
-								case "doc" : iconClass = "icon-file-word file-icon";
-								break;
-								case "spreadsheet" : iconClass = "icon-file-excel file-icon";
-								break;
-								case "presentation" : iconClass = "icon-file-powerpoint file-icon";
-								break;
-								case "pdf" : iconClass = "icon-file-pdf file-icon";
-								break;
-							}
-							
-							icon = '<i class="' + iconClass + '"></i>';
-						} else if (val.type == "audio") {
-							icon = '<i class="icon-file-audio file-icon"></i>';
-						} else if (val.type == "video") {
-							icon = '<i class="icon-file-video file-icon"></i>';
-						} else if (val.type == "image") {
-							icon = '<i class="icon-file-image file-icon"></i>';
-						} else if (val.type == "folder") {
-							icon = '<i class="icon-folder file-icon"></i>';
-						} else {
-							icon = '<i class="icon-doc file-icon"></i>';
+						switch(val.documentType) {
+							case "doc" : iconClass = "icon-file-word file-icon";
+							break;
+							case "spreadsheet" : iconClass = "icon-file-excel file-icon";
+							break;
+							case "presentation" : iconClass = "icon-file-powerpoint file-icon";
+							break;
+							case "pdf" : iconClass = "icon-file-pdf file-icon";
+							break;
 						}
 						
-						var date = getDateFromTimestamp(val.lastModified);
-						var dateStr = date.getDate() + "." + date.getMonth() + 1 + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+						icon = '<i class="' + iconClass + '"></i>';
+					} else if (val.type == "audio") {
+						icon = '<i class="icon-file-audio file-icon"></i>';
+					} else if (val.type == "video") {
+						icon = '<i class="icon-file-video file-icon"></i>';
+					} else if (val.type == "image") {
+						icon = '<i class="icon-file-image file-icon"></i>';
+					} else if (val.type == "folder") {
+						icon = '<i class="icon-folder file-icon"></i>';
+					} else {
+						icon = '<i class="icon-doc file-icon"></i>';
+					}
 					
-						var row = "<tr class=\"data-row\">";
-						
-						if (val.type == "folder") {
-							row += "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a> </a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
-						} else {
-							row += "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\" data-folder-id=" + val.id + ">" + val.name + "</a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
-						}
-						
-						row += "<td>" + val.typeLabel + "</td>";
-						row += "<td>" + dateStr + "</td>";
-						row += "<td>";
-						row += "<a class=\"file-delete\" href=\"#\" data-path=\"" + val.path + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>";
-						row += "</td>";
-						row += "</tr>";
+					var date = getDateFromTimestamp(val.lastModified);
+					var dateStr = date.getDate() + "." + date.getMonth() + 1 + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+				
+					row[i++] = "<tr class=\"data-row row-" + val.type + "\">";
 					
-					fileTable.append(row);
+					if (val.type == "folder") {
+						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a> </a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
+					} else {
+						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\" data-folder-id=" + val.id + ">" + val.name + "</a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
+					}
+					
+					row[i++] = "<td>" + val.typeLabel + "</td>";
+					row[i++] = "<td>" + dateStr + "</td>";
+					row[i++] = "<td>";
+					row[i++] = "<a class=\"file-delete\" href=\"#\" data-path=\"" + val.path + "\"><i class=\"icon-trash\"></i> <span>delete</span></a>";
+					row[i++] = "</td>";
+					row[i++] = "</tr>";
 				});
+				
+				var rowHtml = $.parseHTML(row.join(''));
+				var fileArr = [];
+				var folderArr = [];
+				
+				// Move folders the a separate array
+				$(rowHtml).each(function(key, val) {
+					if ($(val).hasClass("row-folder")) {
+						folderArr.push(rowHtml[key]);
+					}
+					else {
+						fileArr.push(rowHtml[key]);
+					}
+				});
+				
+				// Merge the folder and file arrays
+				var fileListArr = folderArr.concat(fileArr);
+				
+				fileTable.append($(fileListArr));
 			}
 
 			/**

@@ -210,6 +210,8 @@ public class FileServiceImpl implements FileService {
 	 */
 	private String getJsonFileList(List<UploadFile> fileList, User currentUser,
 			int parent) {
+		
+		
 
 		ResourceBundle bundle = ResourceBundle.getBundle(
 				"com.danielkueffer.filehosting.i18n.messages", new Locale(
@@ -425,6 +427,40 @@ public class FileServiceImpl implements FileService {
 	}
 
 	/**
+	 * Rename a file or folder
+	 */
+	@Override
+	public boolean updateFileName(String fileName, int id) {
+	
+		// No slashes or backslashes in the file name allowed
+		if (fileName.indexOf("/") > -1 || fileName.indexOf("\\") > -1) {
+			return false;
+		}
+	
+		UploadFile uf = this.fileDao.get(id);
+		String oldFileName = uf.getName();
+		String path = uf.getPath();
+		path = path.replace(oldFileName, fileName);
+	
+		File old = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
+				+ this.authManager.getCurrentUser().getUsername() + "/"
+				+ uf.getPath());
+	
+		File newFile = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR
+				+ "/" + this.authManager.getCurrentUser().getUsername() + "/"
+				+ path);
+	
+		old.renameTo(newFile);
+	
+		uf.setName(fileName);
+		uf.setPath(path);
+	
+		this.fileDao.update(uf);
+	
+		return false;
+	}
+
+	/**
 	 * Delete the folder content in the database
 	 * 
 	 * @param id
@@ -471,39 +507,5 @@ public class FileServiceImpl implements FileService {
 			int parent = folder.getParent();
 			this.getChildFolders(this.fileDao.get(parent));
 		}
-	}
-
-	/**
-	 * Rename a file or folder
-	 */
-	@Override
-	public boolean updateFileName(String fileName, int id) {
-
-		// No slashes or backslashes in the file name allowed
-		if (fileName.indexOf("/") > -1 || fileName.indexOf("\\") > -1) {
-			return false;
-		}
-
-		UploadFile uf = this.fileDao.get(id);
-		String oldFileName = uf.getName();
-		String path = uf.getPath();
-		path = path.replace(oldFileName, fileName);
-
-		File old = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
-				+ this.authManager.getCurrentUser().getUsername() + "/"
-				+ uf.getPath());
-
-		File newFile = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR
-				+ "/" + this.authManager.getCurrentUser().getUsername() + "/"
-				+ path);
-
-		old.renameTo(newFile);
-
-		uf.setName(fileName);
-		uf.setPath(path);
-
-		this.fileDao.update(uf);
-
-		return false;
 	}
 }
