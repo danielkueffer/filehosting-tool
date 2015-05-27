@@ -238,6 +238,11 @@
 				parent = $(this).data("folder-id");
 				loadFileTable();
 				
+				// Update the hidden field for ie9
+				if ($this.find(".ie-file").length) {
+					$this.find(".ie-file").val(parent);
+				}
+				
 				return false;
 			});
 			
@@ -324,6 +329,24 @@
 				
 				return false;
 			});
+			
+			/**
+			 * IE 9 fallback upload form
+			 */
+			if ($this.hasClass("dz-browser-not-supported")) {
+				var uploadForm = $this.find("form[action='resource/file/upload']");
+				
+				uploadForm.append('<input type="hidden" name="parent" class="ie-file" value="' + parent + '" />');
+				uploadForm.append('<input type="hidden" name="my-filename" value="" class="ie-my-filename" />');
+				uploadForm.append('<input type="hidden" name="ie-form" value=""/>');
+				
+				uploadForm.submit(function() {
+					var filename = $(this).find("input[type='file']").val();
+					filename = filename.replace("C:\\fakepath\\", "");
+					
+					$(this).find("input[name='my-filename']").val(filename);
+				});
+			}
 			
 			loadFileTable();
 		});

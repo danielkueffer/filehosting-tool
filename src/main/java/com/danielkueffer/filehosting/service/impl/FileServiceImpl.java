@@ -69,7 +69,7 @@ public class FileServiceImpl implements FileService {
 	 * Upload files
 	 */
 	@Override
-	public String uploadFiles(List<InputPart> inputParts, int parent,
+	public boolean uploadFiles(List<InputPart> inputParts, int parent,
 			String fileName) {
 
 		// Check if a directory for the current user exists
@@ -154,7 +154,7 @@ public class FileServiceImpl implements FileService {
 
 		}
 
-		return "{\"success\": true, \"message\": \"created\"}";
+		return true;
 	}
 
 	/**

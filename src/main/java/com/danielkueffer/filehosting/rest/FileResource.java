@@ -3,8 +3,14 @@ package com.danielkueffer.filehosting.rest;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -34,6 +40,9 @@ public class FileResource implements Serializable {
 
 	@EJB
 	FileService fileService;
+
+	@Inject
+	HttpServletRequest request;
 
 	/**
 	 * Get all files from current user
@@ -71,6 +80,7 @@ public class FileResource implements Serializable {
 	public Response uploadFile(MultipartFormDataInput input) {
 		int parent = 0;
 		String filename = "";
+		boolean ieForm = false;
 
 		try {
 			parent = input.getFormDataMap().get("parent").get(0)
@@ -78,12 +88,34 @@ public class FileResource implements Serializable {
 
 			filename = input.getFormDataMap().get("my-filename").get(0)
 					.getBodyAsString();
+
+			if (input.getFormDataMap().get("ie-form") != null) {
+				ieForm = true;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		this.fileService.uploadFiles(input.getFormDataMap().get("file"),
 				parent, filename);
+
+		// Upload send by Internet Explorer below v.10. Redirect to the file
+		// list
+		if (ieForm) {
+			try {
+				URI uri = new URL(this.request.getScheme() + "://"
+						+ this.request.getServerName() + ":"
+						+ this.request.getServerPort()
+						+ this.request.getContextPath()).toURI();
+
+				return Response.temporaryRedirect(uri).build();
+
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		}
 
 		return Response.ok().build();
 	}

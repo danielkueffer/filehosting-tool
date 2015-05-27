@@ -12,7 +12,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
  * 
  */
 public interface FileService {
-	String uploadFiles(List<InputPart> inputParts, int parent, String fileName);
+	boolean uploadFiles(List<InputPart> inputParts, int parent, String fileName);
 	
 	String getFilesFromCurrentUser();
 	
