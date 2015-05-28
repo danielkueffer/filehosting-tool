@@ -55,11 +55,17 @@ public class AuthController implements Serializable {
 	 */
 	public String doLogin() {
 
-		User user = this.userService.login(this.credentials.getUsername(),
-				this.credentials.getPassword());
-		
+		User user = null;
+
+		if (this.credentials.getUsername() != null
+				&& this.credentials.getPassword() != null) {
+
+			user = this.userService.login(this.credentials.getUsername(),
+					this.credentials.getPassword());
+		}
+
 		boolean login = false;
-		
+
 		if (user != null) {
 			if (user.getActive() == 1) {
 				login = true;
@@ -73,7 +79,7 @@ public class AuthController implements Serializable {
 			// Set the locale
 			Locale l = new Locale(user.getLanguage());
 			this.localeManager.setLanguage(l.getLanguage());
-			
+
 			// Set if user is a administrator
 			for (Group g : this.user.getGroups()) {
 				if (g.getIsAdmin() == 1) {
