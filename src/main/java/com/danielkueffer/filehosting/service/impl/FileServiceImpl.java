@@ -3,9 +3,11 @@ package com.danielkueffer.filehosting.service.impl;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.zip.ZipOutputStream;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -210,8 +213,6 @@ public class FileServiceImpl implements FileService {
 	 */
 	private String getJsonFileList(List<UploadFile> fileList, User currentUser,
 			int parent) {
-		
-		
 
 		ResourceBundle bundle = ResourceBundle.getBundle(
 				"com.danielkueffer.filehosting.i18n.messages", new Locale(
@@ -315,7 +316,15 @@ public class FileServiceImpl implements FileService {
 					+ this.authManager.getCurrentUser().getUsername() + "/"
 					+ uf.getPath();
 
-			return FileUtil.getFile(path);
+			File f = new File(path);
+
+			if (!f.isDirectory()) {
+				// Return a file
+				return FileUtil.getFile(path);
+			} else {
+				// Return a ZIP archive
+				return this.getZipArchive(path, f.getName());
+			}
 		}
 
 		return null;
@@ -431,32 +440,32 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public boolean updateFileName(String fileName, int id) {
-	
+
 		// No slashes or backslashes in the file name allowed
 		if (fileName.indexOf("/") > -1 || fileName.indexOf("\\") > -1) {
 			return false;
 		}
-	
+
 		UploadFile uf = this.fileDao.get(id);
 		String oldFileName = uf.getName();
 		String path = uf.getPath();
 		path = path.replace(oldFileName, fileName);
-	
+
 		File old = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
 				+ this.authManager.getCurrentUser().getUsername() + "/"
 				+ uf.getPath());
-	
+
 		File newFile = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR
 				+ "/" + this.authManager.getCurrentUser().getUsername() + "/"
 				+ path);
-	
+
 		old.renameTo(newFile);
-	
+
 		uf.setName(fileName);
 		uf.setPath(path);
-	
+
 		this.fileDao.update(uf);
-	
+
 		return false;
 	}
 
@@ -507,5 +516,35 @@ public class FileServiceImpl implements FileService {
 			int parent = folder.getParent();
 			this.getChildFolders(this.fileDao.get(parent));
 		}
+	}
+
+	/**
+	 * Get a ZIP archive
+	 * 
+	 * @param path
+	 * @return
+	 */
+	private File getZipArchive(String path, String filename) {
+
+		// The ZIP File to return
+		File zipFile = new File(filename + ".zip");
+
+		try {
+			FileOutputStream fos = new FileOutputStream(zipFile);
+			ZipOutputStream zos = new ZipOutputStream(fos,
+					Charset.forName("UTF-8"));
+
+			File initialDir = new File(path);
+
+			// Add all files and sub-directories to the archive
+			FileUtil.addDirToArchive(zos, path, initialDir);
+
+			zos.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return zipFile;
 	}
 }

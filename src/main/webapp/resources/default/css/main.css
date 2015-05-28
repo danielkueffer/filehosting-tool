@@ -196,8 +196,7 @@ a:focus {
 }
 
 .login h1 {
-	font: normal 1.625em titilliumbold_italic, Arial, Helvertica, sans-serif;
-	/* 26px */
+	font: normal 1.625em titilliumbold_italic, Arial, Helvertica, sans-serif; /* 26px */
 	margin: 0 0 30px;
 	color: #FCF9DA;
 	width: 100%;
@@ -713,7 +712,9 @@ a:focus {
 }
 
 .update-file,
-.update-file:visited {
+.download-folder,
+.update-file:visited,
+.download-folder:visited {
 	display: none;
 	padding: 0 0 0 15px;
 	color: #333;

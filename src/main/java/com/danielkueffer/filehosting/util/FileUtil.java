@@ -1,11 +1,14 @@
 package com.danielkueffer.filehosting.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 
@@ -102,5 +105,65 @@ public class FileUtil {
 		fop.write(content);
 		fop.flush();
 		fop.close();
+	}
+
+	/**
+	 * Add a directory to a ZIP archive
+	 * 
+	 * @param zos
+	 * @param srcDir
+	 */
+	public static void addDirToArchive(ZipOutputStream zos, String path,
+			File initialDir) {
+
+		File srcDir = new File(path);
+		File[] files = srcDir.listFiles();
+
+		for (int i = 0; i < files.length; i++) {
+			try {
+
+				// Get the relative path
+				String relativePath = initialDir.toURI()
+						.relativize(files[i].toURI()).getPath();
+
+				// Create file or folder
+				zos.putNextEntry(new ZipEntry(relativePath));
+
+				// Check if empty directory
+				boolean emptyDir = files[i].isDirectory()
+						&& files[i].length() == 0;
+
+				// Write file or folder with content
+				if (!emptyDir) {
+
+					FileInputStream fis = new FileInputStream(files[i]);
+
+					// create byte buffer
+					byte[] buffer = new byte[1024];
+
+					int length;
+
+					// Write the content
+					while ((length = fis.read(buffer)) > 0) {
+						zos.write(buffer, 0, length);
+					}
+
+					fis.close();
+				} else {
+					// Write empty directory
+					zos.write(new byte[0], 0, 0);
+				}
+
+				zos.closeEntry();
+
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
+
+			// if the file is directory, use recursion
+			if (files[i].isDirectory()) {
+				addDirToArchive(zos, files[i].getPath(), initialDir);
+			}
+		}
 	}
 }

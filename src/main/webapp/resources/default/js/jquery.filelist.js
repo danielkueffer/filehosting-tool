@@ -123,7 +123,9 @@
 					row[i++] = "<tr class=\"data-row row-" + val.type + "\">";
 					
 					if (val.type == "folder") {
-						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a> </a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
+						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"#\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a>" +
+								" <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a>" +
+								" <a class=\"download-folder\" href=\"resource/file/download/" + val.path + "\"><i class=\"icon-download\"></i></a></td>";
 					} else {
 						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\" data-folder-id=" + val.id + ">" + val.name + "</a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
 					}
@@ -258,11 +260,15 @@
 			 */
 			$this.on("mouseover", ".data-row", function() {
 				var updateFile = $(this).find(".update-file");
+				var downloadFolder = $(this).find(".download-folder");
+				
 				if (! $(this).find(".update-form").length) {
 					updateFile.show();
+					downloadFolder.show();
 				}
 			}).on("mouseleave", ".data-row", function() {
 				$(this).find(".update-file").hide();
+				$(this).find(".download-folder").hide();
 			});
 			
 			/**
