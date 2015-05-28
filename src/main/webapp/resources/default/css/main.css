@@ -552,7 +552,7 @@ a:focus {
 
 .file-icon {
 	float: left;
-	margin: 0 10px 0 0;
+	margin: 0 10px -2px 0;
 	font-size: 1.571em;
 }
 
@@ -591,9 +591,13 @@ a:focus {
 
 .file-name,
 .file-name:visited {
-	display: inline-block;
-	margin: 7px 0 0;
+	float: left;
 	color: #333;
+}
+
+.file-name span {
+	float: left;
+	margin: 6px 0 0;
 }
 
 .file-name:hover {
@@ -727,14 +731,15 @@ a:focus {
 .update-file:visited,
 .download-folder:visited {
 	display: none;
-	padding: 0 0 0 15px;
+	float: left;
+	margin: 7px 0 0 15px;
 	color: #333;
 }
 
 .update-form {
 	position: absolute;
-	left: 35px;
-	top: 12px;
+	left: 38px;
+	top: 11px;
 	background: #fff;
 }
 

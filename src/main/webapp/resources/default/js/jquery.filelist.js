@@ -123,11 +123,11 @@
 					row[i++] = "<tr class=\"data-row row-" + val.type + "\">";
 					
 					if (val.type == "folder") {
-						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"#\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + val.name + "</a>" +
+						row[i++] = "<td class=\"filename-col\"><a href=\"#\" class=\"file-name folder-name\" data-folder-id=" + val.id + " data-parent=" + val.parent + ">" + icon + " <span>" + val.name + "</span></a>" +
 								" <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a>" +
 								" <a class=\"download-folder\" href=\"resource/file/download/" + val.path + "\"><i class=\"icon-download\"></i></a></td>";
 					} else {
-						row[i++] = "<td class=\"filename-col\">" + icon + "<a href=\"resource/file/download/" + val.path + "\" class=\"file-name\" data-folder-id=" + val.id + ">" + val.name + "</a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
+						row[i++] = "<td class=\"filename-col\"><a href=\"resource/file/download/" + val.path + "\" class=\"file-name\" data-folder-id=" + val.id + ">" + icon + " <span>" + val.name + "</span></a> <a class=\"update-file\" href=\"#\"><i class=\"icon-pencil\"></i></a></td>";
 					}
 					
 					row[i++] = "<td>" + val.typeLabel + "</td>";
@@ -291,7 +291,7 @@
 				
 				$(this).parent().append(form);
 				var fileName = $(this).parent().find(".file-name");
-				var fileNameVal = fileName.text();
+				var fileNameVal = fileName.find("span").text();
 				var inputWidth = 150;
 				
 				if(fileName.width() > 150) {
