@@ -446,7 +446,20 @@ public class FileServiceImpl implements FileService {
 			return false;
 		}
 
+		// Get the file
 		UploadFile uf = this.fileDao.get(id);
+
+		// Get the files in the folder of the file
+		List<UploadFile> fileList = this.fileDao.getFilesByParent(uf
+				.getParent());
+
+		// Check if the filename already exists in this folder
+		for (UploadFile uploadFile : fileList) {
+			if (uploadFile.getName().trim().equals(fileName.trim())) {
+				return false;
+			}
+		}
+
 		String oldFileName = uf.getName();
 		String path = uf.getPath();
 		path = path.replace(oldFileName, fileName);
@@ -486,11 +499,11 @@ public class FileServiceImpl implements FileService {
 			List<UploadFile> fileList = this.fileDao.getFilesByParent(id);
 
 			for (UploadFile uf : fileList) {
-				
+
 				// Get the parent path
 				UploadFile parentFile = this.fileDao.get(uf.getParent());
 				String parentPath = parentFile.getPath();
-				
+
 				// Update the file path
 				uf.setPath(parentPath + "/" + uf.getName());
 				this.fileDao.update(uf);
