@@ -464,9 +464,43 @@ public class FileServiceImpl implements FileService {
 		uf.setName(fileName);
 		uf.setPath(path);
 
+		// Update the folder path of containing files and folders
+		if (uf.getMimeType().equals("folder")) {
+			this.udpateFolderPaths(id);
+		}
+
 		this.fileDao.update(uf);
 
 		return false;
+	}
+
+	/**
+	 * Update folder paths recursively
+	 * 
+	 * @param path
+	 * @param parent
+	 */
+	private void udpateFolderPaths(int id) {
+		if (this.fileDao.get(id) != null) {
+
+			List<UploadFile> fileList = this.fileDao.getFilesByParent(id);
+
+			for (UploadFile uf : fileList) {
+				
+				// Get the parent path
+				UploadFile parentFile = this.fileDao.get(uf.getParent());
+				String parentPath = parentFile.getPath();
+				
+				// Update the file path
+				uf.setPath(parentPath + "/" + uf.getName());
+				this.fileDao.update(uf);
+
+				// Load folder contents and add the name to the path
+				if (uf.getMimeType().equals("folder")) {
+					this.udpateFolderPaths(uf.getId());
+				}
+			}
+		}
 	}
 
 	/**
