@@ -18,10 +18,8 @@ A Java based "Dropbox" like clone to manage files online
  * Download JBoss Wildfly 8
  * Create a datasource with the JNDI name "java:/jdbc/DefaultDS"
  * In the JBoss directory standalone/data create the directories "files" and "profile-images"
- * In the standalone.xml under "default-host" add the following line:
-<location name="/profile-img" handler="profile-image"/>
- * In the standalone.xml under "handlers" add the following line:
-<file name="profile-image" path="${jboss.server.data.dir}/profile-images"/>
+ * In the standalone.xml under "default-host" add the following line: <location name="/profile-img" handler="profile-image"/>
+ * In the standalone.xml under "handlers" add the following line: <file name="profile-image" path="${jboss.server.data.dir}/profile-images"/>
  * Build a war and deploy it to the JBoss server
  
 ## License
