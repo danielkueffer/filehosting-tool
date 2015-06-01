@@ -17,6 +17,7 @@ A Java EE 7 based "Dropbox" like clone to manage files online
 
  * Download JBoss Wildfly 8
  * Create a datasource with the JNDI name "java:/jdbc/DefaultDS"
+ * Import the [filehosting_tool.sql](https://github.com/danielkueffer/filehosting-tool/blob/master/sql/filehosting_tool.sql) file in your database
  * In the JBoss directory standalone/data create the directories "files" and "profile-images"
  * Build a war and deploy it to the JBoss server
  
