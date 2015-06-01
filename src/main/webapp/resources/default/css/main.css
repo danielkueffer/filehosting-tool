@@ -502,9 +502,11 @@ a:focus {
 }
 
 .dz-preview {
+	position: relative;
 	float: left;
 	width: 100%;
-	padding: 5px 20px;
+	margin: 3px 0 0;
+	padding: 15px 20px 5px;
 	background: #FAF1BF;
 }
 
@@ -514,6 +516,65 @@ a:focus {
 
 .dz-preview .dz-size {
 	float: right;
+}
+
+.dz-preview .dz-progress {
+	position: absolute;
+	top: 5px;
+	left: 6px;
+	right: 6px;
+	height: 6px;
+	background: #000;
+	display: none;
+}
+
+.dz-preview .dz-progress .dz-upload {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 0%;
+	background-color: #8cc657;
+}
+
+.dz-preview.dz-processing .dz-progress {
+	display: block;
+}
+
+.dz-preview.dz-error .dz-progress .dz-upload {
+	background: #ee1e2d;
+}
+
+.dz-preview .dz-progress .dz-upload {
+	-webkit-animation: loading 0.4s linear infinite;
+	-moz-animation: loading 0.4s linear infinite;
+	-o-animation: loading 0.4s linear infinite;
+	-ms-animation: loading 0.4s linear infinite;
+	animation: loading 0.4s linear infinite;
+	-webkit-transition: width 0.3s ease-in-out;
+	-moz-transition: width 0.3s ease-in-out;
+	-o-transition: width 0.3s ease-in-out;
+	-ms-transition: width 0.3s ease-in-out;
+	transition: width 0.3s ease-in-out;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 100%;
+}
+
+.dz-preview.dz-success .dz-progress {
+	display: block;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	-webkit-transition: opacity 0.4s ease-in-out;
+	-moz-transition: opacity 0.4s ease-in-out;
+	-o-transition: opacity 0.4s ease-in-out;
+	-ms-transition: opacity 0.4s ease-in-out;
+	transition: opacity 0.4s ease-in-out;
 }
 
 .file-table {

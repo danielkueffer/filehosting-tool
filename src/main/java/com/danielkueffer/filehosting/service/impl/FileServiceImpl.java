@@ -102,6 +102,7 @@ public class FileServiceImpl implements FileService {
 						+ this.authManager.getCurrentUser().getUsername() + "/"
 						+ filePath;
 
+				// Write the file
 				FileUtil.writeFile(bytes, systemFilePath);
 
 				Path path = Paths.get(systemFilePath);
@@ -109,6 +110,7 @@ public class FileServiceImpl implements FileService {
 				InputStream is = new BufferedInputStream(new FileInputStream(
 						new File(systemFilePath)));
 
+				// Get the MIME type
 				AutoDetectParser parser = new AutoDetectParser();
 				Detector detector = parser.getDetector();
 				Metadata md = new Metadata();
