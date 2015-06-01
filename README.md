@@ -1,6 +1,6 @@
 # Filehosting-Tool
 
-A Java based "Dropbox" like clone to manage files online
+A Java EE 7 based "Dropbox" like clone to manage files online
 
 ## Features
 
