@@ -17,6 +17,8 @@
 						<dd>#{profileController.user.username}</dd>
 					<dt>#{msg['common.quota']}:</dt>
 						<dd>#{profileController.user.diskQuota == 0 ? msg['common.unlimited'] : profileController.user.diskQuota} #{profileController.user.diskQuota != 0 ? 'GB' : ''}</dd>
+					<dt>#{msg['profile.spaceused']}</dt>
+						<dd>#{profileController.diskSpaceUsed}</dd>
 				</dl>
 			</div>
 		</section>

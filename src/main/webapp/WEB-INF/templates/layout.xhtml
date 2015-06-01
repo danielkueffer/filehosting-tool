@@ -29,6 +29,10 @@
 		<h:outputText value=" &lt;![endif]--&gt;" escape="false"/>
 		
 		<ui:param name="ctx" value="#{request.contextPath}" />
+		
+		<script>
+			var ctx = "#{request.contextPath}";
+		</script>
 	</h:head>
 	<h:body>
 		<div class="wrapper #{pageName == msg['files.title'] ? 'file-wrapper' : ''}">

@@ -4,10 +4,11 @@
  * @param $
  */
 (function($) {
-	$.fn.filelist = function() {
+	$.fn.filelist = function(options) {
 		return this.each(function() {
 
 			var $this = $(this);
+			var ctx = options.ctx;
 			
 			var parent = 0;
 
@@ -76,6 +77,21 @@
 					}
 				});
 			}
+			
+			/**
+			 * Open a folder
+			 */
+			$this.on("click", ".folder-name", function() {
+				parent = $(this).data("folder-id");
+				loadFileTable();
+				
+				// Update the hidden field for ie9
+				if ($this.find(".ie-file").length) {
+					$this.find(".ie-file").val(parent);
+				}
+				
+				return false;
+			});
 			
 			/**
 			 * Populate the Table with the files
@@ -167,7 +183,7 @@
 			 */
 			var loadFileTable = function() {
 				$.ajax({
-					url : "resource/file/" + parent,
+					url : ctx + "/resource/file/" + parent,
 					type : "GET"
 				}).success(function(msg) {
 					populateTable(msg["files"]);
@@ -182,7 +198,7 @@
 				var path = $(this).data("path");
 				
 				$.ajax({
-					url: "resource/file/" + path,
+					url: ctx + "/resource/file/" + path,
 					type: "DELETE",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8"
 				}).success(function() {
@@ -223,7 +239,7 @@
 					};
 					
 					$.ajax({
-						url: "resource/file/folder/add",
+						url: ctx + "/resource/file/folder/add",
 						type: "POST",
 						data: data,
 						contentType: "application/x-www-form-urlencoded; charset=UTF-8"
@@ -234,22 +250,6 @@
 					jQuery.fancybox.close();
 					$(this).find("#folder").removeClass("error");
 					$(this).find("#folder").val("");
-				}
-				
-				return false;
-			});
-
-			/**
-			 * Open a folder
-			 */
-			$this.on("click", ".folder-name", function() {
-				
-				parent = $(this).data("folder-id");
-				loadFileTable();
-				
-				// Update the hidden field for ie9
-				if ($this.find(".ie-file").length) {
-					$this.find(".ie-file").val(parent);
 				}
 				
 				return false;
@@ -331,7 +331,7 @@
 					};
 					
 					$.ajax({
-						url: "resource/file/update",
+						url: ctx + "/resource/file/update",
 						type: "POST",
 						data: data,
 						contentType: "application/x-www-form-urlencoded; charset=UTF-8"

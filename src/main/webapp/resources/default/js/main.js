@@ -5,7 +5,9 @@ $(document).ready(function() {
 	
 	// File list
 	if ($(".file-wrapper").length) {
-		$(".file-wrapper").filelist();
+		$(".file-wrapper").filelist({
+			"ctx": ctx
+		});
 	}
 	
 	// Remove search text on focus

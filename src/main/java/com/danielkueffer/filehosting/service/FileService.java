@@ -25,4 +25,6 @@ public interface FileService {
 	boolean createFolder(String folder, int parent);
 	
 	boolean updateFileName(String fileName, int id);
+	
+	String getUsedDiskSpaceByCurrentUser();
 }

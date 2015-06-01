@@ -14,6 +14,7 @@ import org.primefaces.model.UploadedFile;
 import com.danielkueffer.filehosting.auth.AuthManager;
 import com.danielkueffer.filehosting.i18n.MessageProvider;
 import com.danielkueffer.filehosting.persistence.model.User;
+import com.danielkueffer.filehosting.service.FileService;
 import com.danielkueffer.filehosting.service.UserService;
 
 /**
@@ -29,9 +30,12 @@ public class ProfileController {
 	@EJB
 	UserService userService;
 
+	@EJB
+	FileService fileService;
+
 	@Inject
 	AuthManager authManager;
-	
+
 	@Inject
 	MessageProvider messageProvider;
 
@@ -41,18 +45,20 @@ public class ProfileController {
 	private UploadedFile file;
 
 	private String profileImagePath;
-	
 	private String message;
+	
+	private String diskSpaceUsed;
 
 	@PostConstruct
 	public void init() {
 		this.user = this.authManager.getCurrentUser();
-		
+
 		if (this.user.getNotificationDiskFull() == 1) {
 			this.user.setCheckboxDiskFull(true);
 		}
-		
+
 		this.profileImagePath = this.userService.getProfileImage(this.user);
+		this.diskSpaceUsed = this.fileService.getUsedDiskSpaceByCurrentUser();
 	}
 
 	/**
@@ -71,15 +77,14 @@ public class ProfileController {
 		if (file.getSize() > 0) {
 			this.userService.saveProfileImage(file);
 			this.profileImagePath = this.userService.getProfileImage(this.user);
-			
+
 			return "/profile.xhtml?faces-redirect=true";
-		}
-		else {
+		} else {
 			message = this.messageProvider.getValue("profile.imageempty");
 
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN, message, ""));
-			
+
 			return "/profile.xhtml";
 		}
 	}
@@ -126,9 +131,17 @@ public class ProfileController {
 	}
 
 	/**
-	 * @param message the message to set
+	 * @param message
+	 *            the message to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	/**
+	 * @return the diskSpaceUsed
+	 */
+	public String getDiskSpaceUsed() {
+		return diskSpaceUsed;
 	}
 }

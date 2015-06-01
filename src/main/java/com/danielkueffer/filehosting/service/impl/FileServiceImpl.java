@@ -26,6 +26,7 @@ import javax.json.Json;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.metadata.Metadata;
@@ -593,5 +594,39 @@ public class FileServiceImpl implements FileService {
 		}
 
 		return zipFile;
+	}
+
+	/**
+	 * Get used disk space as String by user in MB or KB
+	 */
+	@Override
+	public String getUsedDiskSpaceByCurrentUser() {
+		String usedStr = 0 + " KB";
+
+		long usedSpace = this.getUsedDiskSpace() / 1024;
+
+		if (usedSpace < 1024) {
+			usedStr = usedSpace + " KB";
+		} else {
+			usedStr = (usedSpace / 1024) + " MB";
+		}
+
+		return usedStr;
+	}
+
+	/**
+	 * Get used disk space by current user
+	 */
+	private long getUsedDiskSpace() {
+		File f = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
+				+ this.authManager.getCurrentUser().getUsername());
+
+		long used = 0;
+
+		if (f.isDirectory()) {
+			used = FileUtils.sizeOfDirectory(f);
+		}
+
+		return used;
 	}
 }
