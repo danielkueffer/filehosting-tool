@@ -43,7 +43,7 @@ public class RestRequestFilter implements ContainerRequestFilter {
 		String path = requestCtx.getUriInfo().getPath();
 
 		// For any methods besides login, the authToken must be verified
-		if (!path.startsWith("user/login/")) {
+		if (!this.excludeFromFilter(path)) {
 
 			// Check if the user is already logged in
 			if (!authController.isLoggedIn()) {
@@ -63,6 +63,20 @@ public class RestRequestFilter implements ContainerRequestFilter {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Exclude path's from the filter
+	 * 
+	 * @param path
+	 * @return
+	 */
+	private boolean excludeFromFilter(String path) {
+		if (path.startsWith("/user/login") || path.startsWith("/status")) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
