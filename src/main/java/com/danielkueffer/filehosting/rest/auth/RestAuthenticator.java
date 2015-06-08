@@ -111,10 +111,11 @@ public class RestAuthenticator {
 		if (authorizationTokensStorage.containsKey(authToken)) {
 
 			/**
-			 * When a client logs out, the authentication token will be remove
+			 * When a client logs out, the authentication token will be removed
 			 * and will be made invalid.
 			 */
 			authorizationTokensStorage.remove(authToken);
+			this.setCurrentRestUser(null);
 
 			return;
 		}

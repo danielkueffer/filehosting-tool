@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.danielkueffer.filehosting.persistence.model.User;
+import com.danielkueffer.filehosting.rest.auth.RestLoggedIn;
 
 /**
  * The AuthManager
@@ -27,12 +28,20 @@ public class AuthManager implements Serializable {
 	@LoggedIn
 	User currentUser;
 
+	@Inject
+	@RestLoggedIn
+	User restUser;
+
 	/**
 	 * Get the current user
 	 * 
 	 * @return
 	 */
 	public User getCurrentUser() {
-		return this.currentUser;
+		if (currentUser != null) {
+			return currentUser;
+		} else {
+			return restUser;
+		}
 	}
 }
