@@ -25,6 +25,7 @@ import com.danielkueffer.filehosting.i18n.LocaleManager;
 import com.danielkueffer.filehosting.persistence.dao.UserDao;
 import com.danielkueffer.filehosting.persistence.model.Group;
 import com.danielkueffer.filehosting.persistence.model.User;
+import com.danielkueffer.filehosting.service.FileService;
 import com.danielkueffer.filehosting.service.GroupService;
 import com.danielkueffer.filehosting.service.UserService;
 import com.danielkueffer.filehosting.util.DateUtil;
@@ -46,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
 	@EJB
 	GroupService groupService;
+	
+	@EJB
+	FileService fileService;
 
 	@Inject
 	AuthManager authManager;
@@ -293,12 +297,16 @@ public class UserServiceImpl implements UserService {
 		if (user.getProfileImage() != null) {
 			profileImage = user.getProfileImage();
 		}
+		
+		// Get the used disk space in bytes
+		long usedDiskSpace = this.fileService.getUsedDiskSpaceByCurrentUser();
 
 		gen.writeStartObject().write("id", user.getId())
 				.write("username", user.getUsername())
 				.write("displayName", displayName).write("email", email)
 				.write("language", user.getLanguage())
 				.write("diskQuota", user.getDiskQuota())
+				.write("usedDiskSpace", usedDiskSpace)
 				.write("profileImage", profileImage)
 				.write("dateCreated", user.getDateCreated() + "").writeEnd();
 

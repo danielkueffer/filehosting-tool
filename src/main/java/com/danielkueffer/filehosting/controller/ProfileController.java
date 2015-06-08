@@ -58,7 +58,7 @@ public class ProfileController {
 		}
 
 		this.profileImagePath = this.userService.getProfileImage(this.user);
-		this.diskSpaceUsed = this.fileService.getUsedDiskSpaceByCurrentUser();
+		this.diskSpaceUsed = this.fileService.getUsedDiskSpaceByCurrentUserAsString();
 	}
 
 	/**

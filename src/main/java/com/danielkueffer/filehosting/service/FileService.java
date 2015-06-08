@@ -13,18 +13,20 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
  */
 public interface FileService {
 	boolean uploadFiles(List<InputPart> inputParts, int parent, String fileName);
-	
+
 	String getFilesFromCurrentUser();
-	
+
 	String getFilesFromCurrentUser(int parent);
-	
+
 	File getDownloadFile(String filePath);
 
 	boolean deleteFile(String filePath);
-	
+
 	boolean createFolder(String folder, int parent);
-	
+
 	boolean updateFileName(String fileName, int id);
-	
-	String getUsedDiskSpaceByCurrentUser();
+
+	String getUsedDiskSpaceByCurrentUserAsString();
+
+	long getUsedDiskSpaceByCurrentUser();
 }

@@ -602,10 +602,10 @@ public class FileServiceImpl implements FileService {
 	 * Get used disk space as String by user in MB or KB
 	 */
 	@Override
-	public String getUsedDiskSpaceByCurrentUser() {
+	public String getUsedDiskSpaceByCurrentUserAsString() {
 		String usedStr = 0 + " KB";
 
-		long usedSpace = this.getUsedDiskSpace() / 1024;
+		long usedSpace = this.getUsedDiskSpaceByCurrentUser() / 1024;
 
 		if (usedSpace < 1024) {
 			usedStr = usedSpace + " KB";
@@ -617,9 +617,10 @@ public class FileServiceImpl implements FileService {
 	}
 
 	/**
-	 * Get used disk space by current user
+	 * Get the used disk space by user
 	 */
-	private long getUsedDiskSpace() {
+	@Override
+	public long getUsedDiskSpaceByCurrentUser() {
 		File f = new File(System.getProperty(BASE_DIR) + "/" + FILE_DIR + "/"
 				+ this.authManager.getCurrentUser().getUsername());
 
