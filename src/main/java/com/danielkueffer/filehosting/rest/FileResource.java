@@ -83,8 +83,8 @@ public class FileResource implements Serializable {
 		boolean ieForm = false;
 
 		try {
-			parent = input.getFormDataMap().get("parent").get(0)
-					.getBody(Integer.class, null);
+			parent = Integer.valueOf(input.getFormDataMap().get("parent")
+					.get(0).getBodyAsString());
 
 			filename = input.getFormDataMap().get("my-filename").get(0)
 					.getBodyAsString();
