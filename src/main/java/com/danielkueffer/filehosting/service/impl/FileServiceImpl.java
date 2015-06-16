@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +41,6 @@ import com.danielkueffer.filehosting.persistence.dao.FileDao;
 import com.danielkueffer.filehosting.persistence.model.UploadFile;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.FileService;
-import com.danielkueffer.filehosting.util.DateUtil;
 import com.danielkueffer.filehosting.util.FileUtil;
 import com.danielkueffer.filehosting.util.MimeType;
 
@@ -103,7 +103,7 @@ public class FileServiceImpl implements FileService {
 						+ filePath;
 
 				// Write the file
-				FileUtil.writeFile(bytes, systemFilePath);
+				File file = FileUtil.writeFile(bytes, systemFilePath);
 
 				Path path = Paths.get(systemFilePath);
 
@@ -136,7 +136,7 @@ public class FileServiceImpl implements FileService {
 					uf = fileList.get(0);
 
 					uf.setSize(size);
-					uf.setLastModified(DateUtil.getSQLTimestamp());
+					uf.setLastModified(new Timestamp(file.lastModified()));
 
 					this.fileDao.update(uf);
 				} else {
@@ -149,7 +149,7 @@ public class FileServiceImpl implements FileService {
 					uf.setName(fileName);
 					uf.setMimeType(type);
 					uf.setSize(size);
-					uf.setLastModified(DateUtil.getSQLTimestamp());
+					uf.setLastModified(new Timestamp(file.lastModified()));
 
 					this.fileDao.create(uf);
 				}
@@ -430,7 +430,7 @@ public class FileServiceImpl implements FileService {
 		uf.setName(folder);
 		uf.setMimeType("folder");
 		uf.setSize(size);
-		uf.setLastModified(DateUtil.getSQLTimestamp());
+		uf.setLastModified(new Timestamp(f.lastModified()));
 
 		// Save the uploadFile
 		this.fileDao.create(uf);

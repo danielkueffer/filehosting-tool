@@ -94,7 +94,7 @@ public class FileUtil {
 	 * @param filename
 	 * @throws IOException
 	 */
-	public static void writeFile(byte[] content, String filename)
+	public static File writeFile(byte[] content, String filename)
 			throws IOException {
 		File file = new File(filename);
 
@@ -105,6 +105,8 @@ public class FileUtil {
 		fop.write(content);
 		fop.flush();
 		fop.close();
+
+		return file;
 	}
 
 	/**
