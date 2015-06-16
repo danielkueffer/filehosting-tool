@@ -10,6 +10,7 @@
 		<class>com.danielkueffer.filehosting.persistence.model.Group</class>
 		<class>com.danielkueffer.filehosting.persistence.model.Configuration</class>
 		<class>com.danielkueffer.filehosting.persistence.model.UploadFile</class>
+		<class>com.danielkueffer.filehosting.persistence.model.FilesDeleted</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 		</properties>

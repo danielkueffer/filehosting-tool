@@ -107,6 +107,26 @@ CREATE TABLE IF NOT EXISTS `filehosting_tool`.`log` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `filehosting_tool`.`files_deleted`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `filehosting_tool`.`files_deleted` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `path` VARCHAR(4000) NULL,
+  `name` VARCHAR(200) NULL,
+  `mimetype` VARCHAR(100) NULL,
+  `last_modified` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_files_deleted_user_idx` (`user_id` ASC),
+  CONSTRAINT `fk_files_deleted_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `filehosting_tool`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -38,6 +38,8 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import com.danielkueffer.filehosting.auth.AuthManager;
 import com.danielkueffer.filehosting.i18n.MessageProvider;
 import com.danielkueffer.filehosting.persistence.dao.FileDao;
+import com.danielkueffer.filehosting.persistence.dao.FilesDeletedDao;
+import com.danielkueffer.filehosting.persistence.model.FilesDeleted;
 import com.danielkueffer.filehosting.persistence.model.UploadFile;
 import com.danielkueffer.filehosting.persistence.model.User;
 import com.danielkueffer.filehosting.service.FileService;
@@ -62,6 +64,9 @@ public class FileServiceImpl implements FileService {
 
 	@EJB
 	FileDao fileDao;
+
+	@EJB
+	FilesDeletedDao filesDeletedDao;
 
 	@Inject
 	AuthManager authManager;
@@ -357,7 +362,17 @@ public class FileServiceImpl implements FileService {
 					this.deleteFolderContents(uf.getId());
 				}
 
-				// Delete the file or folder on disk
+				// Move the file to the FilesDeleted entity
+				FilesDeleted filesDeleted = new FilesDeleted();
+				filesDeleted.setUser(uf.getUser());
+				filesDeleted.setPath(uf.getPath());
+				filesDeleted.setName(uf.getName());
+				filesDeleted.setMimeType(uf.getMimeType());
+				filesDeleted.setLastModified(uf.getLastModified());
+
+				this.filesDeletedDao.create(filesDeleted);
+
+				// Delete the file from database
 				this.fileDao.delete(uf);
 
 				return true;
@@ -534,6 +549,17 @@ public class FileServiceImpl implements FileService {
 					this.deleteFolderContents(uf.getId());
 				}
 
+				// Move the file to the FilesDeleted entity
+				FilesDeleted filesDeleted = new FilesDeleted();
+				filesDeleted.setUser(uf.getUser());
+				filesDeleted.setPath(uf.getPath());
+				filesDeleted.setName(uf.getName());
+				filesDeleted.setMimeType(uf.getMimeType());
+				filesDeleted.setLastModified(uf.getLastModified());
+
+				this.filesDeletedDao.create(filesDeleted);
+
+				// Delete the file from database
 				this.fileDao.delete(uf);
 			}
 		}
