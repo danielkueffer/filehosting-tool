@@ -81,6 +81,7 @@ public class FileResource implements Serializable {
 		int parent = 0;
 		String filename = "";
 		boolean ieForm = false;
+		long lastModified = 0;
 
 		try {
 			parent = Integer.valueOf(input.getFormDataMap().get("parent")
@@ -92,12 +93,17 @@ public class FileResource implements Serializable {
 			if (input.getFormDataMap().get("ie-form") != null) {
 				ieForm = true;
 			}
+
+			if (input.getFormDataMap().get("last-modified") != null) {
+				lastModified = Long.valueOf(input.getFormDataMap()
+						.get("last-modified").get(0).getBodyAsString());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		this.fileService.uploadFiles(input.getFormDataMap().get("file"),
-				parent, filename);
+				parent, filename, lastModified);
 
 		// Upload send by Internet Explorer below v.10. Redirect to the file
 		// list
@@ -188,6 +194,32 @@ public class FileResource implements Serializable {
 			@FormParam("parent") int parrent) {
 
 		this.fileService.createFolder(folderName, parrent);
+
+		return Response.ok().build();
+	}
+
+	/**
+	 * Get the deleted files from current user
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("deleted")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getFilesDeleted() {
+		return this.fileService.getDeletedFilesFromCurrentUser();
+	}
+
+	/**
+	 * Update the deleted files
+	 * 
+	 * @param json
+	 * @return
+	 */
+	@POST
+	@Path("deleted")
+	public Response updateFilesDeleted(@FormParam("json") String json) {
+		this.fileService.updateDeletedFiles(json);
 
 		return Response.ok().build();
 	}

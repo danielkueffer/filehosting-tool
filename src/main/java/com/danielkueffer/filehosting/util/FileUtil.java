@@ -94,8 +94,9 @@ public class FileUtil {
 	 * @param filename
 	 * @throws IOException
 	 */
-	public static File writeFile(byte[] content, String filename)
-			throws IOException {
+	public static File writeFile(byte[] content, String filename,
+			long lastModified) throws IOException {
+
 		File file = new File(filename);
 
 		file.createNewFile();
@@ -105,6 +106,10 @@ public class FileUtil {
 		fop.write(content);
 		fop.flush();
 		fop.close();
+
+		if (lastModified > 0) {
+			file.setLastModified(lastModified);
+		}
 
 		return file;
 	}

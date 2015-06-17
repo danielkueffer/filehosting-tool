@@ -37,6 +37,9 @@ public class FilesDeleted {
 	@Column(name = "last_modified")
 	private Timestamp lastModified;
 
+	@Column(name = "client_deleted")
+	private int clientDeleted;
+
 	/**
 	 * @return the id
 	 */
@@ -125,5 +128,20 @@ public class FilesDeleted {
 	 */
 	public void setLastModified(Timestamp lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	/**
+	 * @return the clientDeleted
+	 */
+	public int getClientDeleted() {
+		return clientDeleted;
+	}
+
+	/**
+	 * @param clientDeleted
+	 *            the clientDeleted to set
+	 */
+	public void setClientDeleted(int clientDeleted) {
+		this.clientDeleted = clientDeleted;
 	}
 }

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -24,6 +25,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 
@@ -79,7 +83,7 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public boolean uploadFiles(List<InputPart> inputParts, int parent,
-			String fileName) {
+			String fileName, long lastModified) {
 
 		// Check if a directory for the current user exists
 		this.createUserDir();
@@ -108,8 +112,9 @@ public class FileServiceImpl implements FileService {
 						+ filePath;
 
 				// Write the file
-				File file = FileUtil.writeFile(bytes, systemFilePath);
-
+				File file = FileUtil.writeFile(bytes, systemFilePath,
+						lastModified);
+				
 				Path path = Paths.get(systemFilePath);
 
 				InputStream is = new BufferedInputStream(new FileInputStream(
@@ -369,6 +374,7 @@ public class FileServiceImpl implements FileService {
 				filesDeleted.setName(uf.getName());
 				filesDeleted.setMimeType(uf.getMimeType());
 				filesDeleted.setLastModified(uf.getLastModified());
+				filesDeleted.setClientDeleted(0);
 
 				this.filesDeletedDao.create(filesDeleted);
 
@@ -556,6 +562,7 @@ public class FileServiceImpl implements FileService {
 				filesDeleted.setName(uf.getName());
 				filesDeleted.setMimeType(uf.getMimeType());
 				filesDeleted.setLastModified(uf.getLastModified());
+				filesDeleted.setClientDeleted(0);
 
 				this.filesDeletedDao.create(filesDeleted);
 
@@ -657,5 +664,55 @@ public class FileServiceImpl implements FileService {
 		}
 
 		return used;
+	}
+
+	/**
+	 * Get the deleted files from current user
+	 */
+	@Override
+	public String getDeletedFilesFromCurrentUser() {
+		User currentUser = this.authManager.getCurrentUser();
+
+		List<FilesDeleted> filesDeletedList = this.filesDeletedDao
+				.getFilesDeletedByUser(currentUser);
+
+		JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+		StringWriter writer = new StringWriter();
+		JsonGenerator gen = factory.createGenerator(writer);
+
+		gen.writeStartArray();
+
+		for (FilesDeleted fd : filesDeletedList) {
+			gen.writeStartObject().write("id", fd.getId())
+					.write("path", fd.getPath()).write("name", fd.getName())
+					.write("type", fd.getMimeType())
+					.write("lastModified", fd.getLastModified().toString())
+					.write("clientDeleted", fd.getClientDeleted()).writeEnd();
+		}
+
+		gen.writeEnd().flush();
+
+		return writer.toString();
+	}
+
+	/**
+	 * Update the deleted files and set them as deleted on the client
+	 */
+	@Override
+	public boolean updateDeletedFiles(String json) {
+		JsonReader reader = Json.createReader(new StringReader(json));
+		JsonArray deletedArray = reader.readArray();
+
+		for (int i = 0; i < deletedArray.size(); i++) {
+			JsonObject jObj = deletedArray.getJsonObject(i);
+			int id = jObj.getInt("id");
+
+			// Set the deleted file as deleted on the client
+			FilesDeleted fd = this.filesDeletedDao.get(id);
+			fd.setClientDeleted(1);
+			this.filesDeletedDao.update(fd);
+		}
+
+		return false;
 	}
 }

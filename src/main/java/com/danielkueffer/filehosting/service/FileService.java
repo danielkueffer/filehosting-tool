@@ -12,7 +12,8 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
  * 
  */
 public interface FileService {
-	boolean uploadFiles(List<InputPart> inputParts, int parent, String fileName);
+	boolean uploadFiles(List<InputPart> inputParts, int parent,
+			String fileName, long lastModified);
 
 	String getFilesFromCurrentUser();
 
@@ -29,4 +30,8 @@ public interface FileService {
 	String getUsedDiskSpaceByCurrentUserAsString();
 
 	long getUsedDiskSpaceByCurrentUser();
+
+	String getDeletedFilesFromCurrentUser();
+
+	boolean updateDeletedFiles(String json);
 }

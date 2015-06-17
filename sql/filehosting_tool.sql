@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `filehosting_tool`.`file` (
   `name` VARCHAR(250) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NULL,
   `mimetype` VARCHAR(100) NULL,
   `size` BIGINT NULL,
-  `last_modified` TIMESTAMP NULL,
+  `last_modified` TIMESTAMP(3) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_file_user_idx` (`user_id` ASC),
   CONSTRAINT `fk_file_user_id`
@@ -116,7 +116,8 @@ CREATE TABLE IF NOT EXISTS `filehosting_tool`.`files_deleted` (
   `path` VARCHAR(4000) NULL,
   `name` VARCHAR(200) NULL,
   `mimetype` VARCHAR(100) NULL,
-  `last_modified` TIMESTAMP NULL,
+  `last_modified` TIMESTAMP(3) NULL,
+  `client_deleted` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_files_deleted_user_idx` (`user_id` ASC),
   CONSTRAINT `fk_files_deleted_user`
