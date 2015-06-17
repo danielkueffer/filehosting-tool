@@ -33,5 +33,5 @@ public interface FileService {
 
 	String getDeletedFilesFromCurrentUser();
 
-	boolean updateDeletedFiles(String json);
+	boolean updateDeletedFiles();
 }

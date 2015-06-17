@@ -218,9 +218,14 @@ public class FileResource implements Serializable {
 	 */
 	@POST
 	@Path("deleted")
-	public Response updateFilesDeleted(@FormParam("json") String json) {
-		this.fileService.updateDeletedFiles(json);
+	public Response updateFilesDeleted(@FormParam("deleted") String deleted) {
 
-		return Response.ok().build();
+		if (deleted.equals("true")) {
+			this.fileService.updateDeletedFiles();
+			return Response.ok().build();
+		} else {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
 	}
 }

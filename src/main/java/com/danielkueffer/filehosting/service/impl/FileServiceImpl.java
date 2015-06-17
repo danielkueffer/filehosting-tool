@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -25,9 +24,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 
@@ -114,7 +110,7 @@ public class FileServiceImpl implements FileService {
 				// Write the file
 				File file = FileUtil.writeFile(bytes, systemFilePath,
 						lastModified);
-				
+
 				Path path = Paths.get(systemFilePath);
 
 				InputStream is = new BufferedInputStream(new FileInputStream(
@@ -699,20 +695,17 @@ public class FileServiceImpl implements FileService {
 	 * Update the deleted files and set them as deleted on the client
 	 */
 	@Override
-	public boolean updateDeletedFiles(String json) {
-		JsonReader reader = Json.createReader(new StringReader(json));
-		JsonArray deletedArray = reader.readArray();
+	public boolean updateDeletedFiles() {
+		User currentUser = this.authManager.getCurrentUser();
 
-		for (int i = 0; i < deletedArray.size(); i++) {
-			JsonObject jObj = deletedArray.getJsonObject(i);
-			int id = jObj.getInt("id");
+		List<FilesDeleted> deletedList = this.filesDeletedDao
+				.getFilesDeletedByUser(currentUser);
 
-			// Set the deleted file as deleted on the client
-			FilesDeleted fd = this.filesDeletedDao.get(id);
+		for (FilesDeleted fd : deletedList) {
 			fd.setClientDeleted(1);
 			this.filesDeletedDao.update(fd);
 		}
 
-		return false;
+		return true;
 	}
 }
