@@ -343,7 +343,7 @@ public class FileServiceImpl implements FileService {
 	 * Delete a file
 	 */
 	@Override
-	public boolean deleteFile(String filePath) {
+	public boolean deleteFile(String filePath, boolean fromClient) {
 		List<UploadFile> fileList = this.fileDao.getSingleFileByUser(filePath,
 				this.authManager.getCurrentUser());
 
@@ -371,6 +371,10 @@ public class FileServiceImpl implements FileService {
 				filesDeleted.setMimeType(uf.getMimeType());
 				filesDeleted.setLastModified(uf.getLastModified());
 				filesDeleted.setClientDeleted(0);
+				
+				if (fromClient) {
+					filesDeleted.setClientDeleted(1);
+				}
 
 				this.filesDeletedDao.create(filesDeleted);
 

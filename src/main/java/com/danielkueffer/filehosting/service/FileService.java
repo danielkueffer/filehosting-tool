@@ -21,7 +21,7 @@ public interface FileService {
 
 	File getDownloadFile(String filePath);
 
-	boolean deleteFile(String filePath);
+	boolean deleteFile(String filePath, boolean fromClient);
 
 	boolean createFolder(String folder, int parent);
 

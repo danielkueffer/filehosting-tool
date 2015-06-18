@@ -151,7 +151,26 @@ public class FileResource implements Serializable {
 	@DELETE
 	@Path("{filePath:.*}")
 	public Response deleteFile(@PathParam("filePath") String filePath) {
-		boolean deleted = this.fileService.deleteFile(filePath);
+		boolean deleted = this.fileService.deleteFile(filePath, false);
+
+		if (!deleted) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
+
+		return Response.ok().build();
+	}
+
+	/**
+	 * Delete a file which was deleted on the client
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	@DELETE
+	@Path("client/{filePath:.*}")
+	public Response deleteFileFromClient(@PathParam("filePath") String filePath) {
+		boolean deleted = this.fileService.deleteFile(filePath, true);
 
 		if (!deleted) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
