@@ -15,6 +15,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -25,6 +26,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import com.danielkueffer.filehosting.service.ConfigurationService;
 import com.danielkueffer.filehosting.service.FileService;
 
 /**
@@ -40,6 +42,9 @@ public class FileResource implements Serializable {
 
 	@EJB
 	FileService fileService;
+
+	@EJB
+	ConfigurationService configurationService;
 
 	@Inject
 	HttpServletRequest request;
@@ -77,7 +82,10 @@ public class FileResource implements Serializable {
 	@POST
 	@Path("upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA + "; charset=UTF-8")
-	public Response uploadFile(MultipartFormDataInput input) {
+	public Response uploadFile(
+			@HeaderParam("Content-Length") int contentLength,
+			MultipartFormDataInput input) {
+
 		int parent = 0;
 		String filename = "";
 		boolean ieForm = false;
@@ -100,6 +108,15 @@ public class FileResource implements Serializable {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+
+		// Check if the content is not too long
+		int maxFileSize = this.configurationService.getConfiguration()
+				.getMaxUploadSize();
+
+		if (contentLength > maxFileSize) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
 		}
 
 		this.fileService.uploadFiles(input.getFormDataMap().get("file"),

@@ -22,7 +22,7 @@ public class ConfigurationController {
 
 	@EJB
 	ConfigurationService configurationService;
-	
+
 	@Inject
 	AuthManager authManager;
 
@@ -31,11 +31,17 @@ public class ConfigurationController {
 	@PostConstruct
 	public void init() {
 		this.formConfiguration = this.configurationService.getConfiguration();
-		
+
 		if (this.formConfiguration.getMaxUploadSize() == 0) {
 			this.formConfiguration.setMaxUploadSize(1024);
+		} else {
+			int maxUploadBytes = this.formConfiguration.getMaxUploadSize();
+
+			// Convert to MB
+			this.formConfiguration
+					.setMaxUploadSize(maxUploadBytes / 1024 / 1024);
 		}
-		
+
 		if (this.formConfiguration.getDeletedRestoreTime() == 0) {
 			this.formConfiguration.setDeletedRestoreTime(24);
 		}
@@ -48,9 +54,10 @@ public class ConfigurationController {
 	 */
 	public String updateConfiguration() {
 		if (this.authManager.getCurrentUser().isAdmin()) {
-			this.configurationService.updateConfiguration(this.formConfiguration);
+			this.configurationService
+					.updateConfiguration(this.formConfiguration);
 		}
-		
+
 		return "/settings.xhtml?faces-redirect=true";
 	}
 

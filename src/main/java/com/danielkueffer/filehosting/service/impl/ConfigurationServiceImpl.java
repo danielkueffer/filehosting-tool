@@ -17,8 +17,6 @@ import com.danielkueffer.filehosting.persistence.model.Configuration;
 import com.danielkueffer.filehosting.service.ConfigurationService;
 import com.danielkueffer.filehosting.util.ConfUtil;
 
-
-
 /**
  * The configuration service implementation
  * 
@@ -30,7 +28,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@EJB
 	ConfigurationDao configurationDao;
-	
+
 	@Inject
 	AuthManager authManager;
 
@@ -50,7 +48,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 				if (conf.getConfName().equals(ConfNames.fileconf.toString())) {
 					Map<String, String> fileConfMap = ConfUtil
 							.getMapFromString(conf.getConfValue());
-
+					
 					formConfiguration.setMaxUploadSize(Integer
 							.valueOf(fileConfMap.get(ConfValues.maxUploadSize
 									.toString())));
@@ -78,19 +76,19 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 		String fileConfString = this
 				.createFileConfigurationString(formConfiguration);
-		
+
 		if (fileConfiguration == null) {
 			Configuration conf = new Configuration();
 			conf.setConfName(ConfNames.fileconf.toString());
 			conf.setConfValue(fileConfString);
 			conf.setUpdatedUser(this.authManager.getCurrentUser().getUsername());
-			
+
 			this.configurationDao.create(conf);
-		}
-		else {
+		} else {
 			fileConfiguration.setConfValue(fileConfString);
-			fileConfiguration.setUpdatedUser(this.authManager.getCurrentUser().getUsername());
-			
+			fileConfiguration.setUpdatedUser(this.authManager.getCurrentUser()
+					.getUsername());
+
 			this.configurationDao.update(fileConfiguration);
 		}
 
@@ -104,9 +102,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	 */
 	private String createFileConfigurationString(FormConfiguration formConf) {
 
+		int maxUploadSize = formConf.getMaxUploadSize();
+
+		// Convert max upload size to bytes
+		maxUploadSize = maxUploadSize * 1024 * 1024;
+
 		Map<String, String> confMap = new LinkedHashMap<String, String>();
-		confMap.put(ConfValues.maxUploadSize.toString(),
-				formConf.getMaxUploadSize() + "");
+		confMap.put(ConfValues.maxUploadSize.toString(), maxUploadSize + "");
 		confMap.put(ConfValues.deletedRestoreTime.toString(),
 				formConf.getDeletedRestoreTime() + "");
 
