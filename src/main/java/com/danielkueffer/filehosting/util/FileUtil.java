@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -94,18 +96,22 @@ public class FileUtil {
 	 * @param filename
 	 * @throws IOException
 	 */
-	public static File writeFile(byte[] content, String filename,
+	public static File writeFile(InputStream inputStream, String filename,
 			long lastModified) throws IOException {
 
 		File file = new File(filename);
-
 		file.createNewFile();
 
-		FileOutputStream fop = new FileOutputStream(file);
+		OutputStream out = new FileOutputStream(file);
 
-		fop.write(content);
-		fop.flush();
-		fop.close();
+		byte[] bytes = new byte[4096];
+
+		for (int len; (len = inputStream.read(bytes)) > 0;) {
+			out.write(bytes, 0, len);
+		}
+
+		out.flush();
+		out.close();
 
 		if (lastModified > 0) {
 			file.setLastModified(lastModified);

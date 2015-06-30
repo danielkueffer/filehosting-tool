@@ -28,7 +28,6 @@ import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
@@ -87,13 +86,6 @@ public class FileServiceImpl implements FileService {
 		for (InputPart inputPart : inputParts) {
 
 			try {
-				InputStream inputStream = inputPart.getBody(InputStream.class,
-						null);
-
-				byte[] bytes = IOUtils.toByteArray(inputStream);
-
-				inputStream.close();
-
 				String filePath = fileName;
 
 				if (parent != 0) {
@@ -107,9 +99,14 @@ public class FileServiceImpl implements FileService {
 						+ this.authManager.getCurrentUser().getUsername() + "/"
 						+ filePath;
 
+				InputStream inputStream = inputPart.getBody(InputStream.class,
+						null);
+				
 				// Write the file
-				File file = FileUtil.writeFile(bytes, systemFilePath,
+				File file = FileUtil.writeFile(inputStream, systemFilePath,
 						lastModified);
+
+				inputStream.close();
 
 				Path path = Paths.get(systemFilePath);
 
