@@ -56,6 +56,11 @@ public class ProfileController {
 		if (this.user.getNotificationDiskFull() == 1) {
 			this.user.setCheckboxDiskFull(true);
 		}
+		
+		// Set the diskQuota bytes to GB
+		long diskQuota = this.user.getDiskQuota();
+		diskQuota = diskQuota / 1024 / 1024 / 1024;
+		this.user.setDiskQuota(diskQuota);
 
 		this.profileImagePath = this.userService.getProfileImage(this.user);
 		this.diskSpaceUsed = this.fileService.getUsedDiskSpaceByCurrentUserAsString();

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `filehosting_tool`.`user` (
   `password` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
   `language` VARCHAR(45) NULL,
-  `disk_quota` INT NULL,
+  `disk_quota` BIGINT NULL,
   `profile_image` VARCHAR(45) NULL,
   `display_name` VARCHAR(100) NULL,
   `active` INT NULL,

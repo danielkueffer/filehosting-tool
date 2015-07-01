@@ -53,7 +53,17 @@ public class UserController {
 	 * @return
 	 */
 	public List<User> getUsers() {
-		return this.userService.getAllUsers();
+		List<User> userList = this.userService.getAllUsers();
+
+		for (User user : userList) {
+
+			// Set the diskQuota bytes to GB
+			long diskQuota = user.getDiskQuota();
+			diskQuota = diskQuota / 1024 / 1024 / 1024;
+			user.setDiskQuota(diskQuota);
+		}
+
+		return userList;
 	}
 
 	/**
@@ -83,6 +93,12 @@ public class UserController {
 	 */
 	public void initUpdate() {
 		this.user = this.userService.getUserById(user.getId());
+
+		// Set the diskQuota bytes to GB
+		long diskQuota = this.user.getDiskQuota();
+		diskQuota = diskQuota / 1024 / 1024 / 1024;
+		this.user.setDiskQuota(diskQuota);
+
 	}
 
 	/**
@@ -92,7 +108,7 @@ public class UserController {
 	 */
 	public String updateUser() {
 		this.userService.updateUser(this.user);
-		
+
 		return "/user/list.xhtml?faces-redirect=true";
 	}
 

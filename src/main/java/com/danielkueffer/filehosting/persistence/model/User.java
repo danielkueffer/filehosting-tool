@@ -35,10 +35,10 @@ public class User implements Serializable {
 
 	@NotNull
 	private String username;
-	
+
 	@NotNull
 	private String password;
-	
+
 	private String email;
 	private String language;
 
@@ -49,14 +49,14 @@ public class User implements Serializable {
 	private String displayName;
 
 	@Column(name = "disk_quota")
-	private int diskQuota;
+	private long diskQuota;
 
 	private int active;
 
 	@Column(name = "notification_disk_full")
 	private int notificationDiskFull;
 
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "group_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
 	private List<Group> groups;
 
@@ -65,16 +65,16 @@ public class User implements Serializable {
 
 	@Column(name = "last_login")
 	private Timestamp lastLogin;
-	
+
 	@Transient
 	private boolean checkboxActive;
-	
+
 	@Transient
 	private boolean checkboxDiskFull;
-	
+
 	@Transient
 	private List<String> groupIds;
-	
+
 	@Transient
 	private boolean isAdmin;
 
@@ -186,7 +186,7 @@ public class User implements Serializable {
 	/**
 	 * @return the diskQuota
 	 */
-	public int getDiskQuota() {
+	public long getDiskQuota() {
 		return diskQuota;
 	}
 
@@ -194,7 +194,7 @@ public class User implements Serializable {
 	 * @param diskQuota
 	 *            the diskQuota to set
 	 */
-	public void setDiskQuota(int diskQuota) {
+	public void setDiskQuota(long diskQuota) {
 		this.diskQuota = diskQuota;
 	}
 
@@ -281,7 +281,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param checkboxActive the checkboxActive to set
+	 * @param checkboxActive
+	 *            the checkboxActive to set
 	 */
 	public void setCheckboxActive(boolean checkboxActive) {
 		this.checkboxActive = checkboxActive;
@@ -295,7 +296,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param groupIds the groupIds to set
+	 * @param groupIds
+	 *            the groupIds to set
 	 */
 	public void setGroupIds(List<String> groupIds) {
 		this.groupIds = groupIds;
@@ -309,7 +311,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param isAdmin the isAdmin to set
+	 * @param isAdmin
+	 *            the isAdmin to set
 	 */
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
@@ -323,7 +326,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param checkboxDiskFull the checkboxDiskFull to set
+	 * @param checkboxDiskFull
+	 *            the checkboxDiskFull to set
 	 */
 	public void setCheckboxDiskFull(boolean checkboxDiskFull) {
 		this.checkboxDiskFull = checkboxDiskFull;

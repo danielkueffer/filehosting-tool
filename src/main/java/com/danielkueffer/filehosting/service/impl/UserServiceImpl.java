@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 	@EJB
 	GroupService groupService;
-	
+
 	@EJB
 	FileService fileService;
 
@@ -108,6 +108,14 @@ public class UserServiceImpl implements UserService {
 		if (user.isCheckboxActive()) {
 			user.setActive(1);
 		}
+
+		// Set the diskQuota from GB to bytes
+		long diskQuota = user.getDiskQuota();
+		long diskQuotaBytes = this.getBytesFormGB(diskQuota);
+		
+		System.out.println(diskQuota + ": " + diskQuotaBytes);
+		
+		user.setDiskQuota(this.getBytesFormGB(diskQuota));
 
 		// Set the groups selected
 		List<Group> groupList = new ArrayList<Group>();
@@ -172,8 +180,11 @@ public class UserServiceImpl implements UserService {
 		}
 
 		updUser.setLanguage(user.getLanguage());
-		updUser.setDiskQuota(user.getDiskQuota());
-
+		
+		// Set the diskQuota from GB to bytes
+		long diskQuota = user.getDiskQuota();
+		updUser.setDiskQuota(this.getBytesFormGB(diskQuota));
+		
 		// Set active
 		if (user.isCheckboxActive()) {
 			updUser.setActive(1);
@@ -297,7 +308,7 @@ public class UserServiceImpl implements UserService {
 		if (user.getProfileImage() != null) {
 			profileImage = user.getProfileImage();
 		}
-		
+
 		// Get the used disk space in bytes
 		long usedDiskSpace = this.fileService.getUsedDiskSpaceByCurrentUser();
 
@@ -313,5 +324,15 @@ public class UserServiceImpl implements UserService {
 		gen.writeEnd().flush();
 
 		return writer.toString();
+	}
+
+	/**
+	 * Convert GB to bytes
+	 * 
+	 * @param gb
+	 * @return
+	 */
+	private long getBytesFormGB(long gb) {
+		return gb * 1024 * 1024 * 1024;
 	}
 }
