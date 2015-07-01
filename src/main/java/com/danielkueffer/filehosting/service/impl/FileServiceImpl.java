@@ -41,6 +41,7 @@ import com.danielkueffer.filehosting.persistence.dao.FilesDeletedDao;
 import com.danielkueffer.filehosting.persistence.model.FilesDeleted;
 import com.danielkueffer.filehosting.persistence.model.UploadFile;
 import com.danielkueffer.filehosting.persistence.model.User;
+import com.danielkueffer.filehosting.service.ConfigurationService;
 import com.danielkueffer.filehosting.service.FileService;
 import com.danielkueffer.filehosting.util.FileUtil;
 import com.danielkueffer.filehosting.util.MimeType;
@@ -66,6 +67,9 @@ public class FileServiceImpl implements FileService {
 
 	@EJB
 	FilesDeletedDao filesDeletedDao;
+
+	@EJB
+	ConfigurationService configurationService;
 
 	@Inject
 	AuthManager authManager;
@@ -101,7 +105,7 @@ public class FileServiceImpl implements FileService {
 
 				InputStream inputStream = inputPart.getBody(InputStream.class,
 						null);
-				
+
 				// Write the file
 				File file = FileUtil.writeFile(inputStream, systemFilePath,
 						lastModified);
@@ -241,9 +245,15 @@ public class FileServiceImpl implements FileService {
 					.write("folderName", uf.getName()).writeEnd();
 		}
 
-		gen.writeEnd().writeStartArray("files");
+		// Create the configuration array
+		gen.writeEnd().writeStartArray("configuration");
+		int maxUploadSize = this.configurationService.getConfiguration()
+				.getMaxUploadSize();
+		gen.writeStartObject().write("maxUploadSize", maxUploadSize).writeEnd();
 
 		// Create file array
+		gen.writeEnd().writeStartArray("files");
+
 		for (UploadFile uf : fileList) {
 
 			String type = "";
@@ -368,7 +378,7 @@ public class FileServiceImpl implements FileService {
 				filesDeleted.setMimeType(uf.getMimeType());
 				filesDeleted.setLastModified(uf.getLastModified());
 				filesDeleted.setClientDeleted(0);
-				
+
 				if (fromClient) {
 					filesDeleted.setClientDeleted(1);
 				}
