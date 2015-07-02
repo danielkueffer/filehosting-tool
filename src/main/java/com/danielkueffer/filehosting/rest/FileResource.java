@@ -28,6 +28,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.danielkueffer.filehosting.service.ConfigurationService;
 import com.danielkueffer.filehosting.service.FileService;
+import com.danielkueffer.filehosting.service.UserService;
 
 /**
  * The file rest service
@@ -42,6 +43,9 @@ public class FileResource implements Serializable {
 
 	@EJB
 	FileService fileService;
+	
+	@EJB
+	UserService userService;
 
 	@EJB
 	ConfigurationService configurationService;
@@ -83,7 +87,7 @@ public class FileResource implements Serializable {
 	@Path("upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA + "; charset=UTF-8")
 	public Response uploadFile(
-			@HeaderParam("Content-Length") int contentLength,
+			@HeaderParam("Content-Length") long contentLength,
 			MultipartFormDataInput input) {
 
 		int parent = 0;
@@ -110,17 +114,13 @@ public class FileResource implements Serializable {
 			e.printStackTrace();
 		}
 
-		// Check if the content is not too long
-		int maxFileSize = this.configurationService.getConfiguration()
-				.getMaxUploadSize();
-
-		if (contentLength > maxFileSize) {
+		boolean uploaded = this.fileService.uploadFiles(input.getFormDataMap().get("file"),
+				parent, filename, lastModified, contentLength);
+		
+		if (! uploaded) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.build();
 		}
-
-		this.fileService.uploadFiles(input.getFormDataMap().get("file"),
-				parent, filename, lastModified);
 
 		// Upload send by Internet Explorer below v.10. Redirect to the file
 		// list

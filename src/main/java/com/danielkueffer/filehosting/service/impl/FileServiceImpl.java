@@ -82,7 +82,22 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public boolean uploadFiles(List<InputPart> inputParts, int parent,
-			String fileName, long lastModified) {
+			String fileName, long lastModified, long contentLength) {
+
+		int maxFileSize = this.configurationService.getConfiguration()
+				.getMaxUploadSize();
+
+		// Check if the content is too long
+		if (contentLength > maxFileSize) {
+			return false;
+		}
+
+		long diskQuota = this.authManager.getCurrentUser().getDiskQuota();
+
+		// Check if the disk quota of the current user is full
+		if ((this.getUsedDiskSpaceByCurrentUser() + contentLength) > diskQuota) {
+			return false;
+		}
 
 		// Check if a directory for the current user exists
 		this.createUserDir();

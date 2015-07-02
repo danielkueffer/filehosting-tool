@@ -50,7 +50,7 @@ public class RestAuthenticator {
 			 */
 			String authToken = UUID.randomUUID().toString();
 			authorizationTokensStorage.put(authToken, username);
-
+			
 			return authToken;
 		}
 

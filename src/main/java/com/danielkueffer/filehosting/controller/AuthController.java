@@ -86,6 +86,9 @@ public class AuthController implements Serializable {
 					this.user.setAdmin(true);
 				}
 			}
+			
+			// Set the last login time
+			this.userService.setLastLoginTime();
 
 			return "/files.xhtml?faces-redirect=true";
 		} else {

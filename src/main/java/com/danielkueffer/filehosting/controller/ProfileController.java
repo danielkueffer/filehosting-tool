@@ -46,24 +46,26 @@ public class ProfileController {
 
 	private String profileImagePath;
 	private String message;
-	
+
 	private String diskSpaceUsed;
 
 	@PostConstruct
 	public void init() {
 		this.user = this.authManager.getCurrentUser();
 
-		if (this.user.getNotificationDiskFull() == 1) {
-			this.user.setCheckboxDiskFull(true);
+		if (user.getNotificationDiskFull() == 1) {
+			user.setCheckboxDiskFull(true);
 		}
-		
+
 		// Set the diskQuota bytes to GB
-		long diskQuota = this.user.getDiskQuota();
+		long diskQuota = user.getDiskQuota();
+
 		diskQuota = diskQuota / 1024 / 1024 / 1024;
-		this.user.setDiskQuota(diskQuota);
+		user.setDiskQuotaGb((int) diskQuota);
 
 		this.profileImagePath = this.userService.getProfileImage(this.user);
-		this.diskSpaceUsed = this.fileService.getUsedDiskSpaceByCurrentUserAsString();
+		this.diskSpaceUsed = this.fileService
+				.getUsedDiskSpaceByCurrentUserAsString();
 	}
 
 	/**

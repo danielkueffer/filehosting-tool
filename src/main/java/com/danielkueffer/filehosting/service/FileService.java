@@ -13,7 +13,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
  */
 public interface FileService {
 	boolean uploadFiles(List<InputPart> inputParts, int parent,
-			String fileName, long lastModified);
+			String fileName, long lastModified, long contentLength);
 
 	String getFilesFromCurrentUser();
 

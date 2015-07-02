@@ -34,4 +34,6 @@ public interface UserService {
 	String getProfileImage(User user);
 	
 	String getUserInfoAsJson();
+	
+	void setLastLoginTime();
 }

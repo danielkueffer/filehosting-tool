@@ -77,6 +77,9 @@ public class User implements Serializable {
 
 	@Transient
 	private boolean isAdmin;
+	
+	@Transient
+	private int diskQuotaGb;
 
 	/**
 	 * @return the id
@@ -331,5 +334,19 @@ public class User implements Serializable {
 	 */
 	public void setCheckboxDiskFull(boolean checkboxDiskFull) {
 		this.checkboxDiskFull = checkboxDiskFull;
+	}
+
+	/**
+	 * @return the diskQuotaGb
+	 */
+	public int getDiskQuotaGb() {
+		return diskQuotaGb;
+	}
+
+	/**
+	 * @param diskQuotaGb the diskQuotaGb to set
+	 */
+	public void setDiskQuotaGb(int diskQuotaGb) {
+		this.diskQuotaGb = diskQuotaGb;
 	}
 }

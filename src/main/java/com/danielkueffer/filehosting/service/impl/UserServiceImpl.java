@@ -112,9 +112,9 @@ public class UserServiceImpl implements UserService {
 		// Set the diskQuota from GB to bytes
 		long diskQuota = user.getDiskQuota();
 		long diskQuotaBytes = this.getBytesFormGB(diskQuota);
-		
+
 		System.out.println(diskQuota + ": " + diskQuotaBytes);
-		
+
 		user.setDiskQuota(this.getBytesFormGB(diskQuota));
 
 		// Set the groups selected
@@ -180,11 +180,11 @@ public class UserServiceImpl implements UserService {
 		}
 
 		updUser.setLanguage(user.getLanguage());
-		
+
 		// Set the diskQuota from GB to bytes
 		long diskQuota = user.getDiskQuota();
 		updUser.setDiskQuota(this.getBytesFormGB(diskQuota));
-		
+
 		// Set active
 		if (user.isCheckboxActive()) {
 			updUser.setActive(1);
@@ -334,5 +334,16 @@ public class UserServiceImpl implements UserService {
 	 */
 	private long getBytesFormGB(long gb) {
 		return gb * 1024 * 1024 * 1024;
+	}
+
+	/**
+	 * Set the last login time in the current user
+	 */
+	@Override
+	public void setLastLoginTime() {
+		User user = this.authManager.getCurrentUser();
+
+		user.setLastLogin(DateUtil.getSQLTimestamp());
+		this.userDao.update(user);
 	}
 }
