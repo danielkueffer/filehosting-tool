@@ -7,6 +7,8 @@ A Java EE 7 based "Dropbox" like clone to manage files online
  * Filemanager
  * User management
  * Group management
+ * Internationalization
+ * REST API
 
 ## Requirements
  
