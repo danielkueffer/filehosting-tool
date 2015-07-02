@@ -30,6 +30,10 @@ In the standalone.xml under "default-host" add the following line:
 In the standalone.xml under "handlers" add the following line:
 
 	<file name="profile-image" path="${jboss.server.data.dir}/profile-images"/>
+	
+## Desktop Client
+
+A JavaFX [Desktop Client](https://github.com/danielkueffer/filehosting-tool-desktop-client) for the [Filehosting-Tool](https://github.com/danielkueffer/filehosting-tool) to synchronize the files on the desktop with the server.
 
 ## License
 
