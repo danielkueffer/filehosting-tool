@@ -257,6 +257,7 @@ a:focus {
  * Search
  */
 .searchform {
+	display: none;
 	position: relative;
 	float: left;
 	margin: 15px 0 25px;
@@ -307,6 +308,7 @@ a:focus {
  */
 .mainnav {
 	clear: both;
+	padding: 25px 0 0;
 }
 
 .mainnav ul {
@@ -894,6 +896,10 @@ a:focus {
 .app-form label.notification-label {
 	width: auto;
 	font-weight: normal;
+}
+
+.ui-helper-hidden-accessible {
+	width: 30px !important;
 }
 
 /**
