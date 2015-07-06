@@ -108,13 +108,10 @@ public class UserServiceImpl implements UserService {
 		if (user.isCheckboxActive()) {
 			user.setActive(1);
 		}
+		
+		long diskQuota = user.getDiskQuota();
 
 		// Set the diskQuota from GB to bytes
-		long diskQuota = user.getDiskQuota();
-		long diskQuotaBytes = this.getBytesFormGB(diskQuota);
-
-		System.out.println(diskQuota + ": " + diskQuotaBytes);
-
 		user.setDiskQuota(this.getBytesFormGB(diskQuota));
 
 		// Set the groups selected
