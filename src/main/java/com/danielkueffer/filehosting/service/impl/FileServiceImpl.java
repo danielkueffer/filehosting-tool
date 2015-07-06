@@ -94,9 +94,12 @@ public class FileServiceImpl implements FileService {
 
 		long diskQuota = this.authManager.getCurrentUser().getDiskQuota();
 
-		// Check if the disk quota of the current user is full
-		if ((this.getUsedDiskSpaceByCurrentUser() + contentLength) > diskQuota) {
-			return false;
+		// Check if the disk quota of the current user is full. Only check if
+		// the disk quota is greater than 0. 0 is unlimited
+		if (diskQuota > 0) {
+			if ((this.getUsedDiskSpaceByCurrentUser() + contentLength) > diskQuota) {
+				return false;
+			}
 		}
 
 		// Check if a directory for the current user exists
